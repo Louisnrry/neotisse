@@ -23,16 +23,6 @@
 - Âge : 35-50 ans
 - Exemple : Antoine, 45 ans, directeur du musée de Tautavel
 
-## Pages / fonctionnalités
-- Accueil / présentation
-- Ateliers (catalogue)
-- Calendrier des événements
-- Équipe (membres + bénévoles)
-- Actualités
-- Partenaires
-- Avis des partenaires
-- Contact (e-mail + formulaire)
-
 ## À mettre en avant
 - Le festival organisé par Néotisse (très important)
 - Fêtes de la Préhistoire de Tautavel (récurrent)
