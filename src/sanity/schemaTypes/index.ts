@@ -11,6 +11,7 @@ import { aProposPage } from "./singletons/aProposPage"
 import { ateliersPage } from "./singletons/ateliersPage"
 import { calendrierPage } from "./singletons/calendrierPage"
 import { contactPage } from "./singletons/contactPage"
+import { cookieBanner } from "./singletons/cookieBanner"
 import { homePage } from "./singletons/homePage"
 import { livreDorPage } from "./singletons/livreDorPage"
 import { mentionsLegalesPage } from "./singletons/mentionsLegalesPage"
@@ -29,6 +30,7 @@ export const schemaTypes: SchemaTypeDefinition[] = [
 
   // Pages et réglages (un seul document par type)
   siteSettings,
+  cookieBanner,
   homePage,
   ateliersPage,
   calendrierPage,
@@ -50,6 +52,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
  */
 export const singletonTypes = new Set([
   "siteSettings",
+  "cookieBanner",
   "homePage",
   "ateliersPage",
   "calendrierPage",

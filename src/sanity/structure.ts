@@ -64,6 +64,7 @@ export const structure: StructureResolver = (S) => {
     .title("Contenu")
     .items([
       singletonItem(siteSettingsItem),
+      singletonItem({ type: "cookieBanner", title: "Bandeau cookies", icon: LockIcon }),
       S.divider(),
       S.listItem()
         .title("Pages du site")

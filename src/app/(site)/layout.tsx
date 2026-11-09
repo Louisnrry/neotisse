@@ -3,8 +3,10 @@ import { CookieBanner } from "@/components/layout/CookieBanner";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { SanityLive } from "@/sanity/lib/live";
+import { getCookieBanner } from "@/sanity/queries/cookies";
 
-export default function SiteLayout({ children }: LayoutProps<"/">) {
+export default async function SiteLayout({ children }: LayoutProps<"/">) {
+  const cookieTexts = await getCookieBanner();
   return (
     <>
       <a
@@ -18,7 +20,7 @@ export default function SiteLayout({ children }: LayoutProps<"/">) {
         {children}
       </main>
       <Footer />
-      <CookieBanner />
+      <CookieBanner texts={cookieTexts} />
       <Analytics />
       {/* Met la page à jour dès qu’un contenu est publié dans le Studio. */}
       <SanityLive includeDrafts={false} />

@@ -2,6 +2,7 @@ import { CommentIcon } from "@sanity/icons/Comment"
 import { defineArrayMember, defineField, defineType } from "sanity"
 import { imageWithAltField } from "../shared/image"
 import { linkField } from "../shared/link"
+import { richTextField } from "../shared/richText"
 import { seoField } from "../shared/seo"
 
 export const contactPage = defineType({
@@ -69,6 +70,7 @@ export const contactPage = defineType({
         }),
         defineField({ name: "submit", title: "Libellé du bouton", type: "string", initialValue: "Envoyer" }),
         defineField({ name: "sending", title: "Libellé pendant l’envoi", type: "string", initialValue: "Envoi en cours…" }),
+        richTextField("legal", "Mention sous le formulaire"),
       ],
     }),
     defineField({

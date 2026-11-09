@@ -1,5 +1,6 @@
 import { StarIcon } from "@sanity/icons/Star"
 import { defineField, defineType } from "sanity"
+import { richTextField } from "../shared/richText"
 import { seoField } from "../shared/seo"
 
 export const livreDorPage = defineType({
@@ -63,6 +64,7 @@ export const livreDorPage = defineType({
           type: "string",
           initialValue: "Je confirme ne pas être un robot.",
         }),
+        richTextField("legal", "Mention sous le formulaire"),
       ],
     }),
   ],

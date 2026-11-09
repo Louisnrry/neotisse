@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useId, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
-import { cookieBannerContent as t } from "@/content/cookies";
+import type { CookieBannerContent } from "@/sanity/types";
 import { cn } from "@/lib/cn";
 import { getConsentState, getServerConsentState, saveConsent, subscribeConsent } from "@/lib/consent";
 
@@ -12,15 +12,23 @@ import { getConsentState, getServerConsentState, saveConsent, subscribeConsent }
  * et « Enregistrer mes choix ». Affiché tant qu’aucun choix n’est fait, et rouvert par
  * le lien « Gérer mes cookies » du pied de page.
  */
-export function CookieBanner() {
+export function CookieBanner({ texts: t }: { texts: CookieBannerContent }) {
   // Côté serveur (et pendant l’hydratation) l’état est « fermé » : le cookie n’est lu que dans le navigateur.
   const { consent, reopened, ready } = useSyncExternalStore(subscribeConsent, getConsentState, getServerConsentState);
   if (!ready || (consent !== null && !reopened)) return null;
   // Chaque ouverture repart de la vue simple, avec le choix déjà enregistré.
-  return <Banner initialStatistics={consent?.statistics ?? false} focusOnOpen={reopened} />;
+  return <Banner t={t} initialStatistics={consent?.statistics ?? false} focusOnOpen={reopened} />;
 }
 
-function Banner({ initialStatistics, focusOnOpen }: { initialStatistics: boolean; focusOnOpen: boolean }) {
+function Banner({
+  t,
+  initialStatistics,
+  focusOnOpen,
+}: {
+  t: CookieBannerContent;
+  initialStatistics: boolean;
+  focusOnOpen: boolean;
+}) {
   const [customizing, setCustomizing] = useState(false);
   const [statistics, setStatistics] = useState(initialStatistics);
   const firstButton = useRef<HTMLButtonElement>(null);
