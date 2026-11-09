@@ -216,7 +216,7 @@ export function Header() {
               })}
             </ul>
             <div className="mt-10">
-              <Button href={routes.contact} variant="on-red" onClick={() => setMenuOpen(false)}>
+              <Button href={routes.contact} variant="on-ink" onClick={() => setMenuOpen(false)}>
                 Prenez contact
               </Button>
             </div>

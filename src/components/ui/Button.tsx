@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { ComponentProps, ReactNode } from "react";
 import { cn } from "@/lib/cn";
 
-type Variant = "primary" | "outline" | "outline-garance" | "on-red";
+type Variant = "primary" | "outline" | "outline-garance" | "on-red" | "on-ink";
 type Size = "default" | "compact" | "large";
 
 const base =
@@ -15,8 +15,10 @@ const variants: Record<Variant, string> = {
   outline: "border-2 border-ink text-ink hover:bg-ink hover:text-blanc",
   // Contour garance, se remplit au survol (« Plus d’avis », « Refuser »)
   "outline-garance": "border border-garance text-garance hover:bg-garance hover:text-blanc",
-  // Sur fond rouge ou encre : fond crème, texte garance foncé
+  // Sur fond rouge : fond crème, texte garance foncé, survol encre
   "on-red": "bg-creme text-garance-dark hover:bg-ink hover:text-blanc",
+  // Sur fond encre (pied de page, menu mobile) : fond crème, survol garance
+  "on-ink": "bg-creme text-garance-dark hover:bg-garance hover:text-creme",
 };
 
 const sizes: Record<Size, string> = {

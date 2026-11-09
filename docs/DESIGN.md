@@ -129,7 +129,8 @@ Point de rupture spécifique : **`nav:` = 960px**, passage au menu burger.
 | `primary` (défaut) | fond garance, texte crème | fond garance-dark |
 | `outline` | bordure 2px encre, texte encre | fond encre, texte blanc |
 | `outline-garance` | bordure 1px garance, texte garance | fond garance, texte blanc |
-| `on-red` | fond crème, texte garance-dark (sur fond rouge ou encre) | fond encre, texte blanc |
+| `on-red` | fond crème, texte garance-dark (sur fond rouge) | fond encre, texte blanc |
+| `on-ink` | fond crème, texte garance-dark (sur fond encre : pied de page, menu mobile) | **fond garance, texte crème** (un survol encre serait invisible sur fond encre) |
 
 | Taille | Padding | Texte |
 |---|---|---|
@@ -160,12 +161,12 @@ Quicksand 600, angles droits, transitions 0.2s. `href` interne → `next/link`, 
 - Bouton « Prenez contact » en taille `compact`.
 - Se cache au scroll vers le bas (seuil 6px, à partir de 80px), revient au scroll vers le haut ou quand le focus entre dans l'en-tête ; transition 0.35s.
 - **Accueil** : `position: fixed` par-dessus le héro, **transparent** jusqu'au premier défilement (> 10px), puis fond blanc définitivement (comme la V1).
-- **Sous 960px** : bouton burger → menu plein écran fond encre, liens Cormorant 2.2rem crème (survol `garance-soft`), bouton « Prenez contact » `on-red`. Focus piégé, Échap ferme et rend le focus au burger, défilement de la page bloqué.
+- **Sous 960px** : bouton burger → menu plein écran fond encre, liens Cormorant 2.2rem crème (survol `garance-soft`), bouton « Prenez contact » `on-ink`. Focus piégé, Échap ferme et rend le focus au burger, défilement de la page bloqué.
 
 ## 9. Pied de page
 
 - Fond encre, texte crème, padding `72px` en haut, `28px` en bas.
-- Trois colonnes 38 % / 24 % / 38 % (une seule sous 768px) : logo blanc 56px + « Néotisse » (Cormorant 2.1rem) + texte ; navigation verticale Cormorant 1.25rem ; accroche Cormorant 600 1.45rem + bouton `on-red` « Écrivez-nous » + e-mail + icônes Instagram et Facebook.
+- Trois colonnes 38 % / 24 % / 38 % (une seule sous 768px) : logo blanc 56px + « Néotisse » (Cormorant 2.1rem) + texte ; navigation verticale Cormorant 1.25rem ; accroche Cormorant 600 1.45rem + bouton `on-ink` « Écrivez-nous » + e-mail + icônes Instagram et Facebook.
 - Liens texte crème, survol `garance-soft` (classes posées sur chaque lien : un style global sur tous les `<a>` du pied de page rendait le bouton « Écrivez-nous » crème sur crème, corrigé le 09/11/2026).
 - Ligne basse 0.88rem séparée par un filet crème à 14 % : © année · Mentions légales · Gérer mes cookies · Politique de confidentialité.
 

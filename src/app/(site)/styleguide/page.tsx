@@ -142,7 +142,7 @@ export default function StyleguidePage() {
           Section sur fond encre
         </ThreadHeading>
         <div className="mt-8 flex justify-center">
-          <Button href="#" variant="on-red">
+          <Button href="#" variant="on-ink">
             Écrivez-nous
           </Button>
         </div>

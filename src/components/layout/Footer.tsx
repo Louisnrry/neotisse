@@ -42,7 +42,7 @@ export function Footer() {
 
           <div className="flex flex-col items-start gap-5">
             <p className="font-serif text-[1.45rem] leading-[1.25] font-semibold">{siteSettings.footerCta}</p>
-            <Button href={routes.contact} variant="on-red">
+            <Button href={routes.contact} variant="on-ink">
               Écrivez-nous
             </Button>
             <p className="font-semibold">
