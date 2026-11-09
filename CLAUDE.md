@@ -24,8 +24,8 @@
    Plusieurs conversations se succèdent sur ce projet : ces fichiers sont la mémoire commune.
 4. **Git** : le dépôt GitHub `Louisnrry/neotisse` existe.
    - **Committer à chaque changement** (demande de Louis du 09/11/2026) : un commit par modification cohérente, message en français, sans attendre qu’on le demande.
-   - Travail sur la branche **`v2`** (pas directement sur `main`).
-   - **Ne jamais `git push` sans demande explicite de Louis.** La branche `v2` a été poussée sur GitHub le 09/11/2026 à sa demande (accueil) ; chaque nouveau push reste à demander.
+   - Travail **directement sur `main`**. Ne pas créer de branche (Louis l’a refusé le 09/11/2026).
+   - **Ne jamais `git push` sans demande explicite de Louis.** Push de `main` fait le 09/11/2026 à sa demande (accueil) ; chaque nouveau push reste à demander.
    - Ne pas committer `docs/Cahier_Des_Charges_Neotisse_V2.pdf` (fichier de Louis, hors périmètre).
 5. **Phase actuelle : design uniquement**. Sanity, formulaires, e-mails, analytics et domaine viendront plus tard (voir `docs/TODO.md`).
 6. Next.js 16 diffère des versions connues : lire la doc embarquée dans `node_modules/next/dist/docs/` avant d’utiliser une API (voir `AGENTS.md`).
