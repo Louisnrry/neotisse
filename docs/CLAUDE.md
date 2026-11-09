@@ -29,7 +29,7 @@
    - Travail **directement sur `main`**. Ne pas créer de branche (Louis l’a refusé le 09/11/2026).
    - **Ne jamais `git push` sans demande explicite de Louis.** Push de `main` fait le 09/11/2026 à sa demande (accueil) ; chaque nouveau push reste à demander.
    - Ne pas committer `docs/Cahier_Des_Charges_Neotisse_V2.pdf` (fichier de Louis, hors périmètre).
-5. **Phase actuelle : design uniquement**. Sanity, formulaires, e-mails, analytics et domaine viendront plus tard (voir `docs/TODO.md`).
+5. **Phase actuelle : design + mise en place du CMS (Sanity)**. Le projet Sanity `t4k96qs7` (dataset `production`) et le Studio embarqué sur `/studio` sont créés ; les schémas sont prêts. Restent à faire : migrer les contenus, brancher le site sur Sanity, les formulaires, les e-mails, les analytics et le domaine (voir `docs/TODO.md`).
 6. Next.js 16 diffère des versions connues : lire la doc embarquée dans `node_modules/next/dist/docs/` avant d’utiliser une API (voir `docs/AGENTS.md`).
 7. **Tous les fichiers `.md` du projet vivent dans `docs/`** (demande de Louis du 09/11/2026), y compris ce fichier, `README.md` et `AGENTS.md`. Ne pas en créer à la racine. `next.config.ts` a `agentRules: false` pour que `next dev` ne recrée pas `AGENTS.md` à la racine.
 
@@ -38,7 +38,8 @@
 | Sujet | Décision |
 |---|---|
 | Hébergement | **Netlify** |
-| CMS Sanity | Projet à créer ensemble, plus tard |
+| CMS Sanity | Projet **`t4k96qs7`** créé (dataset `production`), Studio **embarqué sur `/studio`** (décision du 09/11/2026 ; pas de dossier `studio-neotisse/`) |
+| Plan Sanity | **Free pour l’instant** : le dataset est public. Ne pas y stocker l’e-mail/IP des avis en production tant que le dataset n’est pas privé (Growth) ou que le stockage n’est pas revu. |
 | Domaine, e-mail (Resend), GA4 | Rien n’est acheté ni créé pour l’instant |
 | Stockage des messages de contact | Pas pour l’instant |
 | Livre d’or | Avis affichés **5 par 5** (« Plus d’avis ») |
@@ -378,6 +379,15 @@ page (singletons : home, ateliers, calendrier, partenaires, livreDor, aPropos, c
 - Studio en français, aperçu des pages si possible.
 - Documents privés (`review.email`, `review.ip`) jamais exposés côté client : requêtes publiques filtrées sur les champs publics.
 
+**Implémentation (09/11/2026)** :
+
+- Configuration du Studio : `sanity.config.ts` ; schémas : `src/sanity/schemaTypes/` ; navigation en français : `src/sanity/structure.ts` ; route Next.js : `src/app/studio/[[...tool]]/page.tsx`.
+- Les pages et les réglages sont des **singletons** : un seul document par type, avec un identifiant fixe égal au nom du type (`siteSettings`, `homePage`…). Le menu « Créer » ne les propose pas et les actions « Supprimer » / « Dupliquer » sont masquées.
+- Les listes ordonnées (tuiles d’ateliers de l’accueil, ateliers, partenaires, équipe, questions) utilisent des **références Sanity** : l’ordre se règle en faisant glisser les éléments dans le Studio.
+- Modération des avis : Studio → **Avis → À modérer** (statut `pending`), puis passage en `approved` ou `rejected`.
+- Les formulaires publics n’écrivent pas encore dans Sanity : il faudra une route API avec un token d’écriture **côté serveur uniquement**.
+- Le Studio embarqué est `noindex` via les métadonnées de `next-sanity/studio`.
+
 ---
 
 ## 9. RGPD & mentions légales
@@ -447,8 +457,9 @@ page (singletons : home, ateliers, calendrier, partenaires, livreDor, aPropos, c
 ## 14. Variables d’environnement
 
 ```
-NEXT_PUBLIC_SANITY_PROJECT_ID=
+NEXT_PUBLIC_SANITY_PROJECT_ID=t4k96qs7
 NEXT_PUBLIC_SANITY_DATASET=production
+NEXT_PUBLIC_SANITY_API_VERSION=2026-11-09
 SANITY_API_WRITE_TOKEN=          # serveur uniquement (avis, messages)
 SANITY_REVALIDATE_SECRET=
 RESEND_API_KEY=                  # ou autre service d’e-mail
@@ -456,3 +467,5 @@ CONTACT_FROM_EMAIL=
 NEXT_PUBLIC_GA_MEASUREMENT_ID=   # chargé seulement après consentement
 NEXT_PUBLIC_SITE_URL=https://neotisse.fr
 ```
+
+`.env.local` contient les valeurs locales et n’est jamais commité. `.env.example` documente les variables attendues (commité).

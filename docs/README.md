@@ -15,7 +15,9 @@ npm install
 npm run dev
 ```
 
-Le site tourne sur http://localhost:3000.
+Le site tourne sur http://localhost:3000. Le Studio Sanity est sur http://localhost:3000/studio.
+
+Au premier lancement, copier `.env.example` vers `.env.local` et renseigner les variables (le projet Sanity `t4k96qs7` et le dataset `production` sont déjà indiqués).
 
 ## Commandes
 
@@ -24,5 +26,6 @@ Le site tourne sur http://localhost:3000.
 | `npm run dev` | serveur de développement |
 | `npm run build` | build de production |
 | `npm run lint` | ESLint |
+| `npx sanity schemas validate` | vérifie les schémas du Studio |
 
-Stack : Next.js 16 (App Router, Cache Components), React 19, TypeScript, Tailwind CSS v4. Hébergement prévu : Netlify. CMS prévu : Sanity.
+Stack : Next.js 16 (App Router, Cache Components), React 19, TypeScript, Tailwind CSS v4, Sanity (Studio embarqué sur `/studio`). Hébergement prévu : Netlify.

@@ -48,12 +48,21 @@
 - [ ] Récupérer les textes de chaque page depuis le WordPress (MCP Novamira)
 - [ ] Comparer chaque page avec la V1 à 375, 768 et 1440px
 
-## Phase 2 : contenus et CMS (plus tard)
-- [ ] Créer le projet Sanity avec Louis (comptes au nom de Néotisse)
-- [ ] Schémas Sanity (CLAUDE.md § 8) et Studio sur `/studio`
+## Phase 2 : contenus et CMS (en cours)
+- [x] Créer le projet Sanity avec Louis (09/11) : projet `t4k96qs7`, dataset `production`, CORS `http://localhost:3000` — compte Google de Louis pour l’instant, transfert au nom de Néotisse à prévoir
+- [x] Schémas Sanity (CLAUDE.md § 8) et Studio embarqué sur `/studio` (09/11)
+  - Schémas en français dans `src/sanity/schemaTypes/` (documents, singletons, briques partagées SEO / liens / images avec alt obligatoire / texte enrichi)
+  - Navigation française dans `src/sanity/structure.ts` : réglages, pages, événements, ateliers, partenaires, équipe, FAQ, modération des avis
+  - Singletons protégés (pas de doublon, pas de suppression accidentelle)
+  - `.env.example` ajouté ; `.env.local` ignoré par git
+  - Vérifié : `npx sanity schemas validate` (0 erreur), TypeScript et `npm run build` OK, Studio accessible sur `/studio`
+- [ ] Décider du stockage de `review.email` / `review.ip` avant la mise en ligne (dataset public en plan Free)
+- [ ] Ajouter le domaine de production dans les CORS Sanity et configurer le webhook de revalidation
 - [ ] Migrer les contenus de la V1 : textes, 2 événements, 7 partenaires, avis (hors avis de test), 10 questions de FAQ, 2 membres d’équipe
 - [ ] Remplacer `src/content/site-settings.ts` par le document `siteSettings`
+- [ ] Brancher les pages sur les requêtes GROQ (`sanityFetch` + Cache Components)
 - [ ] Passer les images de `public/images` dans Sanity
+- [ ] Faire relire le Studio par l’association (libellés, aide, parcours de la cliente)
 
 ## Phase 3 : fonctionnalités (plus tard)
 - [ ] Formulaire de contact : brancher `ContactForm` sur une route API (e-mail, validation serveur) ; aujourd’hui la confirmation s’affiche sans rien envoyer
