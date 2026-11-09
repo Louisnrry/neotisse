@@ -37,3 +37,5 @@ Au premier lancement, copier `.env.example` vers `.env.local` et renseigner les 
 | `npx sanity schemas validate` | vérifie les schémas du Studio |
 
 Stack : Next.js 16 (App Router, Cache Components), React 19, TypeScript, Tailwind CSS v4, Sanity (Studio embarqué sur `/studio`). Hébergement prévu : Netlify.
+
+Contenu : les pages lisent Sanity via `src/sanity/queries/` ; une publication dans le Studio met le site à jour en quelques secondes (`<SanityLive />`). Les champs encore vides affichent les textes de la V1 (`src/content/`).

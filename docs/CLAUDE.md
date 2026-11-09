@@ -29,7 +29,7 @@
    - Travail **directement sur `main`**. Ne pas créer de branche (Louis l’a refusé le 09/11/2026).
    - **Ne jamais `git push` sans demande explicite de Louis.** Push de `main` fait le 09/11/2026 à sa demande (accueil) ; chaque nouveau push reste à demander.
    - Ne pas committer `docs/Cahier_Des_Charges_Neotisse_V2.pdf` (fichier de Louis, hors périmètre).
-5. **Phase actuelle : design + mise en place du CMS (Sanity)**. Le projet Sanity `t4k96qs7` (dataset `production`) et le Studio embarqué sur `/studio` sont créés ; les schémas sont prêts. Restent à faire : migrer les contenus, brancher le site sur Sanity, les formulaires, les e-mails, les analytics et le domaine (voir `docs/TODO.md`).
+5. **Phase actuelle : contenus et CMS (Sanity)**. Le projet Sanity `t4k96qs7` (dataset `production`) et le Studio embarqué sur `/studio` sont créés, et **toutes les pages lisent Sanity** (10/11/2026, voir « Contenus et Sanity » plus bas). Restent à faire : migrer les contenus, les formulaires, les e-mails, les analytics et le domaine (voir `docs/TODO.md`).
 6. Next.js 16 diffère des versions connues : lire la doc embarquée dans `node_modules/next/dist/docs/` avant d’utiliser une API (voir `docs/AGENTS.md`).
 7. **Tous les fichiers `.md` du projet vivent dans `docs/`** (demande de Louis du 09/11/2026), y compris ce fichier, `README.md` et `AGENTS.md`. Ne pas en créer à la racine. `next.config.ts` a `agentRules: false` pour que `next dev` ne recrée pas `AGENTS.md` à la racine.
 
@@ -76,9 +76,16 @@
 
 - Calendrier (V1, page 17) : sous le H1, une phrase d’intro (« Le calendrier des ateliers Néotisse rassemble… »). « À venir » et « Calendrier des ateliers et événements » sont des **titres à filets** (H2). La liste « À venir » occupe toute la colonne de 1040px (le 880px du CSS n’est pas appliqué). Le bloc final « Comment participer à nos ateliers ? » est en deux colonnes (photo 4/5 à 40 %, texte à 60 %) avec le H3 « Vous êtes un musée ou une structure culturelle ? » et le bouton « Programmer un atelier » ; il n’est pas sur fond de couleur. Sans événement, la liste affiche « Aucun événement programmé pour le moment. » (et non le texte par défaut du schéma Sanity). La modale a deux boutons : lien vers le lieu et « Prenez contact ».
 
-### Contenus provisoires
+### Contenus et Sanity (branché le 10/11/2026)
 
-Tant que le site n’est pas branché sur Sanity, les contenus sont dans `src/content/*.ts` (repris de la V1), chacun marqué `TODO(sanity)`. Les composants n’y accèdent que par ces modules : il suffira de remplacer les fonctions (`getNextEvent`, `getLatestReviews`…) par des requêtes GROQ.
+- Les pages et composants lisent le contenu **uniquement** par les fonctions de `src/sanity/queries/` (`getHomePage`, `getAllEvents`, `getReviews`, `getContactPage`…). Chaque requête GROQ renvoie **la même forme** que l’ancien contenu local, pour ne pas toucher aux composants.
+- `fetchSanity` (`src/sanity/lib/live.ts`) : contenu **publié** seulement (pas de brouillons ni d’aperçu), mis en cache (`"use cache"`, étiquettes posées par `sanityFetch`). `<SanityLive />` (layout du site) invalide ces étiquettes dès qu’un document est publié : **le site se met à jour sans webhook ni redéploiement**. Si Sanity ne répond pas, le site affiche les contenus de secours et réessaie quelques minutes plus tard.
+- **Contenus de secours** : tant qu’un champ est vide dans Sanity, le site affiche la valeur reprise de la V1 dans `src/content/*.ts` (`withFallback`, champ par champ ; une liste vide → la liste locale). Les ateliers sont fusionnés par ancre (un atelier absent de Sanity reste affiché à la suite). À supprimer une fois la migration terminée.
+- Texte enrichi : converti par `src/sanity/lib/portableText.ts` vers le format de `<RichText>` (gras, liens, retours à la ligne). Pages légales : un titre 2 ouvre une rubrique (mentions légales) ; un titre 3 regroupe la liste à puces qui suit (confidentialité) ; un lien vers `#cookies` devient le bouton « Gérer mes cookies ».
+- Ordre des listes : celui des références glissées sur la page (Ateliers, Partenaires, Contact → FAQ, À propos → équipe), sinon le champ « Ordre d’affichage ».
+- Téléphone et ville de la page Contact : page Contact, sinon Réglages du site, sinon la V1.
+- Schéma `calendrierPage` adapté au rendu réel : photo « Comment participer », textes en texte enrichi (ils contiennent des liens), titre du calendrier mensuel ; bouton « Comment participer » retiré (absent de la V1).
+- Restent en dur : bandeau cookies (`src/content/cookies.ts`, pas de schéma), e-mail cité dans les textes légaux et mentions sous les formulaires.
 
 ---
 
