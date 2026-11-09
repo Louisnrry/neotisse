@@ -52,9 +52,11 @@
 - [x] **Bandeau cookies / « Gérer mes cookies »** (09/11) : copie du bandeau Complianz de la V1 (textes, mesures, Personnaliser avec Fonctionnel et Statistiques), rouvert par le lien du pied de page ; choix gardé 365 jours ; GA4 chargé seulement après acceptation
   - Comparé à la V1 à 1440px (positions et hauteurs identiques au pixel, vue simple et vue Personnaliser) et à 375px (pas de débordement)
 
+- [x] **Page Calendrier** (09/11) : liste « À venir », calendrier mensuel (navigation par mois, pastilles par type), modale détail (`<dialog>` natif), « Comment participer à nos ateliers ? », JSON-LD `Event`
+  - Textes et SEO repris du WordPress (page 17) dans `src/content/calendrier.ts` ; texte des événements avec le gras de la V1
+  - Comparée à la V1 à 1024px (positions identiques au pixel jusqu’au calendrier) et à 375px (identique, pas de débordement) ; modale vérifiée au clavier (focus, Échap, retour du focus)
+
 ### À faire (design)
-- [ ] Cartes « À venir », calendrier mensuel et modale événement
-- [ ] Construire les pages : Calendrier
 - [ ] Récupérer les textes de chaque page depuis le WordPress (MCP Novamira)
 - [ ] Comparer chaque page avec la V1 à 375, 768 et 1440px
 
@@ -88,6 +90,8 @@
 - [ ] Politique de confidentialité complète : fonction de Marie-Salomé, siège, lieu et durée de conservation des sauvegardes (encore « [À COMPLÉTER] ») ; nommer le prestataire d’e-mails et confirmer Google Analytics une fois choisis ; mettre à jour la date en haut de page
 
 ## Questions ouvertes
+- Boutons pleins : les boutons WordPress de la V1 (ex. « Programmer un atelier ») ont un interligne de 1.65 (52px de haut), le `<Button>` de la V2 1.3 (46px) : aligner sur la V1 partout ?
+- Calendrier : le CSS de la V1 limite la liste « À venir » à 880px mais WordPress l’affiche sur 1040px ; la V2 reproduit l’affichage réel
 - Cookies : la V1 affiche le bandeau alors qu’aucun traceur n’est actif (GA non configuré) ; CLAUDE.md § 7.5 dit de ne pas l’afficher dans ce cas. La V2 suit la V1 : à trancher quand les statistiques seront décidées
 - Cookies : sur la V1 le titre du bandeau disparaît sous 426px et « Toujours activé » est en vert (réglages par défaut de Complianz) : reproduits tels quels, à corriger ?
 - Contact : le téléphone (06 48 65 58 16, Marie-Salomé) est affiché sur la V1 mais absent de `siteSettings` (CLAUDE.md § 8 ne prévoit que `legal.phone`) : à ajouter au schéma

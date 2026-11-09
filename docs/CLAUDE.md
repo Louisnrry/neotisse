@@ -74,6 +74,8 @@
 
 - Cookies (V1 : bandeau Complianz, pas de page dédiée) : « Gérer mes cookies » **rouvre le bandeau**. La V1 l’affiche même sans traceur actif et garde le choix **365 jours** (et non 6 mois) : la V2 fait pareil. Catégories visibles : Fonctionnel (toujours activé) et Statistiques seulement. Le titre est masqué sous 426px et « Toujours activé » est en vert, comme la V1. Détails : `docs/DESIGN.md` § 9 octies.
 
+- Calendrier (V1, page 17) : sous le H1, une phrase d’intro (« Le calendrier des ateliers Néotisse rassemble… »). « À venir » et « Calendrier des ateliers et événements » sont des **titres à filets** (H2). La liste « À venir » occupe toute la colonne de 1040px (le 880px du CSS n’est pas appliqué). Le bloc final « Comment participer à nos ateliers ? » est en deux colonnes (photo 4/5 à 40 %, texte à 60 %) avec le H3 « Vous êtes un musée ou une structure culturelle ? » et le bouton « Programmer un atelier » ; il n’est pas sur fond de couleur. Sans événement, la liste affiche « Aucun événement programmé pour le moment. » (et non le texte par défaut du schéma Sanity). La modale a deux boutons : lien vers le lieu et « Prenez contact ».
+
 ### Contenus provisoires
 
 Tant que le site n’est pas branché sur Sanity, les contenus sont dans `src/content/*.ts` (repris de la V1), chacun marqué `TODO(sanity)`. Les composants n’y accèdent que par ces modules : il suffira de remplacer les fonctions (`getNextEvent`, `getLatestReviews`…) par des requêtes GROQ.

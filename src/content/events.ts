@@ -2,6 +2,7 @@
  * Événements, en attendant Sanity (type `event`, CLAUDE.md § 8).
  * TODO(sanity) : remplacer par une requête GROQ. Données reprises du WordPress V1.
  */
+import type { Paragraph } from "@/components/ui/RichText";
 import { todayInParis } from "@/lib/dates";
 
 export type EventType = "atelier" | "festival" | "conference" | "autre";
@@ -26,7 +27,7 @@ export type NeoEvent = {
   /** 2–3 phrases, affichées sur l’accueil */
   excerpt?: string;
   /** Texte complet (modale du calendrier) : un paragraphe par entrée */
-  body: string[];
+  body: Paragraph[];
   image?: { src: string; alt: string };
 };
 
@@ -43,11 +44,19 @@ export const events: NeoEvent[] = [
     excerpt:
       "Un événement inédit : l’association Néotisse et le musée de l’Aurignacien s’associent pour le tout premier Festival d’Archéologie Expérimentale d’Occitanie. Pendant deux jours, venez à la rencontre d’étudiants, de chercheurs et d’artisans passionnés.",
     body: [
-      "Les 9 et 10 octobre 2027, l’association Néotisse et le musée de l’Aurignacien s’associent pour vous faire découvrir la richesse de l’archéologie expérimentale à l’occasion du tout premier Festival d’Archéologie Expérimentale d’Occitanie !",
+      [
+        { strong: "Les 9 et 10 octobre 2027" },
+        ", l’association Néotisse et le musée de l’Aurignacien s’associent pour vous faire découvrir la richesse de l’archéologie expérimentale à l’occasion du tout premier ",
+        { strong: "Festival d’Archéologie Expérimentale d’Occitanie" },
+        " !",
+      ],
       "Pendant deux jours, venez à la rencontre d’étudiants, de chercheurs et d’artisans passionnés qui vous feront découvrir cette discipline essentielle à la compréhension des sociétés du passé.",
       "Démonstrations, expérimentations et échanges vous permettront d’explorer les techniques et les savoir-faire anciens, de comprendre les gestes de nos ancêtres et de découvrir comment l’expérimentation contribue à faire avancer la recherche archéologique.",
       "Un rendez-vous inédit pour petits et grands, curieux, passionnés d’histoire ou simples visiteurs, qui souhaitent découvrir l’archéologie autrement, au plus près des gestes, des matières et des expériences !",
-      "Rendez-vous les 9 et 10 octobre 2027 pour faire revivre les savoir-faire du passé et expérimenter l’archéologie autrement !",
+      [
+        { strong: "Rendez-vous les 9 et 10 octobre 2027" },
+        " pour faire revivre les savoir-faire du passé et expérimenter l’archéologie autrement !",
+      ],
     ],
   },
   {
@@ -80,6 +89,24 @@ export function getNextEvent(today = todayInParis()) {
 /** Extrait pour l’accueil : l’extrait saisi, sinon le début du texte (45 mots, comme la V1). */
 export function eventTeaser(e: NeoEvent) {
   if (e.excerpt) return e.excerpt;
-  const words = e.body.join(" ").split(/\s+/);
+  const words = e.body.map(paragraphText).join(" ").split(/\s+/);
   return words.length > 45 ? `${words.slice(0, 45).join(" ")}…` : words.join(" ");
+}
+
+/** Texte brut d’un paragraphe enrichi (extraits, données structurées). */
+export function paragraphText(p: Paragraph): string {
+  if (typeof p === "string") return p;
+  return p
+    .map((part) => {
+      if (typeof part === "string") return part;
+      if ("strong" in part) return part.strong;
+      if ("link" in part) return part.link;
+      return " ";
+    })
+    .join("");
+}
+
+/** Événements que le calendrier mensuel affiche (passés compris, comme la V1). */
+export function getAllEvents() {
+  return [...events].sort((a, b) => a.startDate.localeCompare(b.startDate));
 }

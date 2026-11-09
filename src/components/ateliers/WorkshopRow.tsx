@@ -1,8 +1,8 @@
 import Image from "next/image";
-import { Fragment } from "react";
 import { PhotoPlaceholder } from "@/components/ui/Media";
 import { Kicker } from "@/components/ui/Typography";
-import type { Paragraph, Workshop } from "@/content/ateliers";
+import { RichText } from "@/components/ui/RichText";
+import type { Workshop } from "@/content/ateliers";
 import { cn } from "@/lib/cn";
 
 /**
@@ -65,18 +65,3 @@ export function WorkshopRow({ workshop, reverse = false }: { workshop: Workshop;
   );
 }
 
-function RichText({ value }: { value: Paragraph }) {
-  if (typeof value === "string") return value;
-  return value.map((part, i) => {
-    if (typeof part === "string") return <Fragment key={i}>{part}</Fragment>;
-    // Gras « relatif » comme la V1 : 400 sur un corps en 300
-    if ("strong" in part) return <strong key={i} className="font-normal">{part.strong}</strong>;
-    if ("br" in part) return <br key={i} />;
-    return (
-      <a key={i} href={part.href} target="_blank" rel="noreferrer noopener">
-        {part.link}
-        <span className="sr-only"> (nouvel onglet)</span>
-      </a>
-    );
-  });
-}

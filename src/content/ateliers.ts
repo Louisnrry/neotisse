@@ -4,9 +4,9 @@
  */
 import { routes } from "@/lib/routes";
 
-/** Morceau de texte enrichi : texte simple, gras, lien ou retour à la ligne. */
-export type Inline = string | { strong: string } | { link: string; href: string } | { br: true };
-export type Paragraph = string | Inline[];
+import type { Paragraph } from "@/components/ui/RichText";
+
+export type { Inline, Paragraph } from "@/components/ui/RichText";
 
 export type Workshop = {
   anchor: string;

@@ -24,6 +24,8 @@ Aperçu de tous les éléments : page **`/styleguide`** (non indexée).
 | Page Partenaires (carte partenaire) | `src/components/partenaires/PartnerCard.tsx` (voir § 9 quinquies) |
 | Page Contact (coordonnées, formulaire, FAQ) | `src/components/contact/*` (voir § 9 sexies) |
 | Page Livre d'or (liste des avis, formulaire) | `src/components/livre-dor/*` (voir § 9 septies) |
+| Page Calendrier (liste « À venir », calendrier mensuel, modale) | `src/components/calendrier/*` (voir § 9 octies) |
+| Texte enrichi des contenus provisoires (gras, liens) | `src/components/ui/RichText.tsx` |
 | Icônes Instagram et Facebook | `src/components/ui/SocialIcons.tsx` (pied de page, page Contact) |
 | Page Ateliers (ligne d'atelier) | `src/components/ateliers/WorkshopRow.tsx` (voir § 9 ter) |
 | Styles de l'intro, du héro et du bandeau défilant | `src/app/globals.css` (`@layer components`) |
@@ -285,6 +287,20 @@ Copie du bandeau **Complianz de la V1** (mêmes textes, mêmes mesures : hauteur
 | Personnaliser | Les catégories apparaissent en fondu (1s) : fond `rgba(239,239,239,.5)`, padding 10px, 10px entre elles ; titre 14px 500 ; « Toujours activé » 12px 500 **vert** (`#008000`, comme la V1) pour Fonctionnel ; interrupteur 28×15px (gris → garance, pastille crème) pour Statistiques ; chevron qui déplie la description (14px). « Personnaliser » laisse la place à « Enregistrer mes choix ». |
 | Choix | Cookie propriétaire `neotisse_consent` (JSON `{statistics, date}`), **365 jours** comme la V1. Refuser ou retirer son accord supprime les cookies `_ga`. |
 | Statistiques | `Analytics.tsx` charge GA4 seulement si « Statistiques » est accepté **et** si `NEXT_PUBLIC_GA_MEASUREMENT_ID` est renseigné (cookie `_ga` limité à 13 mois). Aucune requête Google avant. |
+
+## 9 octies. Calendrier (`/calendrier-des-ateliers/`)
+
+Textes dans `src/content/calendrier.ts`, événements dans `src/content/events.ts` (provisoire, en attendant Sanity). Reprend `templates/agenda.html`, `a-venir.html` et `assets/js/calendrier.js` de l’extension `neotisse-core`. Comparée à la V1 à 1024px (positions identiques au pixel jusqu’au bas du calendrier) et à 375px (identique, pas de débordement).
+
+| Bloc | Composant | Détails |
+|---|---|---|
+| En-tête | `page.tsx` | Colonne de 860px, padding 72px / 16px, écart 20px : H1 à filets, intro centrée `text-lead`. |
+| Sections | `page.tsx`, `EventCalendar.tsx` | Séparées de **1.2rem** comme la V1 (espace WordPress entre groupes). « À venir » : 1040px, padding 40px, écart 32px. Calendrier : 1240px, padding 40px, écart 32px. Titres à filets. |
+| À venir | `EventCalendar.tsx` | Liste `<ol>` sur **toute la largeur** de la colonne (le `max-width: 880px` du CSS de la V1 n’est pas appliqué à l’écran), écart 14px. Carte-bouton fond pierre, bordure 1.5px transparente → garance + translateX(4px) au survol, padding 18px 24px, colonnes 104px / texte / « En savoir plus → » (72px / texte, « En savoir plus » dessous sous 641px). Jour Cormorant 700 2.8rem garance ; mois, année et type en petites capitales grises 0.78rem ; titre Cormorant 700 1.6rem ; « dates · lieu » 0.95rem 600 garance. Un clic place le calendrier sur le mois de l’événement et ouvre la modale. Sans événement : « Aucun événement programmé pour le moment. » |
+| Calendrier mensuel | `EventCalendar.tsx` | Cadre bordure `filet` + filet garance 4px en haut, padding `clamp(16px,3vw,32px)`. Barre « ‹ mois année › » : boutons 46px bordure encre 2px (survol encre), mois Cormorant 700 `clamp(1.9rem,3.5vw,2.6rem)`, annoncé (`aria-live`). Grille 7 colonnes lundi → dimanche (`role="grid"`), en-têtes 0.75rem gris (0.62rem sous 721px). Cases **141px** de haut (73px sous 721px : la V1 est en `content-box`, 124px + padding + filet), jours hors mois hachurés (`bg-hachures`, numéro à 35 %), jour courant en pastille garance (`aria-current="date"`). Pastilles d’événement 0.8rem 600 blanc : atelier garance, festival encre, conférence garance-dark, autre gris ; titre au premier jour et chaque lundi ; barres de 8px sans texte sous 721px. Mois affiché à l’arrivée : celui du prochain événement. |
+| Modale | `EventCalendar.tsx` (`EventDialog`) | `<dialog>` natif (Échap, focus sur « Fermer », focus rendu au déclencheur, clic sur le voile pour fermer), 1080×720 max, voile `ink-deep` 60 % flouté 3px, ombre `0 40px 100px -30px`. Colonne garance 4/12 : jour(s) Cormorant 700 `clamp(4.5rem,9vw,7.5rem)` (« 9–10 »), mois Cormorant 600, type en bas sous un filet crème. Colonne texte : titre Cormorant `clamp(1.9rem,3.2vw,2.7rem)`, « dates · horaires · lieu » 600 garance, texte qui défile (barre fine garance, atteignable au clavier), boutons « Site du lieu ↗ » (plein garance) et « Prenez contact » (contour encre 2px). Sous 761px : une colonne, bandeau garance en ligne. La page est figée tant qu’une modale est ouverte (`html:has(dialog[open])` dans `globals.css`). |
+| Comment participer | `page.tsx` | Padding 32px / 112px. Photo 4/5 (`hero-atelier.jpg`) à 40 %, texte à 60 %, écart 80px, centrés verticalement (une colonne sous 782px, écart 30px) ; H2 à fil rouge, paragraphes en `text-wrap: pretty` (comme la V1), H3 « Vous êtes un musée… », bouton plein « Programmer un atelier ». Écart de 1.2rem entre les blocs. |
+| Données structurées | `CalendarBoard.tsx` | JSON-LD `Event` pour chaque événement à venir (comme la V1). Liste et date du jour calculées côté serveur (fuseau Europe/Paris), page régénérée toutes les heures ; le navigateur remet la date du jour à jour à l’hydratation. |
 
 ## 10. Accessibilité et mouvement
 
