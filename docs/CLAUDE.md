@@ -23,7 +23,8 @@
    - `docs/BRIEF.md`, `docs/ARBORESCENCE.md` : si le périmètre ou les pages changent.
    Plusieurs conversations se succèdent sur ce projet : ces fichiers sont la mémoire commune.
 4. **Git** : le dépôt GitHub `Louisnrry/neotisse` existe.
-   - **Committer à chaque changement** (demande de Louis du 09/11/2026) : un commit par modification cohérente, message en français, sans attendre qu’on le demande.
+   - **Committer à chaque changement** (demande de Louis du 09/11/2026) : un commit par modification cohérente, sans attendre qu’on le demande.
+   - **Messages de commit simples, concis et explicites** : une seule ligne en français qui dit ce qui change pour le site, sans jargon ni liste de détails. Exemples : « Ajoute le calendrier des ateliers », « Corrige les marges des sections sur mobile », « Rend l’intro visible à chaque visite ».
    - Travail **directement sur `main`**. Ne pas créer de branche (Louis l’a refusé le 09/11/2026).
    - **Ne jamais `git push` sans demande explicite de Louis.** Push de `main` fait le 09/11/2026 à sa demande (accueil) ; chaque nouveau push reste à demander.
    - Ne pas committer `docs/Cahier_Des_Charges_Neotisse_V2.pdf` (fichier de Louis, hors périmètre).
