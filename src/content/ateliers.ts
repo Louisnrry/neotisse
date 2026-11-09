@@ -17,7 +17,7 @@ export type Workshop = {
   facts: { label: string; value: string }[];
   paragraphs: Paragraph[];
   /** Photo de l’atelier, sinon cadre provisoire de la couleur indiquée. */
-  image?: { src: string; alt: string };
+  image?: { src: string; alt: string; width?: number; height?: number };
   placeholder: "garance" | "garance-dark" | "ink";
 };
 

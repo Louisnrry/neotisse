@@ -24,8 +24,8 @@ export function WorkshopRow({ workshop, reverse = false }: { workshop: Workshop;
           <Image
             src={image.src}
             alt={image.alt}
-            width={1179}
-            height={1215}
+            width={image.width ?? 1179}
+            height={image.height ?? 1215}
             sizes="(min-width: 782px) 40vw, 100vw"
             className="aspect-[4/5] w-full object-cover"
           />

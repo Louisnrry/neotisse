@@ -1,20 +1,23 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/sanity/lib/metadata";
 import { WorkshopRow } from "@/components/ateliers/WorkshopRow";
 import { Button } from "@/components/ui/Button";
 import { RuledTitle, ThreadHeading } from "@/components/ui/Typography";
-import { ateliers } from "@/content/ateliers";
 import { routes } from "@/lib/routes";
+import { getAteliersPage } from "@/sanity/queries/ateliers";
 
-// TODO(sanity) : titre et description depuis le singleton `page` « ateliers ».
-export const metadata: Metadata = {
-  title: { absolute: "Tissage et teinture : 5 ateliers passionnants | Néotisse" },
-  description:
-    "Tissage aux tablettes, filage et teinture végétale : découvrez les 5 ateliers de Néotisse pour musées, sites archéologiques et jeune public.",
-  alternates: { canonical: routes.ateliers },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { seo } = await getAteliersPage();
+  return pageMetadata(seo, {
+    title: "Tissage et teinture : 5 ateliers passionnants | Néotisse",
+    description:
+      "Tissage aux tablettes, filage et teinture végétale : découvrez les 5 ateliers de Néotisse pour musées, sites archéologiques et jeune public.",
+    canonical: routes.ateliers,
+  });
+}
 
-export default function AteliersPage() {
-  const { title, intro, audience, workshops, cta } = ateliers;
+export default async function AteliersPage() {
+  const { title, intro, audience, workshops, cta } = await getAteliersPage();
   return (
     <>
       {/* En-tête de page : titre à filets, intro, index des 5 formats */}

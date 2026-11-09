@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/sanity/lib/metadata";
 import { ContactCta } from "@/components/home/ContactCta";
 import { Hero } from "@/components/home/Hero";
 import { Intro } from "@/components/home/Intro";
@@ -11,14 +12,12 @@ import { getHomePage } from "@/sanity/queries/home";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { seo } = await getHomePage();
-  return {
-    title: { absolute: seo?.title || "Médiation textile : 5 ateliers uniques | Néotisse" },
+  return pageMetadata(seo, {
+    title: "Médiation textile : 5 ateliers uniques | Néotisse",
     description:
-      seo?.description ||
       "Néotisse anime des ateliers de médiation textile autour des savoir-faire anciens : filage, tissage et teinture végétale, pour les musées et structures culturelles.",
-    alternates: { canonical: "/" },
-    ...(seo?.noindex && { robots: { index: false, follow: true } }),
-  };
+    canonical: "/",
+  });
 }
 
 export default function HomePage() {
