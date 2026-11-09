@@ -1,14 +1,14 @@
-/** URL du site : à conserver telles quelles (référencement, liens existants). */
+/** URL du site, identiques à la V1 (barre finale comprise) : à conserver telles quelles (référencement, liens existants). */
 export const routes = {
   accueil: "/",
-  ateliers: "/ateliers-tissage-teinture",
-  calendrier: "/calendrier-des-ateliers",
-  partenaires: "/partenaires",
-  livreDor: "/livre-dor",
-  aPropos: "/savoir-faire-textiles-anciens-a-propos",
-  contact: "/contact-organiser-un-atelier",
-  mentionsLegales: "/mentions-legales",
-  confidentialite: "/politique-de-confidentialite",
+  ateliers: "/ateliers-tissage-teinture/",
+  calendrier: "/calendrier-des-ateliers/",
+  partenaires: "/partenaires/",
+  livreDor: "/livre-dor/",
+  aPropos: "/savoir-faire-textiles-anciens-a-propos/",
+  contact: "/contact-organiser-un-atelier/",
+  mentionsLegales: "/mentions-legales/",
+  confidentialite: "/politique-de-confidentialite/",
 } as const;
 
 /** Navigation principale (en-tête et pied de page). */

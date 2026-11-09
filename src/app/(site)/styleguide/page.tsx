@@ -212,7 +212,7 @@ export default function StyleguidePage() {
               </div>
               <FormLegal>
                 Les informations recueillies servent uniquement à répondre à votre demande.{" "}
-                <a href="/politique-de-confidentialite">En savoir plus sur vos données</a>
+                <a href="/politique-de-confidentialite/">En savoir plus sur vos données</a>
               </FormLegal>
             </form>
           </Container>

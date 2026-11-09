@@ -148,7 +148,7 @@ export function Header() {
             <ul className="flex items-center gap-8">
               {mainNav.map((item) => (
                 <li key={item.href}>
-                  <NavLink href={item.href} active={pathname.startsWith(item.href)}>
+                  <NavLink href={item.href} active={isActive(pathname, item.href)}>
                     {item.label}
                   </NavLink>
                 </li>
@@ -197,7 +197,7 @@ export function Header() {
           <nav aria-label="Navigation principale" className="mt-8 flex flex-1 flex-col">
             <ul className="flex flex-col gap-5">
               {mainNav.map((item) => {
-                const active = pathname.startsWith(item.href);
+                const active = isActive(pathname, item.href);
                 return (
                   <li key={item.href}>
                     <Link
@@ -225,6 +225,14 @@ export function Header() {
       )}
     </header>
   );
+}
+
+/** Page active : même chemin ou sous-page, avec ou sans barre finale. */
+function isActive(pathname: string, href: string) {
+  const strip = (p: string) => p.replace(/\/+$/, "");
+  const path = strip(pathname);
+  const target = strip(href);
+  return path === target || path.startsWith(`${target}/`);
 }
 
 function NavLink({ href, active, children }: { href: string; active: boolean; children: React.ReactNode }) {
