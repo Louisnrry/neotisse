@@ -259,6 +259,18 @@ Textes dans `src/content/livre-dor.ts`, avis dans `src/content/reviews.ts` (prov
 | Avis | `livre-dor/ReviewList.tsx` | **Copie exacte du rendu V1** (WP Customer Reviews). Note moyenne 0.8em 600, interligne 24px, filet encre en bas. Avant chaque avis : séparateur (filet `filet` + pointillés `#ccc`, 32px dessus, 10px dessous). Avis : padding 22px, filet `filet` en bas ; étoiles sprite `public/images/avis/etoiles.png` (85×17, teinte `hue-rotate(-30deg) saturate(1.6)`), date 0.9em italique gris, « par **Nom** » 0.8em italique (empilés sous 601px) ; titre Cormorant 600 0.8em interligne 24px ; texte 14px 400 avec liseré garance 3px. 5 par 5 avec « Plus d’avis » (contour 1px garance, 0.95rem 700), focus sur le premier avis ajouté. Positions identiques à la V1 à 1440px (à 2px près). |
 | Formulaire | `livre-dor/GuestbookForm.tsx` | Carte à filet rouge, padding `clamp(24px,4vw,40px)`, titre « Laisser un avis » Cormorant 700 `clamp(1.6rem,2.4vw,2rem)`. Nom / E-mail sur 2 colonnes (une sous 561px), titre, **note** (5 boutons radio natifs masqués sous des étoiles garance de 28px, survol qui prévisualise, contour garance au focus clavier), avis, case anti-robot, bouton `large` « Envoyer ». Validation côté client, champ piège + délai de 2s. Mention RGPD 60px sous la carte, sur toute la largeur (comme la V1). |
 
+## 9 octies. Politique de confidentialité (`/politique-de-confidentialite/`)
+
+Textes dans `src/content/confidentialite.ts` (provisoire, en attendant Sanity). Comparée à la V1 à 1024px (positions identiques à 1px près) et à 375px (pas de débordement).
+
+| Bloc | Détails |
+|---|---|
+| En-tête | Colonne de 860px, padding 72px / 24px, écart 20px : H1 à filets, « Dernière mise à jour » centrée en 0.95rem fluide. |
+| Corps | Colonne de 760px, 1.2rem plus bas, padding 8px / 112px ; 1.2rem entre les blocs. Gras en 400, liens garance soulignés, `<code>` en police à chasse fixe. |
+| Sommaire | `<nav>` : H2 « Sommaire » `text-lead` à 40px au-dessus, liste numérotée (retrait 1.4em, interligne 1.9, 8px entre éléments) ; liens encre **sans soulignement**, filet garance de 1px en bas, garance au survol et au focus. |
+| Sections | H2 numérotés `clamp(1.5rem,2.4vw,1.9rem)` à 56px au-dessus (ancres `#responsable`… `#modifications`), H3 1.35rem fluide à 32px, listes à puces retrait 40px, 8px entre éléments. |
+| Gérer mes cookies | `confidentialite/CookieSettingsInline.tsx` : bouton dans le texte, style de lien (garance souligné), rouvre le bandeau via `reopenConsent()`. |
+
 ## 10. Accessibilité et mouvement
 
 - Focus visible : **contour 3px garance, décalage 3px** (comme la V1 ; CLAUDE.md indiquait encre). Exception : tuiles ateliers, contour encre.

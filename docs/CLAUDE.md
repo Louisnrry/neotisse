@@ -70,6 +70,8 @@
 
 - Mentions légales (V1, page 197) : en-tête dans une colonne de 860px (H1 à filets, date « Dernière mise à jour » centrée en 0.95rem), corps dans une colonne de 760px, intertitres H2 en `clamp(1.5rem, 2.4vw, 1.9rem)` à 48px au-dessus. Écarts de contenu voulus : hébergeur **Netlify, Inc.** (la V1 cite OVH), directrice « Marie-Salomé Perrichon » et téléphone renseignés. Les champs encore inconnus restent affichés en « [À COMPLÉTER : …] » comme sur la V1.
 
+- Politique de confidentialité (V1, page 201) : même en-tête que les mentions légales ; corps en 760px : intro, « Sommaire » (H2 1.2rem fluide, 40px au-dessus) puis liste numérotée (interligne 1.9, liens encre soulignés d’un filet garance de 1px, garance au survol), 9 H2 numérotés à **56px** au-dessus, H3 en 1.35rem fluide à 32px, listes à puces (retrait 40px, 8px entre éléments). Écarts de contenu voulus pour la V2 : hébergeur **Netlify** (États-Unis, d’où un transfert hors UE) au lieu d’OVH ; **Sanity** (avis) et le prestataire d’e-mails ajoutés aux destinataires ; cookie de consentement `neotisse_consent` (12 mois) au lieu de Complianz ; cookies de commentaires WordPress et stockage des émojis retirés ; accès au Studio au lieu de l’administration WordPress ; représentante « Marie-Salomé Perrichon » renseignée. Les champs inconnus restent en « [À COMPLÉTER : …] ».
+
 ### Contenus provisoires
 
 Tant que le site n’est pas branché sur Sanity, les contenus sont dans `src/content/*.ts` (repris de la V1), chacun marqué `TODO(sanity)`. Les composants n’y accèdent que par ces modules : il suffira de remplacer les fonctions (`getNextEvent`, `getLatestReviews`…) par des requêtes GROQ.

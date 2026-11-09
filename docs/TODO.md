@@ -45,10 +45,14 @@
   - Textes repris du WordPress (page 197) dans `src/content/mentions-legales.ts`, mis à jour pour la V2 : directrice Marie-Salomé Perrichon, téléphone, hébergeur **Netlify** (au lieu d’OVH)
   - Comparée à la V1 à 1440px (positions identiques au pixel) et à 375px (pas de débordement)
 
+- [x] **Page Politique de confidentialité** (09/11) : en-tête (H1 à filets + date), intro, sommaire cliquable, 9 sections numérotées, lien « Gérer mes cookies » qui rouvre le bandeau, `noindex, follow`
+  - Textes repris du WordPress (page 201) dans `src/content/confidentialite.ts`, mis à jour pour la V2 (voir CLAUDE.md § 0)
+  - Comparée à la V1 à 1024px (positions identiques à 1px près) et à 375px (pas de débordement)
+
 ### À faire (design)
 - [ ] Cartes « À venir », calendrier mensuel et modale événement
 - [ ] Bandeau de cookies sur mesure (§ 7.5) : le lien « Gérer mes cookies » émet déjà l’événement `neotisse:open-cookie-banner`
-- [ ] Construire les pages : Calendrier, Politique de confidentialité
+- [ ] Construire les pages : Calendrier
 - [ ] Récupérer les textes de chaque page depuis le WordPress (MCP Novamira)
 - [ ] Comparer chaque page avec la V1 à 375, 768 et 1440px
 
@@ -79,6 +83,7 @@
 - [ ] Déploiement sur Netlify
 - [ ] Achat du domaine
 - [ ] Mentions légales complètes : siège, RNA, fonction de Marie-Salomé, SIRET / adresse / TVA de bLaNk (encore « [À COMPLÉTER] » sur la page) ; vérifier l’adresse de Netlify au moment du déploiement
+- [ ] Politique de confidentialité complète : fonction de Marie-Salomé, siège, lieu et durée de conservation des sauvegardes (encore « [À COMPLÉTER] ») ; nommer le prestataire d’e-mails et confirmer Google Analytics une fois choisis ; mettre à jour la date en haut de page
 
 ## Questions ouvertes
 - Contact : le téléphone (06 48 65 58 16, Marie-Salomé) est affiché sur la V1 mais absent de `siteSettings` (CLAUDE.md § 8 ne prévoit que `legal.phone`) : à ajouter au schéma
