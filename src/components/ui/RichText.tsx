@@ -3,13 +3,14 @@ import { Fragment } from "react";
 
 /** Morceau de texte enrichi : texte simple, gras, lien ou retour à la ligne. */
 export type Inline = string | { strong: string } | { link: string; href: string } | { br: true };
-/** Paragraphe : texte simple ou suite de morceaux enrichis. TODO(sanity) : remplacé par le portable text. */
+/** Paragraphe : texte simple ou suite de morceaux enrichis (converti depuis le texte enrichi Sanity). */
 export type Paragraph = string | Inline[];
 
 /**
- * Texte enrichi des contenus provisoires.
+ * Texte enrichi venu de Sanity (voir `src/sanity/lib/portableText.ts`).
  * Gras « relatif » comme la V1 : 400 sur un corps en 300.
- * Lien interne (« /… ») → `next/link` ; lien externe → nouvel onglet, signalé aux lecteurs d’écran.
+ * Lien interne (« /… ») → `next/link` ; e-mail, téléphone, ancre → lien simple ;
+ * site externe → nouvel onglet, signalé aux lecteurs d’écran.
  */
 export function RichText({ value }: { value: Paragraph }) {
   if (typeof value === "string") return value;
@@ -27,6 +28,13 @@ export function RichText({ value }: { value: Paragraph }) {
         <Link key={i} href={part.href}>
           {part.link}
         </Link>
+      );
+    // E-mail, téléphone, ancre : lien simple, dans le même onglet.
+    if (!/^https?:/.test(part.href))
+      return (
+        <a key={i} href={part.href}>
+          {part.link}
+        </a>
       );
     return (
       <a key={i} href={part.href} target="_blank" rel="noreferrer noopener">
