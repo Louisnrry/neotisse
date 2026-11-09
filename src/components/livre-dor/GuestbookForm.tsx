@@ -4,10 +4,14 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import { Button } from "@/components/ui/Button";
 import { Checkbox, FormMessage, TextArea, TextField } from "@/components/ui/Field";
 import { Card } from "@/components/ui/Media";
-import type { livreDorPage } from "@/content/livre-dor";
+import {
+  GUESTBOOK_MIN_DELAY_MS,
+  validateGuestbook as validate,
+  type GuestbookErrors as Errors,
+  type GuestbookValues as Values,
+} from "@/lib/guestbook";
+import type { GuestbookFormTexts } from "@/sanity/queries/livreDor";
 
-type Values = { nom: string; email: string; titre: string; note: string; avis: string; robot: string };
-type Errors = Partial<Record<keyof Values, string>>;
 
 /** Libellé suivi d’un astérisque garance (l’obligation est portée par `required`). */
 function Required({ children }: { children: string }) {
@@ -16,19 +20,6 @@ function Required({ children }: { children: string }) {
       {children} <span aria-hidden="true" className="font-normal text-garance">*</span>
     </>
   );
-}
-
-const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-function validate(v: Values): Errors {
-  const e: Errors = {};
-  if (!v.nom.trim()) e.nom = "Indiquez votre nom.";
-  if (!v.email.trim()) e.email = "Indiquez votre adresse e-mail.";
-  else if (!emailPattern.test(v.email.trim())) e.email = "Cette adresse e-mail ne semble pas valide.";
-  if (!v.note) e.note = "Choisissez une note de 1 à 5 étoiles.";
-  if (!v.avis.trim()) e.avis = "Écrivez quelques mots sur votre expérience.";
-  if (!v.robot) e.robot = "Cochez la case pour confirmer que vous n’êtes pas un robot.";
-  return e;
 }
 
 const starPath = "M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.7l-5.1 2.7 1-5.6-4.1-4 5.7-.8z";
@@ -87,23 +78,24 @@ function RatingInput({ error, onChange }: { error?: string; onChange: () => void
 /**
  * Formulaire « Signer le livre d’or » (CLAUDE.md § 6.5 et § 7.3), toujours ouvert, dans une carte à filet rouge :
  * Nom et E-mail sur deux colonnes (une seule sous 561px), titre, note, avis, case anti-robot, bouton « Envoyer ».
- * Anti-spam : champ piège caché + délai minimal de 2s.
- * TODO(phase 3) : envoyer vers une route API qui crée un document `review` en `status: "pending"` dans Sanity.
- * En attendant, un envoi valide affiche directement la confirmation.
+ * Anti-spam : champ piège caché + délai minimal de 2s (vérifiés aussi par le serveur).
+ * L’avis est envoyé à `/api/livre-dor/`, qui le crée dans Sanity avec le statut « À modérer ».
  */
-export function GuestbookForm({ form }: { form: (typeof livreDorPage)["form"] }) {
+export function GuestbookForm({ form }: { form: GuestbookFormTexts }) {
   const startedAt = useRef(0);
   useEffect(() => {
     startedAt.current = Date.now();
   }, []);
   const [errors, setErrors] = useState<Errors>({});
   const [status, setStatus] = useState<"idle" | "sending" | "ok">("idle");
+  const [sendError, setSendError] = useState("");
 
-  function onSubmit(event: FormEvent<HTMLFormElement>) {
+  async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    const elapsed = Date.now() - startedAt.current;
     // Robot : champ piège rempli ou envoi trop rapide → on fait comme si de rien n’était.
-    if (data.get("site") || Date.now() - startedAt.current < 2000) {
+    if (data.get("site") || elapsed < GUESTBOOK_MIN_DELAY_MS) {
       setStatus("ok");
       return;
     }
@@ -118,8 +110,29 @@ export function GuestbookForm({ form }: { form: (typeof livreDorPage)["form"] })
       return;
     }
     setStatus("sending");
-    // TODO(phase 3) : `await fetch("/api/livre-dor", …)` puis gestion de l’erreur d’envoi.
-    setStatus("ok");
+    setSendError("");
+    try {
+      const response = await fetch("/api/livre-dor/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...values, site: String(data.get("site") ?? ""), elapsed }),
+      });
+      if (response.ok) {
+        setStatus("ok");
+        return;
+      }
+      const body = (await response.json().catch(() => ({}))) as { errors?: Errors; error?: string };
+      if (body.errors) {
+        setErrors(body.errors);
+        const firstError = Object.keys(body.errors)[0];
+        if (firstError) document.getElementById(`avis-${firstError}`)?.focus();
+      } else {
+        setSendError(body.error ?? "L’envoi a échoué. Réessayez dans quelques instants.");
+      }
+    } catch {
+      setSendError("L’envoi a échoué. Vérifiez votre connexion puis réessayez.");
+    }
+    setStatus("idle");
   }
 
   const clear = (name: keyof Values) => () => errors[name] && setErrors((e) => ({ ...e, [name]: undefined }));
@@ -175,6 +188,8 @@ export function GuestbookForm({ form }: { form: (typeof livreDorPage)["form"] })
             <label htmlFor="avis-site">Site web</label>
             <input id="avis-site" name="site" type="text" tabIndex={-1} autoComplete="off" />
           </div>
+
+          {sendError && <FormMessage tone="error">{sendError}</FormMessage>}
 
           <div className="mt-1">
             <Button type="submit" size="large" aria-busy={status === "sending" || undefined} disabled={status === "sending"}>
