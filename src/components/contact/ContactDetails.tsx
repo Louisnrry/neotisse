@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { FacebookIcon, InstagramIcon } from "@/components/ui/SocialIcons";
-import { contactPage } from "@/content/contact";
-import { siteSettings } from "@/content/site-settings";
+import { getContactPage } from "@/sanity/queries/contact";
+import { getSiteSettings } from "@/sanity/queries/settings";
 
 const link = "text-ink no-underline hover:text-garance hover:underline";
 
@@ -15,8 +15,8 @@ function Row({ label, children }: { label: string; children: ReactNode }) {
 }
 
 /** Coordonnées (comme la V1) : liste à libellés en petites capitales grises, filet encre en haut, filets fins entre les lignes. */
-export function ContactDetails() {
-  const { phone, city } = contactPage;
+export async function ContactDetails() {
+  const [{ phone, city }, siteSettings] = await Promise.all([getContactPage(), getSiteSettings()]);
   return (
     <dl className="border-t border-ink">
       <Row label="E-mail">

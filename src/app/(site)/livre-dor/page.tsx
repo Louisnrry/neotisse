@@ -5,26 +5,29 @@ import { ReviewList } from "@/components/livre-dor/ReviewList";
 import { FormLegal } from "@/components/ui/Field";
 import { Section } from "@/components/ui/Layout";
 import { RuledTitle, ThreadHeading } from "@/components/ui/Typography";
-import { livreDorPage } from "@/content/livre-dor";
-import { getReviewStats, getReviews } from "@/content/reviews";
 import { routes } from "@/lib/routes";
+import { pageMetadata } from "@/sanity/lib/metadata";
+import { getLivreDorPage } from "@/sanity/queries/livreDor";
+import { getReviews, reviewStats } from "@/sanity/queries/reviews";
 
-// TODO(sanity) : titre et description depuis le singleton `page` « livreDor ».
-export const metadata: Metadata = {
-  title: { absolute: livreDorPage.seo.title },
-  description: livreDorPage.seo.description,
-  alternates: { canonical: routes.livreDor },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { seo } = await getLivreDorPage();
+  return pageMetadata(seo, {
+    title: "Livre d’or : avis sur nos ateliers textiles | Néotisse",
+    description:
+      "Livre d’or de Néotisse : lisez les avis des participants et des structures qui ont accueilli nos ateliers textiles, puis partagez le vôtre.",
+    canonical: routes.livreDor,
+  });
+}
 
 /**
  * Livre d’or (V1, page 126) : une seule colonne de 860px, padding 72px / 112px, écart 28px entre les blocs.
  * En-tête (H1 à filets + intro), « Ils nous ont laissé un mot » (48px au-dessus),
  * « Signer le livre d’or » (64px au-dessus), formulaire, mention RGPD.
  */
-export default function LivreDorPage() {
-  const { title, intro, reviews: list, form, email } = livreDorPage;
-  const reviews = getReviews();
-  const { average } = getReviewStats();
+export default async function LivreDorPage() {
+  const [{ title, intro, reviews: list, form, email }, reviews] = await Promise.all([getLivreDorPage(), getReviews()]);
+  const { average } = reviewStats(reviews);
 
   return (
     <Section width="full" spacing="none" className="pt-[72px] pb-28">
@@ -43,7 +46,7 @@ export default function LivreDorPage() {
 
         <section aria-labelledby="signer-titre" className="mt-9 grid gap-7">
           <ThreadHeading id="signer-titre">{form.title}</ThreadHeading>
-          <GuestbookForm />
+          <GuestbookForm form={form} />
           {/* Toute la largeur de la colonne, comme la V1 (la mise en page WordPress annule les 70ch) */}
           <FormLegal className="mt-8 max-w-none!">
             Seuls votre nom, le titre, la note et le texte de votre avis sont publiés, après relecture par l’association.

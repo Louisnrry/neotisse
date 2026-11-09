@@ -7,18 +7,22 @@ import { Button } from "@/components/ui/Button";
 import { FormLegal } from "@/components/ui/Field";
 import { Section } from "@/components/ui/Layout";
 import { ThreadHeading } from "@/components/ui/Typography";
-import { contactPage } from "@/content/contact";
 import { routes } from "@/lib/routes";
+import { pageMetadata } from "@/sanity/lib/metadata";
+import { getContactPage } from "@/sanity/queries/contact";
 
-// TODO(sanity) : titre et description depuis le singleton `page` « contact ».
-export const metadata: Metadata = {
-  title: { absolute: contactPage.seo.title },
-  description: contactPage.seo.description,
-  alternates: { canonical: routes.contact },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { seo } = await getContactPage();
+  return pageMetadata(seo, {
+    title: "Organiser un atelier : 10 réponses essentielles | Néotisse",
+    description:
+      "Organiser un atelier de tissage ou de teinture végétale avec Néotisse : écrivez-nous et trouvez les réponses à vos questions sur nos interventions.",
+    canonical: routes.contact,
+  });
+}
 
-export default function ContactPage() {
-  const { title, intro, guestbookLink, form, email } = contactPage;
+export default async function ContactPage() {
+  const { title, intro, guestbookLink, form, email } = await getContactPage();
   return (
     <>
       {/* Coordonnées (45 %) et formulaire « Écrivez-nous » (55 %), comme la V1 */}
@@ -39,7 +43,7 @@ export default function ContactPage() {
 
           <div>
             <h2 className="mb-7 text-[clamp(1.6rem,2.4vw,2rem)]">{form.title}</h2>
-            <ContactForm />
+            <ContactForm form={form} />
             <FormLegal className="mt-[1.2rem]">
               Les informations recueillies servent uniquement à répondre à votre demande. Elles sont lues par les membres
               du bureau de Néotisse et conservées 3 ans après notre dernier échange. Vous pouvez y accéder ou demander leur

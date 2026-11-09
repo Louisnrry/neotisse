@@ -5,7 +5,7 @@
 import type { Inline, Paragraph } from "@/components/ui/RichText";
 
 type Span = { _type: "span"; text: string; marks?: string[] };
-type MarkDef = { _key: string; _type: string; href?: string };
+type MarkDef = { _key: string; _type: string; href?: string; external?: boolean };
 export type PortableBlock = {
   _type: string;
   style?: string;

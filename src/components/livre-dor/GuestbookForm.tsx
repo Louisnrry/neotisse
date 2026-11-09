@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import { Button } from "@/components/ui/Button";
 import { Checkbox, FormMessage, TextArea, TextField } from "@/components/ui/Field";
 import { Card } from "@/components/ui/Media";
-import { livreDorPage } from "@/content/livre-dor";
+import type { livreDorPage } from "@/content/livre-dor";
 
 type Values = { nom: string; email: string; titre: string; note: string; avis: string; robot: string };
 type Errors = Partial<Record<keyof Values, string>>;
@@ -91,8 +91,7 @@ function RatingInput({ error, onChange }: { error?: string; onChange: () => void
  * TODO(phase 3) : envoyer vers une route API qui crée un document `review` en `status: "pending"` dans Sanity.
  * En attendant, un envoi valide affiche directement la confirmation.
  */
-export function GuestbookForm() {
-  const { form } = livreDorPage;
+export function GuestbookForm({ form }: { form: (typeof livreDorPage)["form"] }) {
   const startedAt = useRef(0);
   useEffect(() => {
     startedAt.current = Date.now();

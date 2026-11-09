@@ -2,7 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { Section } from "@/components/ui/Layout";
 import { RuledTitle } from "@/components/ui/Typography";
-import { contactPage, plainAnswer, type RichPart } from "@/content/contact";
+import { plainAnswer, type RichPart } from "@/content/contact";
+import { getContactPage } from "@/sanity/queries/contact";
 
 function Rich({ parts }: { parts: RichPart[] }) {
   return parts.map((part, i) => {
@@ -28,8 +29,8 @@ function Rich({ parts }: { parts: RichPart[] }) {
  * accordéon de 10 questions à droite (64 %). Accordéon en `<details>` natif : clavier et lecteurs d’écran sans script.
  * Balisage FAQPage (JSON-LD) inclus.
  */
-export function Faq() {
-  const { title, image, intro, items } = contactPage.faq;
+export async function Faq() {
+  const { title, image, intro, items } = (await getContactPage()).faq;
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",

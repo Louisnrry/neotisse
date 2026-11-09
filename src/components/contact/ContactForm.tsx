@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { Button } from "@/components/ui/Button";
 import { FormMessage, TextArea, TextField } from "@/components/ui/Field";
-import { contactPage } from "@/content/contact";
+import type { contactPage } from "@/content/contact";
 
 type Values = { nom: string; prenom: string; email: string; objet: string; projet: string };
 type Errors = Partial<Record<keyof Values, string>>;
@@ -37,8 +37,7 @@ function validate(v: Values): Errors {
  * TODO(phase 3) : envoyer vers une route API (e-mail via Resend, Reply-To = visiteur, validation serveur).
  * En attendant, un envoi valide affiche directement la confirmation.
  */
-export function ContactForm() {
-  const { form } = contactPage;
+export function ContactForm({ form }: { form: (typeof contactPage)["form"] }) {
   const startedAt = useRef(0);
   useEffect(() => {
     startedAt.current = Date.now();
