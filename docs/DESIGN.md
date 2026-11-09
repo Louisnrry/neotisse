@@ -21,6 +21,7 @@ Aperçu de tous les éléments : page **`/styleguide`** (non indexée).
 | Section, conteneur | `src/components/ui/Layout.tsx` |
 | Cadre photo provisoire, carte à filet rouge, étoiles | `src/components/ui/Media.tsx` |
 | Sections de l'accueil, intro animée | `src/components/home/*` (voir § 9 bis) |
+| Page Ateliers (ligne d'atelier) | `src/components/ateliers/WorkshopRow.tsx` (voir § 9 ter) |
 | Styles de l'intro, du héro et du bandeau défilant | `src/app/globals.css` (`@layer components`) |
 | Champs de formulaire, case à cocher, message, mention RGPD | `src/components/ui/Field.tsx` |
 | En-tête, pied de page | `src/components/layout/Header.tsx`, `Footer.tsx` |
@@ -186,6 +187,19 @@ Textes dans `src/content/home.ts` (provisoire, en attendant Sanity). Mesures pri
 | Nos ateliers de médiation textile | `WorkshopTiles.tsx` | Padding 112px. Intro centrée 1.2rem (marges de 8 %). Mosaïque 55 % / 45 %, écart 20px : grande tuile 600px (420px sur mobile), deux tuiles 290px. Couleurs garance / encre / garance-dark. Libellé Cormorant 700 `clamp(1.6rem,2.6vw,2.2rem)` crème en bas à gauche + « → ». Tuile entière cliquable, zoom ×1.03 au survol et au focus clavier (contour encre 3px). Puis « Et bien plus encore à découvrir » + bouton contour, centrés sur une ligne. |
 | Ils nous ont laissé un mot | `LatestReviews.tsx` | Padding 96px / 32px. Ligne « Note moyenne : ★★★★★ N avis » (filet encre en bas), puis 4 cartes (4 colonnes, 2 sous 1280px, 1 sous 640px) : titre Cormorant 1.5rem, étoiles, date et auteur en 0.85rem, texte avec liseré garance 3px. Bouton contour centré. |
 | Contact | `ContactCta.tsx` | Padding 112px, titre à filets, texte centré 1.2rem, bouton 1.075rem centré. |
+
+---
+
+## 9 ter. Ateliers (`/ateliers-tissage-teinture/`)
+
+Textes dans `src/content/ateliers.ts` (provisoire, en attendant Sanity). Page comparée à la V1 à 1440px : positions identiques au pixel pour l'en-tête et les 4 premiers ateliers ; à 375px, pas de débordement.
+
+| Bloc | Détails |
+|---|---|
+| En-tête de page | Padding 72px / 24px. H1 à filets « Nos ateliers », intro centrée 1.2rem (24px au-dessus), ligne « Pour les musées… » en 600 `gris` centrée, puis **index** (`<nav>`) 32px plus bas : liens Quicksand 600 encre (survol garance), écart 36px, entre deux filets encre de 1px, padding 14px. |
+| Ligne d'atelier (`WorkshopRow`) | Grille 40 % visuel / 60 % texte, écart 88px, padding vertical `clamp(48px,7vw,96px)`, filet `filet` en bas (sauf la dernière). Une ligne sur deux inversée (60/40, visuel à droite). Sous **782px** : une colonne, écart 50px, visuel toujours au-dessus. Visuel 4/5 (photo ou aplat garance / garance-dark / ink). |
+| Texte d'un atelier | Surtitre (`Kicker`), H2 8px dessous (ancre `id`), sous-titre Cormorant italique 600 garance 1.5rem, accroche 1.22rem 500 interligne 1.55, puis **repères** (`<dl>`, max 600px, filet encre en haut, lignes `filet` en bas, padding 10px, colonnes 150px / reste, une seule colonne sous 521px, libellé garance en 400) et paragraphes interligne 1.75 ; écart de 1.2rem entre blocs. Le gras des paragraphes est en **400** (gras relatif sur un corps en 300, comme la V1). |
+| Bloc final | Fond garance, padding 96px, colonne de 760px, écart 28px : H2 à fil crème **aligné à gauche**, texte centré 1.2rem, bouton `on-red` centré (comme la V1). |
 
 ---
 

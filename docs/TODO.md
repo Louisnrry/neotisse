@@ -23,6 +23,7 @@
   - Vérifié : intro (lecture puis ouverture, à chaque visite, y compris en revenant par le logo), bandeau en pause au focus, copies des logos hors clavier, tuiles (zoom + contour encre au clavier)
 - [x] Bouton « Écrivez-nous » du pied de page de nouveau lisible (il était crème sur crème)
 - [x] URL avec barre finale, identiques à la V1 (`trailingSlash: true`)
+- [x] **Page Ateliers** (09/11) : en-tête avec index d'ancres, 5 ateliers en alternance (repères, textes complets), bloc rouge « Des ateliers de tissage adaptés à vos projets » ; textes et SEO repris du WordPress (`src/content/ateliers.ts`) ; comparée à la V1 à 1440 et 375px
 - [x] Tous les `.md` rangés dans `docs/` ; `next dev` ne recrée plus `AGENTS.md` à la racine
 
 ### À faire (design)
@@ -31,7 +32,7 @@
 - [ ] 3 cartes décalées « Nos engagements » (À propos)
 - [ ] Cartes partenaires (fond de lin)
 - [ ] Bandeau de cookies sur mesure (§ 7.5) : le lien « Gérer mes cookies » émet déjà l’événement `neotisse:open-cookie-banner`
-- [ ] Construire les pages : Ateliers, Calendrier, Partenaires, Livre d’or, À propos, Contact, Mentions légales, Politique de confidentialité
+- [ ] Construire les pages : Calendrier, Partenaires, Livre d’or, À propos, Contact, Mentions légales, Politique de confidentialité
 - [ ] Récupérer les textes de chaque page depuis le WordPress (MCP Novamira)
 - [ ] Comparer chaque page avec la V1 à 375, 768 et 1440px
 
@@ -55,6 +56,8 @@
 - [ ] Mentions légales complètes (siège, RNA, téléphone, SIRET bLaNk, hébergeur Netlify)
 
 ## Questions ouvertes
+- Page Ateliers : sur la V1 le titre du bloc rouge final est aligné à gauche alors que le texte et le bouton sont centrés (reproduit tel quel) : centrer le titre ?
+- Photos des ateliers démonstratifs, enfants, conférences et expérimentation : à fournir (cadres provisoires, seule la photo de l'atelier participatif existe)
 - Logo et burger couleur encre peu lisibles sur la photo du héro tant que l’en-tête est transparent (comme sur la V1) : passer en crème à l’arrivée ?
 - Avis de test du WordPress (« pyramide », « INCROYABLE »…) : lesquels garder à la migration ?
 - Événement « Atelier participatif au musée de Tautavel » : texte en lorem ipsum sur la V1, à fournir

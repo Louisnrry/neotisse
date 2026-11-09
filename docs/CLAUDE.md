@@ -56,6 +56,7 @@
 - Mise en page des sections : contenu plafonné à **1240px** avec une gouttière `s50` (et non 1340px).
 - Cadres photo provisoires : **aplats unis** (la trame rayée est masquée par l’aplat sur la V1).
 - Accueil : « Découvrez l’univers Néotisse » n’a pas de photo décalée sur la V1, juste un cadre 4/5 à gauche ; « Et bien plus encore à découvrir » et son bouton sont centrés sur une même ligne ; la note moyenne s’affiche au-dessus des 4 avis.
+- Ateliers : chaque atelier a, en plus de CLAUDE.md § 6.2, une accroche et 3 **repères** (Format, Pour qui…) ; mise en page en lignes alternées 40/60 (pas de cartes) ; le bloc rouge final a son titre aligné à gauche. Le gras dans les textes est en 400 (gras relatif sur un corps en 300).
 - Intro animée : **jouée à chaque visite de l’accueil**, comme la V1 (décision de Louis du 09/11/2026 ; ce fichier disait « une fois par session »). Y compris en revenant sur l’accueil par un lien interne.
 
 ### Contenus provisoires
