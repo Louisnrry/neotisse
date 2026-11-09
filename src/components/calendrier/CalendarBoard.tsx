@@ -1,7 +1,8 @@
 import { cacheLife } from "next/cache";
 import { EventCalendar } from "@/components/calendrier/EventCalendar";
-import { calendrierPage } from "@/content/calendrier";
-import { eventTeaser, getAllEvents, getUpcomingEvents, type NeoEvent } from "@/content/events";
+import { eventTeaser, type NeoEvent } from "@/content/events";
+import { getCalendrierPage } from "@/sanity/queries/calendrier";
+import { getAllEvents, upcomingEvents } from "@/sanity/queries/events";
 import { todayInParis } from "@/lib/dates";
 
 /**
@@ -13,15 +14,16 @@ export async function CalendarBoard() {
   cacheLife("hours");
 
   const today = todayInParis();
-  const upcoming = getUpcomingEvents(today);
+  const [events, page] = await Promise.all([getAllEvents(), getCalendrierPage()]);
+  const upcoming = upcomingEvents(events, today);
   // Mois affiché à l’arrivée : celui du prochain événement (ou du jour s’il est en cours), comme la V1
   const initialMonth = upcoming[0] && upcoming[0].startDate > today ? upcoming[0].startDate : today;
-  const { upcoming: up, agenda, dialogContact } = calendrierPage;
+  const { upcoming: up, agenda, dialogContact } = page;
 
   return (
     <>
       <EventCalendar
-        events={getAllEvents()}
+        events={events}
         upcoming={upcoming}
         serverToday={today}
         initialMonth={initialMonth}

@@ -1,6 +1,8 @@
 import { CalendarIcon } from "@sanity/icons/Calendar"
 import { defineField, defineType } from "sanity"
+import { imageWithAltField } from "../shared/image"
 import { linkField } from "../shared/link"
+import { richTextField } from "../shared/richText"
 import { seoField } from "../shared/seo"
 
 export const calendrierPage = defineType({
@@ -35,7 +37,13 @@ export const calendrierPage = defineType({
       title: "Message sans événement",
       type: "text",
       rows: 2,
-      initialValue: "Pas d’événement programmé pour le moment, revenez bientôt !",
+      initialValue: "Aucun événement programmé pour le moment.",
+    }),
+    defineField({
+      name: "agendaTitle",
+      title: "Titre du calendrier mensuel",
+      type: "string",
+      initialValue: "Calendrier des ateliers et événements",
     }),
     defineField({
       name: "participationTitle",
@@ -43,25 +51,15 @@ export const calendrierPage = defineType({
       type: "string",
       initialValue: "Comment participer à nos ateliers ?",
     }),
-    defineField({
-      name: "participationText",
-      title: "Texte « Comment participer »",
-      type: "text",
-      rows: 4,
-    }),
-    linkField("participationCta", "Bouton « Comment participer »"),
+    imageWithAltField("participationImage", "Photo « Comment participer »"),
+    richTextField("participationText", "Texte « Comment participer »"),
     defineField({
       name: "structuresTitle",
       title: "Titre pour les structures",
       type: "string",
       initialValue: "Vous êtes un musée ou une structure culturelle ?",
     }),
-    defineField({
-      name: "structuresText",
-      title: "Texte pour les structures",
-      type: "text",
-      rows: 3,
-    }),
+    richTextField("structuresText", "Texte pour les structures"),
     linkField("structuresCta", "Bouton pour les structures"),
   ],
   preview: {

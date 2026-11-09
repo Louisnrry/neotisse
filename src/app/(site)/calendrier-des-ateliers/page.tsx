@@ -5,22 +5,26 @@ import { Button } from "@/components/ui/Button";
 import { Section } from "@/components/ui/Layout";
 import { RichText } from "@/components/ui/RichText";
 import { RuledTitle, ThreadHeading } from "@/components/ui/Typography";
-import { calendrierPage } from "@/content/calendrier";
 import { routes } from "@/lib/routes";
+import { pageMetadata } from "@/sanity/lib/metadata";
+import { getCalendrierPage } from "@/sanity/queries/calendrier";
 
-// TODO(sanity) : titre et description depuis le singleton `calendrierPage`.
-export const metadata: Metadata = {
-  title: { absolute: calendrierPage.seo.title },
-  description: calendrierPage.seo.description,
-  alternates: { canonical: routes.calendrier },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { seo } = await getCalendrierPage();
+  return pageMetadata(seo, {
+    title: "Calendrier des ateliers et festivals 2027 | Néotisse",
+    description:
+      "Calendrier des ateliers Néotisse : tissage, teinture végétale, conférences et festivals d’archéologie expérimentale dans les musées partenaires.",
+    canonical: routes.calendrier,
+  });
+}
 
 /**
  * Calendrier (V1, page 17) : en-tête (860px), « À venir » (1040px), calendrier mensuel (1240px),
  * puis « Comment participer à nos ateliers ? » (photo 40 % + texte 60 %, écart 80px).
  */
-export default function CalendrierPage() {
-  const { title, intro, participation } = calendrierPage;
+export default async function CalendrierPage() {
+  const { title, intro, participation } = await getCalendrierPage();
   const { structures } = participation;
 
   return (
@@ -39,8 +43,8 @@ export default function CalendrierPage() {
           <Image
             src={participation.image.src}
             alt={participation.image.alt}
-            width={1179}
-            height={1324}
+            width={participation.image.width ?? 1179}
+            height={participation.image.height ?? 1324}
             sizes="(min-width: 782px) 40vw, 100vw"
             className="aspect-[4/5] w-full object-cover"
           />
