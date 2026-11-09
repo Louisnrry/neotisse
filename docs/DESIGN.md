@@ -308,6 +308,7 @@ Textes dans `src/content/calendrier.ts`, événements dans `src/content/events.t
 - Lien d'évitement « Aller au contenu » en premier élément focusable.
 - `prefers-reduced-motion` : toutes les transitions et animations sont neutralisées dans `@layer base`.
 - `scroll-margin-top: 110px` sur les éléments à ancre (place pour l'en-tête).
+- Défilement : doux (`scroll-behavior: smooth`) pour les ancres d'une même page, mais **arrivée instantanée en haut de page** lors d'un changement de page. Next.js 16 ne coupe plus le défilement doux pendant la navigation : c'est l'attribut `data-scroll-behavior="smooth"` sur `<html>` (layout racine) qui le rétablit. Sans lui, la page remontait visiblement à chaque changement de page.
 
 ---
 

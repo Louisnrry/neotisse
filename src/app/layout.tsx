@@ -35,7 +35,14 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     // suppressHydrationWarning : le script de l’intro ajoute une classe à <html> avant l’hydratation.
-    <html lang="fr" className={`${cormorant.variable} ${quicksand.variable}`} suppressHydrationWarning>
+    // data-scroll-behavior="smooth" : défilement doux pour les ancres, mais arrivée instantanée
+    // en haut de page lors d’un changement de page (Next.js 16 ne le fait plus par défaut).
+    <html
+      lang="fr"
+      className={`${cormorant.variable} ${quicksand.variable}`}
+      data-scroll-behavior="smooth"
+      suppressHydrationWarning
+    >
       <head>
         <script dangerouslySetInnerHTML={{ __html: introDecideScript }} />
       </head>
