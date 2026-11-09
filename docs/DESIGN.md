@@ -1,0 +1,215 @@
+# Design — Néotisse V2
+
+> **Source de vérité : le site WordPress V1** (`http://neotisse.local`, styles globaux du thème + extension `neotisse-core`).
+> En cas d'écart entre ce fichier, `CLAUDE.md` et la V1, **c'est la V1 qui fait foi**.
+> Ce fichier décrit ce qui est **réellement implémenté** dans la V2. À tenir à jour à chaque modification du design.
+
+Aperçu de tous les éléments : page **`/styleguide`** (non indexée).
+
+---
+
+## 1. Où vit le design dans le code
+
+| Élément | Fichier |
+|---|---|
+| Tokens (couleurs, polices, tailles, espacements, largeurs) | `src/app/globals.css` (bloc `@theme`, Tailwind v4) |
+| Styles de base (body, titres, liens, focus, reduced-motion) | `src/app/globals.css` (`@layer base`) |
+| Utilitaires sur mesure : `ruled`, `thread`, `thread-center`, `bg-trame`, `bg-hachures`, `bg-lin` | `src/app/globals.css` (`@utility`) |
+| Polices auto-hébergées | `src/app/fonts/*.woff2` chargées par `next/font/local` dans `src/app/layout.tsx` |
+| Bouton | `src/components/ui/Button.tsx` |
+| Titres à filets, fil rouge, surtitre, sous-titre, citation, petite capitale | `src/components/ui/Typography.tsx` |
+| Section, conteneur | `src/components/ui/Layout.tsx` |
+| Cadre photo provisoire, carte à filet rouge, étoiles | `src/components/ui/Media.tsx` |
+| Sections de l'accueil, intro animée | `src/components/home/*` (voir § 9 bis) |
+| Styles de l'intro, du héro et du bandeau défilant | `src/app/globals.css` (`@layer components`) |
+| Champs de formulaire, case à cocher, message, mention RGPD | `src/components/ui/Field.tsx` |
+| En-tête, pied de page | `src/components/layout/Header.tsx`, `Footer.tsx` |
+
+Tailwind v4 : **il n'y a pas de `tailwind.config.ts`**. Les tokens sont déclarés en CSS dans `@theme` et génèrent les classes (`bg-garance`, `text-h2`, `px-s50`, `max-w-wide`…). Les palettes Tailwind par défaut sont **désactivées** (`--color-*: initial`) : seules les couleurs de la charte existent.
+
+---
+
+## 2. Couleurs
+
+| Token Tailwind | Hex | Usage |
+|---|---|---|
+| `garance` | `#C8361F` | Couleur signature : boutons, liens, filets, accents, **fonds pleins de sections** |
+| `garance-dark` | `#9E2A17` | Survol des boutons et liens, tuile « Ateliers démonstratifs », texte d'erreur |
+| `garance-soft` | `#F08C78` | **Uniquement** le survol des liens du pied de page (sur fond encre) |
+| `ink` | `#1E2B33` | Texte principal, titres, pied de page, filets des titres |
+| `ink-deep` | `#141D22` | Voile et ombre de la modale événement |
+| `creme` | `#FFF8F0` | Texte sur fond rouge ou encre, bouton sur fond rouge |
+| `pierre` | `#FBF9F7` | Fonds de cartes (« À venir »), sections alternées |
+| `filet` | `#ECE4DC` | Bordures fines, séparateurs |
+| `gris` | `#5B6670` | Texte secondaire, **sur fond clair uniquement** (contraste AA) |
+| `blanc` | `#FFFFFF` | Fond par défaut |
+| `champ` | `#CFC7BF` | Bordure des champs de formulaire |
+| `lin` | `#E9E2D6` | Couleur sous la texture de lin |
+| `erreur-bg` | `#FDF1EE` | Fond d'un champ en erreur |
+| `alerte-bg` | `#FBE7E2` | Fond du message d'erreur d'un formulaire |
+| `succes-bg` | `#F3F7F2` | Fond du message de succès d'un formulaire |
+
+Règles :
+- Le rouge garance s'utilise **franchement** (retour cliente : « pas assez flashy ») : sections pleines, intro, colonne de la modale.
+- Jamais de noir pur pour le texte. Pas de bleu ni de jaune (une ancienne piste « bleu guède / safran » a été abandonnée).
+
+---
+
+## 3. Typographie
+
+| Rôle | Police | Graisse |
+|---|---|---|
+| Titres, navigation, grands chiffres de dates, citations | **Cormorant Garamond** (`font-serif`) | 700 ; 600 pour certains textes d'accroche ; italique 600–700 |
+| Texte courant, boutons, formulaires, étiquettes | **Quicksand** (`font-sans`) | **300** pour le corps (comme la V1) ; 500, 600, 700 |
+
+Les deux polices sont des **fichiers variables** (axe de graisse 300–700), sous-ensemble latin, repris de la V1.
+
+| Token | Valeur | Usage |
+|---|---|---|
+| `text-body` | `clamp(0.875rem, …, 1.063rem)` | Corps de texte (interligne 1.65) |
+| `text-button` | `clamp(0.875rem, …, 1rem)` | Boutons |
+| `text-h1` | `clamp(2.8rem, 6vw, 4.6rem)` | H1 |
+| `text-h2` | `clamp(2rem, 3.6vw, 2.9rem)` | H2, titres à filets |
+| `text-h3` | `clamp(1.5rem, 2.2vw, 1.9rem)` | H3 |
+| `text-hero` | `clamp(4rem, 11vw, 8.5rem)` | « Néotisse » du héro (interligne 0.95) |
+| `text-intro` | `clamp(4.5rem, 18vw, 19rem)` | Mot coupé de l'intro animée |
+| `text-event-date` | `clamp(2.2rem, 4.5vw, 3.4rem)` | Grande date du prochain événement |
+| `text-kicker` | `0.78rem` | Surtitres et petites capitales |
+| `text-small` | `0.85rem` | Labels, mentions sous formulaires |
+| `text-legal` | `0.88rem` | Ligne basse du pied de page |
+
+Titres : Cormorant 700, interligne 1.08, letter-spacing 0.01em, `text-wrap: balance`.
+Liens : `garance`, survol `garance-dark`.
+
+**Écart V1 vs `CLAUDE.md`** : le corps de texte est en Quicksand **300** dans la V1 (CLAUDE.md disait 400). On suit la V1.
+
+---
+
+## 4. Espacements et largeurs
+
+| Token | Valeur | Usage |
+|---|---|---|
+| `s20` | 10px | |
+| `s30` | 20px | Écart des champs de formulaire |
+| `s40` | 30px | |
+| `s50` | `clamp(30px, 5vw, 50px)` | **Gouttière latérale du site** (`px-s50`) |
+| `s60` | `clamp(30px, 7vw, 70px)` | |
+| `s70` | `clamp(50px, 7vw, 90px)` | Padding vertical d'une section standard |
+| `s80` | `clamp(70px, 10vw, 140px)` | Padding vertical d'une grande section |
+| `max-w-content` | 645px | Colonne de texte centrée |
+| `max-w-reading` | 880px | Liste « À venir », formulaires |
+| `max-w-section` | 1240px | **Contenu des sections** (`<Section>`, largeur par défaut) |
+| `max-w-wide` | 1340px | En-tête et pied de page |
+
+Mise en page des sections (mesurée sur la V1) : padding latéral `s50` puis contenu plafonné à 1240px. À 1440px le contenu commence à 100px du bord ; à 375px, à 30px (contenu de 315px). L'en-tête et le pied de page, eux, vont jusqu'à 1340px.
+
+Point de rupture spécifique : **`nav:` = 960px**, passage au menu burger.
+
+---
+
+## 5. Signes graphiques
+
+- **Titre à filets** (`<RuledTitle>`, utilitaire `ruled`) : texte centré entre deux lignes de 2px de la couleur du texte, `gap: clamp(16px, 3vw, 40px)`, letter-spacing 0.06em. `tone="creme"` sur fond rouge ou encre. Mettre `as="p"` quand c'est un surtitre de section suivi d'un H2.
+- **Fil rouge** (`<ThreadHeading>`, utilitaire `thread`) : trait 64×4px garance sous le titre, à 0.45em. `center` pour le centrer, `tone="creme"` pour un fil crème.
+- **Surtitre** (`<Kicker>`) : 0.78rem, 700, letter-spacing 0.14em, majuscules, garance, trait de 3px au-dessus (padding-top 12px).
+- **Sous-titre** (`<Subtitle>`) : Cormorant italique 600, garance.
+- **Citation** (`<PullQuote>`) : Cormorant italique 700, garance, interligne 1.2.
+- **Angles droits partout** : le token de rayon est vidé (`--radius-*: initial`), donc les classes `rounded-*` n'existent pas.
+- **Filet rouge en haut des cartes** (`<Card>`) : bordure `filet` + `border-top: 4px garance`.
+- **Texture de lin** (`bg-lin`) : `lin-brut.jpg` en 260px sur `#E9E2D6`, derrière les logos partenaires, avec un filet garance de 3px en bas.
+- **Cadre photo provisoire** (`<PhotoPlaceholder>`) : **aplat uni** (garance, garance-dark, ink ou lin) + petite icône. Sur la V1 la trame rayée est masquée par l'aplat, donc on ne la montre pas par défaut ; `trame` l'active (`bg-trame`). À remplacer par les images Sanity.
+- **Hachures** (`bg-hachures`) : jours hors mois du calendrier.
+
+---
+
+## 6. Boutons (`<Button>`)
+
+| Variante | Rendu | Survol |
+|---|---|---|
+| `primary` (défaut) | fond garance, texte crème | fond garance-dark |
+| `outline` | bordure 2px encre, texte encre | fond encre, texte blanc |
+| `outline-garance` | bordure 1px garance, texte garance | fond garance, texte blanc |
+| `on-red` | fond crème, texte garance-dark (sur fond rouge ou encre) | fond encre, texte blanc |
+
+| Taille | Padding | Texte |
+|---|---|---|
+| `default` | `0.85em 1.7em` | `text-button` |
+| `compact` | `0.5em 1.1em` | 0.9rem (bouton de la navbar) |
+| `large` | `0.95em 2.4em` | 1.05rem (boutons d'envoi des formulaires) |
+
+Quicksand 600, angles droits, transitions 0.2s. `href` interne → `next/link`, `href` externe/`mailto:` → `<a>`, sans `href` → `<button>`.
+
+---
+
+## 7. Formulaires (`Field.tsx`)
+
+- Label : Quicksand 700, 0.85rem, letter-spacing 0.04em, 7px au-dessus du champ.
+- Champ : padding 14px, bordure `champ`, fond blanc, texte encre. Focus : bordure encre + halo `rgba(200,54,31,.18)` de 3px.
+- Erreur : `aria-invalid`, bordure garance, fond `erreur-bg`, message 0.88rem 600 `garance-dark` relié par `aria-describedby`.
+- Deux colonnes Nom / Prénom au-dessus de 640px, une seule en dessous.
+- Message de retour : bordure gauche 4px (encre + `succes-bg` pour un succès ; garance + `alerte-bg` pour une erreur).
+- Mention RGPD (`<FormLegal>`) : 0.85rem, gris, liens garance.
+
+---
+
+## 8. En-tête
+
+- Collant, fond `blanc/96` + flou 8px, filet bas `filet`, padding vertical 4px.
+- Logo 52px, zoom ×1.12 au survol et au focus, sans contour au clic.
+- Liens Cormorant 700 1.2rem, écart 32px ; soulignement garance de 2px qui se déploie de gauche à droite (survol et page active, page active en garance, `aria-current="page"`).
+- Bouton « Prenez contact » en taille `compact`.
+- Se cache au scroll vers le bas (seuil 6px, à partir de 80px), revient au scroll vers le haut ou quand le focus entre dans l'en-tête ; transition 0.35s.
+- **Accueil** : `position: fixed` par-dessus le héro, **transparent** jusqu'au premier défilement (> 10px), puis fond blanc définitivement (comme la V1).
+- **Sous 960px** : bouton burger → menu plein écran fond encre, liens Cormorant 2.2rem crème (survol `garance-soft`), bouton « Prenez contact » `on-red`. Focus piégé, Échap ferme et rend le focus au burger, défilement de la page bloqué.
+
+## 9. Pied de page
+
+- Fond encre, texte crème, padding `72px` en haut, `28px` en bas.
+- Trois colonnes 38 % / 24 % / 38 % (une seule sous 768px) : logo blanc 56px + « Néotisse » (Cormorant 2.1rem) + texte ; navigation verticale Cormorant 1.25rem ; accroche Cormorant 600 1.45rem + bouton `on-red` « Écrivez-nous » + e-mail + icônes Instagram et Facebook.
+- Liens crème, survol `garance-soft`.
+- Ligne basse 0.88rem séparée par un filet crème à 14 % : © année · Mentions légales · Gérer mes cookies · Politique de confidentialité.
+
+---
+
+## 9 bis. Accueil (`src/components/home/`)
+
+Textes dans `src/content/home.ts` (provisoire, en attendant Sanity). Mesures prises sur la V1 à 1440px ; les hauteurs de section de la V2 sont à quelques pixels près (héro 900, partenaires 462, univers 899, événement 895, ateliers 1200, avis 650, contact 473).
+
+| Section | Composant | Détails |
+|---|---|---|
+| Intro animée | `Intro.tsx` + `intro-script.ts` | Deux moitiés garance avec « Néo » / « tisse » (Cormorant 700 crème, `text-intro`), apparition en fondu + translateY 40px (0.9s), fil crème 3px tracé de haut en bas à 1s, ouverture à 1,65s (translateX ±101 %, 1.25s, `ease-reveal`), fin à 3s (6s maximum). Clic, touche, molette ou glissé pour passer. Jouée **à chaque visite de l'accueil** (comme la V1), sauf en reduced-motion ou dans une iframe. Au chargement, le script du `<head>` (layout racine) pose la classe `intro-play` avant l'affichage ; en arrivant par un lien interne (sans rechargement), `Intro` la pose dans un `useLayoutEffect`, donc sans flash du héro. Le point de coupe est recentré selon la largeur des deux mots. |
+| Héro | `Hero.tsx` | `min-h-svh`, fond encre, 2 photos côte à côte (une seule sous 640px), voile `neo-hero__veil` (sombre en bas à gauche + léger en haut). H1 « Néotisse » `text-hero`, accroche `clamp(1.15rem,1.8vw,1.5rem)`, bouton 1.075rem. Avec l'intro : contenu en fondu (délai 0.6s) et photos qui dézooment de 1.12 à 1 (1.8s). |
+| Ils nous ont fait confiance | `PartnersBand.tsx` | Fond garance, padding 72px, titre à filets crème sur toute la largeur. Logos 196×140 (padding 14px, logo 80px de haut max) sur toile de lin, écart 20px, défilement 45s linéaire, masque en dégradé sur 8 % de chaque bord, pause au survol et au focus. Liste doublée (copie `aria-hidden`, liens hors tabulation). Reduced-motion : logos statiques centrés, copie masquée. Survol : liseré intérieur encre 2px. Bouton `on-red` centré. |
+| Découvrez l'univers Néotisse | `Univers.tsx` | Padding 64px / 112px. Titre à filets (`<p>`), puis grille 42 % / 58 % centrée verticalement : cadre 4/5 garance, H2 à fil rouge, 2 paragraphes, bouton. |
+| Prochain événement | `NextEvent.tsx` | Fond garance, padding 96px, titre à filets crème. Grille 58 % / 42 %, écart 88px : date `text-event-date` Cormorant 700, H2 crème, lieu en 600, extrait (ou 45 premiers mots), bouton `on-red` ; image 4/5 (aplat garance-dark sinon). Sans événement : message centré + bouton. Composant mis en cache 1 heure (`"use cache"` + `cacheLife("hours")`). |
+| Nos ateliers de médiation textile | `WorkshopTiles.tsx` | Padding 112px. Intro centrée 1.2rem (marges de 8 %). Mosaïque 55 % / 45 %, écart 20px : grande tuile 600px (420px sur mobile), deux tuiles 290px. Couleurs garance / encre / garance-dark. Libellé Cormorant 700 `clamp(1.6rem,2.6vw,2.2rem)` crème en bas à gauche + « → ». Tuile entière cliquable, zoom ×1.03 au survol et au focus clavier (contour encre 3px). Puis « Et bien plus encore à découvrir » + bouton contour, centrés sur une ligne. |
+| Ils nous ont laissé un mot | `LatestReviews.tsx` | Padding 96px / 32px. Ligne « Note moyenne : ★★★★★ N avis » (filet encre en bas), puis 4 cartes (4 colonnes, 2 sous 1280px, 1 sous 640px) : titre Cormorant 1.5rem, étoiles, date et auteur en 0.85rem, texte avec liseré garance 3px. Bouton contour centré. |
+| Contact | `ContactCta.tsx` | Padding 112px, titre à filets, texte centré 1.2rem, bouton 1.075rem centré. |
+
+---
+
+## 10. Accessibilité et mouvement
+
+- Focus visible : **contour 3px garance, décalage 3px** (comme la V1 ; CLAUDE.md indiquait encre). Exception : tuiles ateliers, contour encre.
+- Lien d'évitement « Aller au contenu » en premier élément focusable.
+- `prefers-reduced-motion` : toutes les transitions et animations sont neutralisées dans `@layer base`.
+- `scroll-margin-top: 110px` sur les éléments à ancre (place pour l'en-tête).
+
+---
+
+## 11. Assets repris de la V1
+
+| Fichier | Origine |
+|---|---|
+| `public/images/logo-neotisse.png` (+ `src/app/icon.png`) | logo du site WordPress |
+| `public/images/textures/lin-brut.jpg`, `lin-texture.png` | textures de lin |
+| `public/images/photos/hero-tissage.jpg`, `hero-atelier.jpg` | photos du héro |
+| `public/images/partenaires/*` | logos détourés des 7 partenaires (Lattes = Musée Henri Prades) |
+
+Ces images sont provisoires dans `public/` : elles passeront dans Sanity quand le CMS sera en place.
+
+---
+
+## 12. Reste à faire côté design
+
+Voir `docs/TODO.md`.
