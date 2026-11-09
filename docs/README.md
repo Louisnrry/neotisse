@@ -1,4 +1,4 @@
-# Néotisse V2
+# Néotisse 
 
 Site vitrine de l’association Néotisse (médiation autour des savoir-faire textiles anciens), réalisé par bLaNk.
 
