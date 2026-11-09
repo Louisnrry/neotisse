@@ -45,3 +45,6 @@ next-env.d.ts
 
 # exemples de variables autorisés
 !.env.example
+
+# cahier des charges : document client, gardé en local (dépôt public)
+docs/Cahier_Des_Charges_Neotisse_V2.pdf
