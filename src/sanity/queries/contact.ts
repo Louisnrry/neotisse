@@ -1,7 +1,7 @@
-import { contactPage as localPage, type FaqItem, type RichPart } from "@/content/contact";
-import { withFallback } from "../lib/fallback";
+import { EMPTY_LINK, withDefaults } from "../lib/fallback";
 import { fetchSanity } from "../lib/live";
-import type { PortableBlock } from "../lib/portableText";
+import { toParagraphs, type PortableBlock } from "../lib/portableText";
+import type { ContentImage, FaqItem, Link, Paragraph, RichPart } from "../types";
 import { getSiteSettings } from "./settings";
 import { IMAGE, imageOrUndefined, SEO, type SanityImage, type Seo } from "./fragments";
 
@@ -11,7 +11,7 @@ const CONTACT_QUERY = `{
   "page": *[_id == "contactPage"][0]{
     ${SEO}, title, intro, phone{ label, href, person }, city,
     guestbookLink{ label, href },
-    form{ title, subjectPlaceholder, projectPlaceholder, submit, sending },
+    form{ title, subjectPlaceholder, projectPlaceholder, submit, sending, legal },
     faq{ title, intro, "image": image${IMAGE} }
   },
   // Ordre choisi sur la page Contact (glisser-déposer) ; sinon le champ « Ordre d’affichage ».
@@ -21,10 +21,8 @@ const CONTACT_QUERY = `{
   )
 }`;
 
-type RemoteBlock = PortableBlock;
-
 /** Réponse en texte enrichi → morceaux de texte et liens (les paragraphes sont mis bout à bout). */
-function answerParts(blocks: RemoteBlock[] | null | undefined): RichPart[] {
+function answerParts(blocks: PortableBlock[] | null | undefined): RichPart[] {
   const parts: RichPart[] = [];
   (blocks ?? [])
     .filter((b) => b._type === "block")
@@ -42,40 +40,81 @@ function answerParts(blocks: RemoteBlock[] | null | undefined): RichPart[] {
   return parts;
 }
 
-type ContactContent = Omit<typeof localPage, "seo" | "faq"> & {
-  seo: Seo;
-  faq: Omit<(typeof localPage)["faq"], "image" | "items"> & { image: SanityImage; items: FaqItem[] };
+export type ContactFormTexts = {
+  title: string;
+  subjectPlaceholder: string;
+  projectPlaceholder: string;
+  submit: string;
+  sending: string;
 };
 
-/** Page Contact et FAQ (valeurs de la V1 pour les champs vides). */
+export type ContactContent = {
+  seo: Seo;
+  title: string;
+  intro: string;
+  phone: { label: string; href: string; person: string };
+  city: string;
+  email: string;
+  guestbookLink: Link;
+  form: ContactFormTexts;
+  /** Mention sous le formulaire (données personnelles). */
+  legal: Paragraph[];
+  faq: { title: string; intro: string; image?: ContentImage; items: FaqItem[] };
+};
+
+const EMPTY = {
+  seo: null as Seo,
+  title: "",
+  intro: "",
+  phone: { label: "", href: "", person: "" },
+  city: "",
+  guestbookLink: EMPTY_LINK,
+  form: { title: "", subjectPlaceholder: "", projectPlaceholder: "", submit: "Envoyer", sending: "Envoi en cours…" },
+  faq: { title: "", intro: "" },
+};
+
+type Remote = {
+  page:
+    | ({
+        phone?: { label?: string; href?: string; person?: string } | null;
+        city?: string | null;
+        form?: ({ legal?: PortableBlock[] | null } & Record<string, unknown>) | null;
+        faq?: ({ image?: Partial<SanityImage> | null } & Record<string, unknown>) | null;
+      } & Record<string, unknown>)
+    | null;
+  items: ({ question?: string; answer?: PortableBlock[] } | null)[] | null;
+};
+
+/** Page Contact et FAQ. */
 export async function getContactPage(): Promise<ContactContent> {
-  const [remote, settings] = await Promise.all([
-    fetchSanity<{
-      page: (Partial<ContactContent> & { faq?: { image?: Partial<SanityImage> | null } }) | null;
-      items: { question?: string; answer?: RemoteBlock[] }[] | null;
-    }>(CONTACT_QUERY),
-    getSiteSettings(),
-  ]);
+  const [remote, settings] = await Promise.all([fetchSanity<Remote>(CONTACT_QUERY), getSiteSettings()]);
+  const page = remote?.page;
+  const { legal, ...form } = page?.form ?? {};
+  const merged = withDefaults(page && { ...page, form, faq: { ...page.faq, image: undefined } }, EMPTY);
 
-  const items = (remote?.items ?? [])
-    .filter((it) => it?.question)
-    .map((it) => ({ question: it.question!, answer: answerParts(it.answer) }));
-
-  const page = remote?.page
-    ? { ...remote.page, faq: { ...remote.page.faq, image: imageOrUndefined(remote.page.faq?.image) } }
-    : null;
-
-  const merged = withFallback(page, localPage as unknown as ContactContent);
+  // Téléphone et ville : la page Contact, sinon les réglages du site.
+  const phoneLabel = page?.phone?.label || settings.phone;
   return {
     ...merged,
-    // Téléphone et ville : la page Contact, sinon les réglages du site, sinon la V1.
     phone: {
-      label: page?.phone?.label || settings.phone || merged.phone.label,
-      href: page?.phone?.href || (settings.phone ? `tel:${settings.phone.replace(/[^\d+]/g, "")}` : merged.phone.href),
-      person: page?.phone?.person || settings.phonePerson || merged.phone.person,
+      label: phoneLabel,
+      href: page?.phone?.href || (phoneLabel ? `tel:${phoneLabel.replace(/[^\d+]/g, "").replace(/^0/, "+33")}` : ""),
+      person: page?.phone?.person || settings.phonePerson,
     },
-    city: page?.city || settings.city || merged.city,
+    city: page?.city || settings.city,
     email: settings.contactEmail,
-    faq: { ...merged.faq, items: items.length ? items : merged.faq.items },
+    legal: toParagraphs(legal),
+    faq: {
+      ...merged.faq,
+      image: imageOrUndefined(page?.faq?.image),
+      items: (remote?.items ?? [])
+        .filter((it) => it?.question)
+        .map((it) => ({ question: it!.question!, answer: answerParts(it!.answer) })),
+    },
   };
+}
+
+/** Texte brut d’une réponse (balisage FAQPage). */
+export function plainAnswer(parts: RichPart[]) {
+  return parts.map((p) => (typeof p === "string" ? p : p.text)).join("");
 }

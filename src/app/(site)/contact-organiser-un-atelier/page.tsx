@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { ContactDetails } from "@/components/contact/ContactDetails";
 import { ContactForm } from "@/components/contact/ContactForm";
 import { Faq } from "@/components/contact/Faq";
 import { Button } from "@/components/ui/Button";
 import { FormLegal } from "@/components/ui/Field";
 import { Section } from "@/components/ui/Layout";
+import { RichText } from "@/components/ui/RichText";
 import { ThreadHeading } from "@/components/ui/Typography";
 import { routes } from "@/lib/routes";
 import { pageMetadata } from "@/sanity/lib/metadata";
@@ -22,7 +22,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function ContactPage() {
-  const { title, intro, guestbookLink, form, email } = await getContactPage();
+  const { title, intro, guestbookLink, form, legal } = await getContactPage();
   return (
     <>
       {/* Coordonnées (45 %) et formulaire « Écrivez-nous » (55 %), comme la V1 */}
@@ -44,12 +44,15 @@ export default async function ContactPage() {
           <div>
             <h2 className="mb-7 text-[clamp(1.6rem,2.4vw,2rem)]">{form.title}</h2>
             <ContactForm form={form} />
-            <FormLegal className="mt-[1.2rem]">
-              Les informations recueillies servent uniquement à répondre à votre demande. Elles sont lues par les membres
-              du bureau de Néotisse et conservées 3 ans après notre dernier échange. Vous pouvez y accéder ou demander leur
-              suppression à <a href={`mailto:${email}`}>{email}</a>.{" "}
-              <Link href={routes.confidentialite}>En savoir plus sur vos données</Link>
-            </FormLegal>
+            {legal.length > 0 && (
+              <div className="mt-[1.2rem] grid gap-2">
+                {legal.map((p, k) => (
+                  <FormLegal key={k}>
+                    <RichText value={p} />
+                  </FormLegal>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </Section>

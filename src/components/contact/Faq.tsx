@@ -1,9 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Section } from "@/components/ui/Layout";
+import { PhotoPlaceholder } from "@/components/ui/Media";
 import { RuledTitle } from "@/components/ui/Typography";
-import { plainAnswer, type RichPart } from "@/content/contact";
-import { getContactPage } from "@/sanity/queries/contact";
+import { getContactPage, plainAnswer } from "@/sanity/queries/contact";
+import type { RichPart } from "@/sanity/types";
 
 function Rich({ parts }: { parts: RichPart[] }) {
   return parts.map((part, i) => {
@@ -49,10 +50,13 @@ export async function Faq() {
       </RuledTitle>
       <div className="grid gap-10 min-[782px]:grid-cols-[36fr_64fr] min-[782px]:gap-20">
         <div>
-          {/* TODO(sanity) : image de la page */}
-          <div className="relative aspect-[4/5] w-full overflow-hidden">
-            <Image src={image.src} alt={image.alt} fill sizes="(min-width: 782px) 30vw, 100vw" className="object-cover" />
-          </div>
+          {image ? (
+            <div className="relative aspect-[4/5] w-full overflow-hidden">
+              <Image src={image.src} alt={image.alt} fill sizes="(min-width: 782px) 30vw, 100vw" className="object-cover" />
+            </div>
+          ) : (
+            <PhotoPlaceholder tone="garance" className="aspect-[4/5] w-full" />
+          )}
           <p className="mt-[1.2rem]">{intro}</p>
         </div>
         <div>

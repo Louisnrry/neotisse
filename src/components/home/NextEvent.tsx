@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/Button";
 import { Section } from "@/components/ui/Layout";
 import { PhotoPlaceholder } from "@/components/ui/Media";
 import { RuledTitle } from "@/components/ui/Typography";
-import { eventTeaser } from "@/content/events";
+import { eventTeaser } from "@/lib/events";
 import { getAllEvents, upcomingEvents } from "@/sanity/queries/events";
 import { getHomePage } from "@/sanity/queries/home";
 import { formatEventDates } from "@/lib/dates";

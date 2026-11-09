@@ -1,5 +1,4 @@
-import { siteSettings as localSettings } from "@/content/site-settings";
-import { withFallback } from "../lib/fallback";
+import { withDefaults } from "../lib/fallback";
 import { fetchSanity } from "../lib/live";
 
 const SITE_SETTINGS_QUERY = `*[_id == "siteSettings"][0]{
@@ -7,19 +6,35 @@ const SITE_SETTINGS_QUERY = `*[_id == "siteSettings"][0]{
   footerText, footerCta, social{ instagram, facebook, linkedin }, gaMeasurementId
 }`;
 
-type LocalSettings = typeof localSettings;
-
-export type SiteSettings = LocalSettings & {
-  contactRecipient?: string;
-  phone?: string;
-  phonePerson?: string;
-  city?: string;
-  gaMeasurementId?: string;
-  social: LocalSettings["social"] & { linkedin?: string };
+export type SiteSettings = {
+  title: string;
+  description: string;
+  contactEmail: string;
+  contactRecipient: string;
+  phone: string;
+  phonePerson: string;
+  city: string;
+  footerText: string;
+  footerCta: string;
+  social: { instagram: string; facebook: string; linkedin: string };
+  gaMeasurementId: string;
 };
 
-/** Document « Réglages du site » (valeurs de la V1 pour les champs vides). */
+const EMPTY: SiteSettings = {
+  title: "Néotisse",
+  description: "",
+  contactEmail: "",
+  contactRecipient: "",
+  phone: "",
+  phonePerson: "",
+  city: "",
+  footerText: "",
+  footerCta: "",
+  social: { instagram: "", facebook: "", linkedin: "" },
+  gaMeasurementId: "",
+};
+
+/** Document « Réglages du site ». */
 export async function getSiteSettings(): Promise<SiteSettings> {
-  const remote = await fetchSanity<Partial<SiteSettings>>(SITE_SETTINGS_QUERY);
-  return withFallback(remote, localSettings as SiteSettings);
+  return withDefaults(await fetchSanity(SITE_SETTINGS_QUERY), EMPTY);
 }

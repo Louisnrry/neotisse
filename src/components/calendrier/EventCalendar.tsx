@@ -6,7 +6,8 @@ import { flushSync } from "react-dom";
 import { RichText } from "@/components/ui/RichText";
 import { Section } from "@/components/ui/Layout";
 import { RuledTitle } from "@/components/ui/Typography";
-import { eventTypeLabels, type EventType, type NeoEvent } from "@/content/events";
+import { eventTypeLabels } from "@/lib/events";
+import type { EventType, NeoEvent } from "@/sanity/types";
 import { cn } from "@/lib/cn";
 import { dayNumber, formatEventDates, formatMonthYear, todayInParis } from "@/lib/dates";
 

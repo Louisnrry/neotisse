@@ -1,16 +1,22 @@
-import { partenairesPage as localPage } from "@/content/partenaires";
-import { withFallback } from "../lib/fallback";
+import { EMPTY_LINK, withDefaults } from "../lib/fallback";
 import { fetchSanity } from "../lib/live";
+import type { Link } from "../types";
 import { SEO, type Seo } from "./fragments";
 
 const PARTENAIRES_QUERY = `*[_id == "partenairesPage"][0]{
   ${SEO}, title, intro, cta{ title, text, button{ label, href } }
 }`;
 
-type PartenairesContent = Omit<typeof localPage, "seo"> & { seo: Seo };
+export type PartenairesContent = {
+  seo: Seo;
+  title: string;
+  intro: string;
+  cta: { title: string; text: string; button: Link };
+};
 
-/** Page Partenaires (valeurs de la V1 pour les champs vides). Les cartes sont lues à part. */
+const EMPTY: PartenairesContent = { seo: null, title: "", intro: "", cta: { title: "", text: "", button: EMPTY_LINK } };
+
+/** Page Partenaires. Les cartes sont lues à part (`getPartners`). */
 export async function getPartenairesPage(): Promise<PartenairesContent> {
-  const remote = await fetchSanity<Partial<PartenairesContent>>(PARTENAIRES_QUERY);
-  return withFallback(remote, localPage as PartenairesContent);
+  return withDefaults(await fetchSanity(PARTENAIRES_QUERY), EMPTY);
 }

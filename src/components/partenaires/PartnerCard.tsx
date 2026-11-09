@@ -1,5 +1,5 @@
 import Image from "next/image";
-import type { Partner } from "@/content/partners";
+import type { Partner } from "@/sanity/types";
 import { cn } from "@/lib/cn";
 
 /**

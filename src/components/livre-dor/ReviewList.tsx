@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import type { Review } from "@/content/reviews";
+import type { Review } from "@/sanity/types";
 import { formatDate } from "@/lib/dates";
 
 /**

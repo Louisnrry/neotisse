@@ -55,6 +55,8 @@ export function buttonClasses({ variant = "primary", size = "default", className
 }
 
 export function Button(props: ButtonAsLink | ButtonAsButton) {
+  // Lien sans destination (champ vide dans le Studio) : pas de bouton.
+  if (props.href === "") return null;
   if (props.href !== undefined) {
     const { variant, size, className, children, href, ...rest } = props;
     const external = /^(https?:|mailto:|tel:)/.test(href);

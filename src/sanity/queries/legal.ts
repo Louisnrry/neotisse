@@ -4,11 +4,10 @@
  * - Confidentialité : une rubrique par section ; dans chaque section, les titres 3 regroupent la liste qui suit.
  * Un lien vers « #cookies » devient le bouton « Gérer mes cookies ».
  */
-import { confidentialitePage as localPrivacy, type PrivacyBlock, type PrivacyInline, type PrivacySection, type PrivacyText } from "@/content/confidentialite";
-import { mentionsLegalesPage as localMentions, type LegalSection, type Paragraph } from "@/content/mentions-legales";
-import { withFallback } from "../lib/fallback";
+import { withDefaults } from "../lib/fallback";
 import { fetchSanity } from "../lib/live";
 import { blockText, blockToInlines, type PortableBlock } from "../lib/portableText";
+import type { LegalParagraph, LegalSection, PrivacyBlock, PrivacyInline, PrivacySection, PrivacyText } from "../types";
 import { SEO, type Seo } from "./fragments";
 
 const MENTIONS_QUERY = `*[_id == "mentionsLegalesPage"][0]{ ${SEO}, title, updatedAt, body }`;
@@ -38,26 +37,41 @@ function slugify(text: string) {
     .slice(0, 60);
 }
 
-type MentionsContent = Omit<typeof localMentions, "seo"> & { seo: Seo };
+export type MentionsContent = {
+  seo: Seo;
+  title: string;
+  updatedAt: string;
+  intro: LegalParagraph;
+  sections: LegalSection[];
+};
 
 export async function getMentionsLegalesPage(): Promise<MentionsContent> {
   const remote = await fetchSanity<{ seo: Seo; title?: string; updatedAt?: string; body?: PortableBlock[] }>(MENTIONS_QUERY);
-  const blocks = blocksOf(remote?.body);
-  let content: { intro?: Paragraph; sections?: LegalSection[] } = {};
-  if (blocks.length) {
-    const intro: Paragraph[] = [];
-    const sections: LegalSection[] = [];
-    for (const b of blocks) {
-      if (b.style === "h2") sections.push({ title: blockText(b), paragraphs: [] });
-      else (sections.at(-1)?.paragraphs ?? intro).push(simplify(richOf(b)) as Paragraph);
-    }
-    // Les paragraphes d’introduction sont réunis en un seul.
-    content = { intro: intro.flatMap((p) => (typeof p === "string" ? [p, " "] : [...p, " "])).slice(0, -1), sections };
+  const intro: LegalParagraph[] = [];
+  const sections: LegalSection[] = [];
+  for (const b of blocksOf(remote?.body)) {
+    if (b.style === "h2") sections.push({ title: blockText(b), paragraphs: [] });
+    else (sections.at(-1)?.paragraphs ?? intro).push(simplify(richOf(b)) as LegalParagraph);
   }
-  return withFallback(remote && { seo: remote.seo, title: remote.title, updatedAt: remote.updatedAt, ...content }, localMentions as MentionsContent);
+  return {
+    seo: remote?.seo ?? null,
+    title: remote?.title ?? "",
+    updatedAt: remote?.updatedAt ?? "",
+    // Les paragraphes d’introduction sont réunis en un seul.
+    intro: intro.flatMap((p, i) => [...(i > 0 ? [" "] : []), ...(typeof p === "string" ? [p] : p)]),
+    sections,
+  };
 }
 
-type PrivacyContent = Omit<typeof localPrivacy, "seo"> & { seo: Seo };
+export type PrivacyContent = {
+  seo: Seo;
+  title: string;
+  intro: string;
+  updatedAt: string;
+  /** Libellé d’interface, non éditable. */
+  tocTitle: string;
+  sections: PrivacySection[];
+};
 
 /** Texte d’une section → paragraphes, listes à puces et intertitres suivis de leur liste. */
 function privacyBlocks(body: PortableBlock[] | null | undefined): PrivacyBlock[] {
@@ -85,5 +99,8 @@ export async function getConfidentialitePage(): Promise<PrivacyContent> {
   const sections: PrivacySection[] = (remote?.sections ?? [])
     .filter((s) => s?.title)
     .map((s) => ({ anchor: s.anchor || slugify(s.title!), title: s.title!, blocks: privacyBlocks(s.body) }));
-  return withFallback(remote && { ...remote, sections }, localPrivacy as PrivacyContent);
+  return withDefaults(
+    { ...remote, sections },
+    { seo: null, title: "", intro: "", updatedAt: "", tocTitle: "Sommaire", sections: [] } as PrivacyContent,
+  );
 }

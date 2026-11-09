@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Fragment, type ReactNode } from "react";
 import { RuledTitle } from "@/components/ui/Typography";
-import type { Paragraph } from "@/content/mentions-legales";
+import type { LegalParagraph as Paragraph } from "@/sanity/types";
 import { formatDate } from "@/lib/dates";
 import { routes } from "@/lib/routes";
 import { pageMetadata } from "@/sanity/lib/metadata";

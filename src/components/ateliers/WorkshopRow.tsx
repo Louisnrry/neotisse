@@ -2,7 +2,7 @@ import Image from "next/image";
 import { PhotoPlaceholder } from "@/components/ui/Media";
 import { Kicker } from "@/components/ui/Typography";
 import { RichText } from "@/components/ui/RichText";
-import type { Workshop } from "@/content/ateliers";
+import type { Workshop } from "@/sanity/types";
 import { cn } from "@/lib/cn";
 
 /**

@@ -1,6 +1,7 @@
 import { cacheLife } from "next/cache";
 import { EventCalendar } from "@/components/calendrier/EventCalendar";
-import { eventTeaser, type NeoEvent } from "@/content/events";
+import { eventTeaser } from "@/lib/events";
+import type { NeoEvent } from "@/sanity/types";
 import { getCalendrierPage } from "@/sanity/queries/calendrier";
 import { getAllEvents, upcomingEvents } from "@/sanity/queries/events";
 import { todayInParis } from "@/lib/dates";

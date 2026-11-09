@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { GuestbookForm } from "@/components/livre-dor/GuestbookForm";
 import { ReviewList } from "@/components/livre-dor/ReviewList";
 import { FormLegal } from "@/components/ui/Field";
 import { Section } from "@/components/ui/Layout";
+import { RichText } from "@/components/ui/RichText";
 import { RuledTitle, ThreadHeading } from "@/components/ui/Typography";
 import { routes } from "@/lib/routes";
 import { pageMetadata } from "@/sanity/lib/metadata";
@@ -26,7 +26,7 @@ export async function generateMetadata(): Promise<Metadata> {
  * « Signer le livre d’or » (64px au-dessus), formulaire, mention RGPD.
  */
 export default async function LivreDorPage() {
-  const [{ title, intro, reviews: list, form, email }, reviews] = await Promise.all([getLivreDorPage(), getReviews()]);
+  const [{ title, intro, reviews: list, form, legal }, reviews] = await Promise.all([getLivreDorPage(), getReviews()]);
   const { average } = reviewStats(reviews);
 
   return (
@@ -48,12 +48,15 @@ export default async function LivreDorPage() {
           <ThreadHeading id="signer-titre">{form.title}</ThreadHeading>
           <GuestbookForm form={form} />
           {/* Toute la largeur de la colonne, comme la V1 (la mise en page WordPress annule les 70ch) */}
-          <FormLegal className="mt-8 max-w-none!">
-            Seuls votre nom, le titre, la note et le texte de votre avis sont publiés, après relecture par l’association.
-            Votre adresse e-mail et votre adresse IP restent confidentielles. Vous pouvez demander la suppression de votre
-            avis à tout moment à <a href={`mailto:${email}`}>{email}</a>.{" "}
-            <Link href={routes.confidentialite}>En savoir plus sur vos données</Link>
-          </FormLegal>
+          {legal.length > 0 && (
+            <div className="mt-8 grid gap-2">
+              {legal.map((p, i) => (
+                <FormLegal key={i} className="max-w-none!">
+                  <RichText value={p} />
+                </FormLegal>
+              ))}
+            </div>
+          )}
         </section>
       </div>
     </Section>

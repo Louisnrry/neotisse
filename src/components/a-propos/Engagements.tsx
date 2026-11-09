@@ -1,6 +1,6 @@
 import { Section } from "@/components/ui/Layout";
 import { ThreadHeading } from "@/components/ui/Typography";
-import type { EngagementTone } from "@/content/a-propos";
+import type { EngagementTone } from "@/sanity/types";
 import { getAProposPage } from "@/sanity/queries/aPropos";
 import { cn } from "@/lib/cn";
 

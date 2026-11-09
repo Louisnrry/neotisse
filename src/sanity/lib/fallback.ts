@@ -1,10 +1,9 @@
 /**
- * Contenus de secours pendant la migration vers Sanity.
+ * Valeurs par défaut des contenus Sanity.
  *
- * Tant qu’un document ou un champ n’est pas rempli dans le Studio, le site affiche
- * la valeur reprise de la V1 (`src/content/*.ts`). Dès qu’il est saisi et publié,
- * la valeur Sanity l’emporte. Une fois la migration terminée, ces valeurs de secours
- * pourront être supprimées.
+ * Le site affiche exactement ce qui est publié dans le Studio. Ces valeurs par défaut
+ * sont **vides** (textes vides, listes vides) : elles servent seulement à garantir la forme
+ * des données, pour qu’un champ non rempli n’empêche pas la page de s’afficher.
  */
 
 type Plain = Record<string, unknown>;
@@ -12,28 +11,21 @@ type Plain = Record<string, unknown>;
 const isPlainObject = (v: unknown): v is Plain =>
   typeof v === "object" && v !== null && !Array.isArray(v);
 
-const isEmpty = (v: unknown) =>
-  v === null || v === undefined || (typeof v === "string" && v.trim() === "") || (Array.isArray(v) && v.length === 0);
-
 /**
- * Fusionne une valeur venue de Sanity avec sa valeur de secours, champ par champ :
- * - objet : fusion récursive ;
- * - tableau : celui de Sanity s’il n’est pas vide, sinon celui de secours ;
- * - texte, nombre, booléen : celui de Sanity s’il est renseigné.
+ * Complète une valeur venue de Sanity avec sa forme par défaut, champ par champ :
+ * un champ absent (`null` / `undefined`) prend la valeur par défaut, les objets sont complétés récursivement.
  */
-export function withFallback<T>(remote: unknown, local: T): T {
-  if (isEmpty(remote)) return local;
-  if (isPlainObject(local) && isPlainObject(remote)) {
-    const out: Plain = { ...local };
+export function withDefaults<T>(remote: unknown, defaults: T): T {
+  if (remote === null || remote === undefined) return defaults;
+  if (isPlainObject(defaults) && isPlainObject(remote)) {
+    const out: Plain = { ...defaults };
     for (const key of Object.keys(remote)) {
-      out[key] = key in local ? withFallback(remote[key], local[key as keyof typeof local]) : remote[key];
+      out[key] = key in defaults ? withDefaults(remote[key], defaults[key as keyof typeof defaults]) : remote[key];
     }
     return out as T;
   }
   return remote as T;
 }
 
-/** Liste Sanity si elle contient au moins un élément, sinon la liste de secours. */
-export function listOr<T>(remote: T[] | null | undefined, local: readonly T[]): T[] {
-  return remote && remote.length > 0 ? remote : [...local];
-}
+/** Lien vide (bouton sans libellé : non affiché par `<Button>`). */
+export const EMPTY_LINK = { label: "", href: "" };

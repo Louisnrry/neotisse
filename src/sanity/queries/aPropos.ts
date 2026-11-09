@@ -1,7 +1,7 @@
-import { aPropos as localPage, type TeamMember } from "@/content/a-propos";
-import { withFallback } from "../lib/fallback";
+import { EMPTY_LINK, withDefaults } from "../lib/fallback";
 import { fetchSanity } from "../lib/live";
 import { blockText, type PortableBlock } from "../lib/portableText";
+import type { ContentImage, EngagementTone, Link, TeamMember } from "../types";
 import { IMAGE, imageOrUndefined, SEO, stripNulls, type SanityImage, type Seo } from "./fragments";
 
 const MEMBER_FIELDS = `{ name, role, bio, photoTone, "photo": photo${IMAGE}, link{ intro, label, href } }`;
@@ -23,46 +23,74 @@ const A_PROPOS_QUERY = `{
   )
 }`;
 
-export type Member = TeamMember & { photo?: SanityImage };
+export type Engagement = { tone: EngagementTone; title: string; tagline: string; text: string };
 
-type RemoteMember = Omit<Member, "bio" | "photo" | "link" | "photoTone"> & {
+export type AProposContent = {
+  seo: Seo;
+  intro: { title: string; subtitle: string; text: string };
+  demarche: { title: string; image?: ContentImage; before: string; pull: string; after: string; conviction: string };
+  engagements: { title: string; intro: string; items: Engagement[] };
+  mediation: { title: string; text: string; image?: ContentImage };
+  team: { title: string; members: TeamMember[] };
+  cta: { title: string; text: string; button: Link };
+};
+
+const EMPTY: Omit<AProposContent, "team" | "demarche" | "mediation"> & {
+  team: { title: string };
+  demarche: Omit<AProposContent["demarche"], "image">;
+  mediation: Omit<AProposContent["mediation"], "image">;
+} = {
+  seo: null,
+  intro: { title: "", subtitle: "", text: "" },
+  demarche: { title: "", before: "", pull: "", after: "", conviction: "" },
+  engagements: { title: "", intro: "", items: [] },
+  mediation: { title: "", text: "" },
+  team: { title: "" },
+  cta: { title: "", text: "", button: EMPTY_LINK },
+};
+
+type RemoteMember = {
+  name?: string;
+  role?: string | null;
   bio?: PortableBlock[] | null;
   photo?: Partial<SanityImage> | null;
   photoTone?: string | null;
   link?: { intro?: string; label?: string; href?: string } | null;
 };
 
-type AProposContent = Omit<typeof localPage, "seo" | "demarche" | "mediation" | "team"> & {
-  seo: Seo;
-  demarche: Omit<(typeof localPage)["demarche"], "image"> & { image: SanityImage };
-  mediation: (typeof localPage)["mediation"] & { image?: SanityImage };
-  team: { title: string; members: Member[] };
-};
+type RemoteSection = ({ image?: Partial<SanityImage> | null } & Record<string, unknown>) | null;
 
-/** Page À propos et équipe (valeurs de la V1 pour les champs vides). */
+/** Page À propos et équipe. */
 export async function getAProposPage(): Promise<AProposContent> {
-  type RemoteSection = { image?: Partial<SanityImage> | null } & Record<string, unknown>;
-  type RemotePage = { demarche?: RemoteSection | null; mediation?: RemoteSection | null } & Record<string, unknown>;
-  const remote = await fetchSanity<{ page: RemotePage | null; members: RemoteMember[] | null }>(A_PROPOS_QUERY);
+  const remote = await fetchSanity<{
+    page: ({ demarche?: RemoteSection; mediation?: RemoteSection; engagements?: Record<string, unknown> | null } & Record<string, unknown>) | null;
+    members: (RemoteMember | null)[] | null;
+  }>(A_PROPOS_QUERY);
   const r = remote?.page;
-  const page = r && {
-    ...r,
-    demarche: r.demarche && { ...r.demarche, image: imageOrUndefined(r.demarche.image) },
-    mediation: r.mediation && { ...r.mediation, image: imageOrUndefined(r.mediation.image) },
-  };
-  const merged = withFallback(page, localPage as unknown as AProposContent);
+  const merged = withDefaults(r, EMPTY);
 
-  const members: Member[] = (remote?.members ?? [])
-    .filter((m) => m?.name)
+  const items = ((r?.engagements?.items as (Partial<Engagement> | null)[] | null) ?? [])
+    .filter((it) => it?.title)
+    .map((it) => withDefaults(it, { tone: "garance" as EngagementTone, title: "", tagline: "", text: "" }));
+
+  const members: TeamMember[] = (remote?.members ?? [])
+    .filter((m): m is RemoteMember & { name: string } => Boolean(m?.name))
     .map(({ bio, photo, photoTone, link, ...m }) =>
       stripNulls({
-        ...m,
+        name: m.name,
+        role: m.role ?? "",
         bio: (bio ?? []).filter((b) => b._type === "block").map(blockText).filter(Boolean),
         photoTone: photoTone === "ink" ? "ink" : "garance",
         photo: imageOrUndefined(photo),
         link: link?.href && link.label ? { intro: link.intro ?? "", label: link.label, href: link.href } : undefined,
-      }) as Member,
+      }) as TeamMember,
     );
 
-  return { ...merged, team: { ...merged.team, members: members.length ? members : merged.team.members } };
+  return {
+    ...merged,
+    demarche: { ...merged.demarche, image: imageOrUndefined(r?.demarche?.image) },
+    mediation: { ...merged.mediation, image: imageOrUndefined(r?.mediation?.image) },
+    engagements: { ...merged.engagements, items },
+    team: { title: merged.team.title, members },
+  };
 }

@@ -1,8 +1,8 @@
-import { ateliers as localAteliers, type Workshop } from "@/content/ateliers";
-import { withFallback } from "../lib/fallback";
+import { EMPTY_LINK, withDefaults } from "../lib/fallback";
 import { fetchSanity } from "../lib/live";
 import { toParagraphs, type PortableBlock } from "../lib/portableText";
-import { IMAGE, imageOrUndefined, SEO, stripNulls, type SanityImage, type Seo } from "./fragments";
+import type { Link, Workshop } from "../types";
+import { IMAGE, imageOrUndefined, SEO, type SanityImage, type Seo } from "./fragments";
 
 const WORKSHOP_FIELDS = `{
   anchor, kicker, title, subtitle, hook, "facts": facts[]{ label, value },
@@ -20,33 +20,46 @@ const ATELIERS_QUERY = `{
   )
 }`;
 
-type RemoteWorkshop = Omit<Workshop, "paragraphs" | "image"> & {
+type RemoteWorkshop = Partial<Omit<Workshop, "paragraphs" | "image">> & {
   paragraphs?: PortableBlock[] | null;
   image?: Partial<SanityImage> | null;
 };
 
-type AteliersContent = Omit<typeof localAteliers, "workshops"> & { workshops: Workshop[]; seo?: Seo };
+export type AteliersContent = {
+  seo: Seo;
+  title: string;
+  intro: string;
+  audience: string;
+  workshops: Workshop[];
+  cta: { title: string; text: string; button: Link };
+};
 
-/**
- * Page Ateliers. Les ateliers saisis dans Sanity remplacent ceux de la V1 (même ancre) ;
- * ceux qui n’y sont pas encore restent affichés à la suite, le temps de la migration.
- */
+const EMPTY_PAGE: Omit<AteliersContent, "workshops"> = {
+  seo: null,
+  title: "",
+  intro: "",
+  audience: "",
+  cta: { title: "", text: "", button: EMPTY_LINK },
+};
+
+const EMPTY_WORKSHOP: Workshop = {
+  anchor: "",
+  kicker: "",
+  title: "",
+  subtitle: "",
+  hook: "",
+  facts: [],
+  paragraphs: [],
+  placeholder: "garance",
+};
+
+/** Page Ateliers et ses ateliers (ceux sans titre ou sans ancre sont ignorés). */
 export async function getAteliersPage(): Promise<AteliersContent> {
-  const remote = await fetchSanity<{ page: Partial<AteliersContent> | null; workshops: RemoteWorkshop[] | null }>(
-    ATELIERS_QUERY,
-  );
-  const fromSanity = (remote?.workshops ?? [])
-    .filter((w) => w?.anchor && w.title)
-    .map(({ paragraphs, image, ...w }) => {
-      const local = localAteliers.workshops.find((l) => l.anchor === w.anchor);
-      return withFallback(
-        stripNulls({ ...w, paragraphs: toParagraphs(paragraphs), image: imageOrUndefined(image) }),
-        (local ?? { placeholder: "garance" }) as Workshop,
-      );
-    });
-  const anchors = new Set(fromSanity.map((w) => w.anchor));
-  const workshops = [...fromSanity, ...localAteliers.workshops.filter((w) => !anchors.has(w.anchor))];
-
-  const page = withFallback(remote?.page, localAteliers as AteliersContent);
-  return { ...page, workshops };
+  const remote = await fetchSanity<{ page: unknown; workshops: (RemoteWorkshop | null)[] | null }>(ATELIERS_QUERY);
+  const workshops = (remote?.workshops ?? [])
+    .filter((w): w is RemoteWorkshop => Boolean(w?.anchor && w.title))
+    .map(({ paragraphs, image, ...w }) =>
+      withDefaults({ ...w, paragraphs: toParagraphs(paragraphs), image: imageOrUndefined(image) }, EMPTY_WORKSHOP),
+    );
+  return { ...withDefaults(remote?.page, EMPTY_PAGE), workshops };
 }

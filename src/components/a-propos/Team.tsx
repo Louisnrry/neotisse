@@ -2,7 +2,8 @@ import { Section } from "@/components/ui/Layout";
 import { PhotoPlaceholder } from "@/components/ui/Media";
 import { RuledTitle } from "@/components/ui/Typography";
 import Image from "next/image";
-import { getAProposPage, type Member as TeamMember } from "@/sanity/queries/aPropos";
+import { getAProposPage } from "@/sanity/queries/aPropos";
+import type { TeamMember } from "@/sanity/types";
 
 /** « Notre équipe » : fond pierre, une ligne par membre (photo 4/5 à 26 %, texte à 74 %). */
 export async function Team() {

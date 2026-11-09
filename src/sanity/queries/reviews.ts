@@ -1,7 +1,6 @@
-import { reviews as localReviews, type Review } from "@/content/reviews";
 import { todayInParis } from "@/lib/dates";
-import { listOr } from "../lib/fallback";
 import { fetchSanity } from "../lib/live";
+import type { Review } from "../types";
 import { stripNulls } from "./fragments";
 
 // Uniquement les champs publics : jamais l’e-mail ni l’IP.
@@ -12,11 +11,12 @@ const REVIEWS_QUERY = `*[_type == "review" && status == "approved"] | order(crea
 /** Avis approuvés, du plus récent au plus ancien. */
 export async function getReviews(): Promise<Review[]> {
   const remote = await fetchSanity<Review[]>(REVIEWS_QUERY);
-  const mapped = remote?.map((r) =>
-    // Date de l’avis à Paris, au format « AAAA-MM-JJ ».
-    stripNulls({ ...r, createdAt: todayInParis(new Date(r.createdAt)) }),
-  );
-  return listOr(mapped, localReviews);
+  return (remote ?? [])
+    .filter((r) => r?.name && r.text && r.createdAt)
+    .map((r) =>
+      // Date de l’avis à Paris, au format « AAAA-MM-JJ ».
+      stripNulls({ ...r, rating: r.rating ?? 5, createdAt: todayInParis(new Date(r.createdAt)) }),
+    );
 }
 
 /** Note moyenne et nombre d’avis. */

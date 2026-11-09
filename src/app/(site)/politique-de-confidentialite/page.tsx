@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Fragment, type ReactNode } from "react";
 import { CookieSettingsInline } from "@/components/confidentialite/CookieSettingsInline";
 import { RuledTitle } from "@/components/ui/Typography";
-import type { PrivacyText } from "@/content/confidentialite";
+import type { PrivacyText } from "@/sanity/types";
 import { formatDate } from "@/lib/dates";
 import { routes } from "@/lib/routes";
 import { pageMetadata } from "@/sanity/lib/metadata";

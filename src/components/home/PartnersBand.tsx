@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { RuledTitle } from "@/components/ui/Typography";
-import type { Partner } from "@/content/partners";
+import type { Partner } from "@/sanity/types";
 import { getHomePage } from "@/sanity/queries/home";
 import { getPartners } from "@/sanity/queries/partners";
 import { routes } from "@/lib/routes";
