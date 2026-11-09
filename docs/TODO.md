@@ -70,13 +70,16 @@
   - Vérifié : `npx sanity schemas validate` (0 erreur), TypeScript et `npm run build` OK, Studio accessible sur `/studio`
 - [ ] Décider du stockage de `review.email` / `review.ip` avant la mise en ligne (dataset public en plan Free)
 - [ ] Ajouter le domaine de production (et l’URL Netlify) dans les CORS Sanity : nécessaire à `<SanityLive />` (plus besoin de webhook de revalidation)
-- [ ] Migrer les contenus de la V1 : textes, 2 événements, 7 partenaires, avis (hors avis de test), 10 questions de FAQ, 2 membres d’équipe
+- [x] **Contenus de la V1 importés dans Sanity** (10/11) avec `scripts/import-v1.ts` : 9 pages, réglages complétés, 5 ateliers (« Expérimentation » ajouté ; les 4 saisis à la main sont gardés tels quels), 2 événements, 7 partenaires avec logos, 10 questions, 2 membres d’équipe, 9 images
+  - Vérifié : `sanity documents validate` (0 erreur), rendu des 9 pages identique avant/après l’import (seul changement : la page Contact affiche le téléphone de la V1)
+- [ ] Avis du livre d’or non importés (avis de test de la V1, sans e-mail) : le site affiche encore ceux de `src/content/reviews.ts` ; décider lesquels garder
+- [ ] Événement « Atelier participatif au musée de Tautavel » : importé avec le texte provisoire de la V1 (lorem ipsum), à remplacer dans le Studio
+- [ ] Description SEO de l’accueil : 164 caractères (texte de la V1), au-delà des 160 conseillés
 - [x] **Site branché sur Sanity** (10/11) : toutes les pages, l’en-tête/pied de page et les métadonnées SEO lisent Sanity (`src/sanity/queries/`), avec repli sur les textes de la V1 tant qu’un champ est vide
   - Mise à jour en direct à la publication (`<SanityLive />`), sans webhook
   - Images Sanity servies par `next/image` (`cdn.sanity.io` autorisé) ; photos de l’équipe et visuel 21/9 d’À propos affichés dès qu’ils sont saisis
   - Vérifié : TypeScript, lint, `npm run build`, `sanity schemas validate` ; rendu inchangé sur toutes les pages (ateliers : photo et textes venus de Sanity)
-- [ ] **Réglages du site dans Sanity : e-mail et téléphone de test** (louisnourry07@gmail.com, 06 40 93 42 70) désormais affichés sur le site (pied de page, Contact) : à corriger dans le Studio
-- [ ] Atelier « Expérimentation archéologique » à saisir dans Sanity (4 ateliers sur 5 y sont)
+- [ ] **Réglages du site dans Sanity : e-mail et téléphone de test** (louisnourry07@gmail.com, 06 40 93 42 70), non écrasés par l’import : l’e-mail s’affiche dans le pied de page et sur Contact, à corriger dans le Studio (le téléphone de Contact vient maintenant de la page Contact)
 - [ ] Supprimer les contenus de secours (`src/content/*.ts`, `withFallback`) une fois la migration terminée
 - [ ] Rendre dynamiques l’e-mail des textes légaux et des mentions sous les formulaires, et les « [À COMPLÉTER] » depuis `siteSettings.legal`
 - [ ] Passer les images de `public/images` dans Sanity

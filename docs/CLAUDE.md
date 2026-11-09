@@ -85,6 +85,8 @@
 - Ordre des listes : celui des références glissées sur la page (Ateliers, Partenaires, Contact → FAQ, À propos → équipe), sinon le champ « Ordre d’affichage ».
 - Téléphone et ville de la page Contact : page Contact, sinon Réglages du site, sinon la V1.
 - Schéma `calendrierPage` adapté au rendu réel : photo « Comment participer », textes en texte enrichi (ils contiennent des liens), titre du calendrier mensuel ; bouton « Comment participer » retiré (absent de la V1).
+- **Import de la V1** : `scripts/import-v1.ts` (`npx sanity exec scripts/import-v1.ts --with-user-token`, `DRY=1` pour simuler). Il utilise la connexion de la CLI Sanity (pas de token à créer) et lit directement `src/content/*.ts`. Il ne remplace jamais ce qui existe : documents absents créés, documents existants complétés champ vide par champ vide. Identifiants fixes (`partner-cerac`, `faq-01`, `team-…`, `event-…`), relançable. Avis non importés.
+- Confidentialité : chaque section a un champ « Ancre » (ancres de la V1 : `#responsable`…) ; à défaut, l’ancre est tirée du titre.
 - Restent en dur : bandeau cookies (`src/content/cookies.ts`, pas de schéma), e-mail cité dans les textes légaux et mentions sous les formulaires.
 
 ---

@@ -35,6 +35,8 @@ Au premier lancement, copier `.env.example` vers `.env.local` et renseigner les 
 | `npm run build` | build de production |
 | `npm run lint` | ESLint |
 | `npx sanity schemas validate` | vérifie les schémas du Studio |
+| `npx sanity documents validate` | vérifie les contenus du dataset |
+| `npx sanity exec scripts/import-v1.ts --with-user-token` | importe les contenus de la V1 sans rien écraser (`DRY=1` devant pour simuler) |
 
 Stack : Next.js 16 (App Router, Cache Components), React 19, TypeScript, Tailwind CSS v4, Sanity (Studio embarqué sur `/studio`). Hébergement prévu : Netlify.
 
