@@ -33,11 +33,14 @@
   - Textes et SEO repris du WordPress (page 13) dans `src/content/partenaires.ts` ; textes alternatifs des logos alignés sur la V1
   - Comparée à la V1 à 1024px (positions identiques à 3–5px près) et à 375px (pas de débordement)
 
+- [x] **Page Contact** (09/11) : coordonnées, formulaire « Écrivez-nous » (validation côté client, champ piège, délai de 2s), FAQ en accordéon (10 questions, `<details>` natif) avec balisage FAQPage
+  - Textes, téléphone et SEO repris du WordPress (page 11) dans `src/content/contact.ts`
+  - Comparée à la V1 à 1024px (positions identiques à quelques pixels près) et à 375px (pas de débordement)
+
 ### À faire (design)
 - [ ] Cartes « À venir », calendrier mensuel et modale événement
-- [ ] FAQ en accordéon (page Contact)
 - [ ] Bandeau de cookies sur mesure (§ 7.5) : le lien « Gérer mes cookies » émet déjà l’événement `neotisse:open-cookie-banner`
-- [ ] Construire les pages : Calendrier, Livre d’or, Contact, Mentions légales, Politique de confidentialité
+- [ ] Construire les pages : Calendrier, Livre d’or, Mentions légales, Politique de confidentialité
 - [ ] Récupérer les textes de chaque page depuis le WordPress (MCP Novamira)
 - [ ] Comparer chaque page avec la V1 à 375, 768 et 1440px
 
@@ -49,7 +52,7 @@
 - [ ] Passer les images de `public/images` dans Sanity
 
 ## Phase 3 : fonctionnalités (plus tard)
-- [ ] Formulaire de contact (route API + e-mail ; choix du service d’envoi à faire)
+- [ ] Formulaire de contact : brancher `ContactForm` sur une route API (e-mail, validation serveur) ; aujourd’hui la confirmation s’affiche sans rien envoyer
 - [ ] Livre d’or : soumission, modération dans Sanity, 5 avis par 5
 - [ ] Anti-spam : honeypot + délai minimal (limite par IP : à décider)
 - [ ] Statistiques (GA4 ou autre : à décider) chargées uniquement après consentement
@@ -61,6 +64,8 @@
 - [ ] Mentions légales complètes (siège, RNA, téléphone, SIRET bLaNk, hébergeur Netlify)
 
 ## Questions ouvertes
+- Contact : le téléphone (06 48 65 58 16, Marie-Salomé) est affiché sur la V1 mais absent de `siteSettings` (CLAUDE.md § 8 ne prévoit que `legal.phone`) : à ajouter au schéma
+- Contact : le texte d’intro est à 1.1rem fixe, la V1 le rend « fluide » (plus petit sur mobile)
 - Photos des ateliers démonstratifs, enfants, conférences et expérimentation : à fournir (cadres provisoires, seule la photo de l'atelier participatif existe)
 - Logo et burger couleur encre peu lisibles sur la photo du héro tant que l’en-tête est transparent (comme sur la V1) : passer en crème à l’arrivée ?
 - Avis de test du WordPress (« pyramide », « INCROYABLE »…) : lesquels garder à la migration ?

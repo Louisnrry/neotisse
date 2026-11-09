@@ -63,6 +63,8 @@
 - WordPress ajoute 1.2rem d’espace entre les grandes sections de la page À propos : reproduit entre sections blanches, **mais pas** la bande blanche qu’il laisse entre « Notre équipe » (pierre) et « Travaillons ensemble » (garance), qui ressemble à un défaut.
 - Partenaires (V1, page 13) : le bloc « Devenir l’un de nos partenaires ? » est sur fond **pierre** (titre à fil rouge à gauche, texte centré, bouton plein), pas rouge. Le logo des cartes est posé directement sur la toile de lin (la pastille blanche du § 6.4 est annulée sur la V1). Les noms liés sont soulignés, en garance.
 
+- Contact (V1, page 11) : le H1 « Contact » est à **fil rouge** (aligné à gauche), pas à filets. La colonne gauche liste les coordonnées en tableau (E-mail, **Téléphone 06 48 65 58 16 – Marie-Salomé Perrichon**, Basées à Montpellier, Suivez-nous) puis le bouton contour fin « Lire et laisser un avis dans notre livre d’or ». La FAQ n’est **pas** sur 2 colonnes de questions : photo 4/5 + texte d’intro à gauche (36 %), les 10 questions en une colonne à droite (64 %). Libellés obligatoires avec un astérisque garance.
+
 ### Contenus provisoires
 
 Tant que Sanity n’existe pas, les contenus sont dans `src/content/*.ts` (repris de la V1), chacun marqué `TODO(sanity)`. Les composants n’y accèdent que par ces modules : il suffira de remplacer les fonctions (`getNextEvent`, `getLatestReviews`…) par des requêtes GROQ.

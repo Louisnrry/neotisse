@@ -22,6 +22,8 @@ Aperçu de tous les éléments : page **`/styleguide`** (non indexée).
 | Cadre photo provisoire, carte à filet rouge, étoiles | `src/components/ui/Media.tsx` |
 | Sections de l'accueil, intro animée | `src/components/home/*` (voir § 9 bis) |
 | Page Partenaires (carte partenaire) | `src/components/partenaires/PartnerCard.tsx` (voir § 9 quinquies) |
+| Page Contact (coordonnées, formulaire, FAQ) | `src/components/contact/*` (voir § 9 sexies) |
+| Icônes Instagram et Facebook | `src/components/ui/SocialIcons.tsx` (pied de page, page Contact) |
 | Page Ateliers (ligne d'atelier) | `src/components/ateliers/WorkshopRow.tsx` (voir § 9 ter) |
 | Styles de l'intro, du héro et du bandeau défilant | `src/app/globals.css` (`@layer components`) |
 | Champs de formulaire, case à cocher, message, mention RGPD | `src/components/ui/Field.tsx` |
@@ -134,6 +136,7 @@ Point de rupture spécifique : **`nav:` = 960px**, passage au menu burger.
 |---|---|---|
 | `primary` (défaut) | fond garance, texte crème | fond garance-dark |
 | `outline` | bordure 2px encre, texte encre | fond encre, texte blanc |
+| `outline-thin` | bordure **1px** encre, texte encre (« Lire et laisser un avis… » de la page Contact, comme la V1) | fond encre, texte blanc |
 | `outline-garance` | bordure 1px garance, texte garance | fond garance, texte blanc |
 | `on-red` | fond crème, texte garance-dark (sur fond rouge) | fond encre, texte blanc |
 | `on-ink` | fond crème, texte garance-dark (sur fond encre : pied de page, menu mobile) | **fond garance, texte crème** (un survol encre serait invisible sur fond encre) |
@@ -156,6 +159,7 @@ Quicksand 600, angles droits, transitions 0.2s. `href` interne → `next/link`, 
 - Deux colonnes Nom / Prénom au-dessus de 640px, une seule en dessous.
 - Message de retour : bordure gauche 4px (encre + `succes-bg` pour un succès ; garance + `alerte-bg` pour une erreur).
 - Mention RGPD (`<FormLegal>`) : 0.85rem, gris, liens garance.
+- Champ obligatoire : astérisque garance après le libellé (`aria-hidden`, l'obligation est portée par `required`).
 
 ---
 
@@ -233,6 +237,16 @@ Textes dans `src/content/partenaires.ts`, cartes depuis `src/content/partners.ts
 | Grille | 1.2rem sous l'en-tête, padding 32px / 112px, contenu 1240px. Colonnes `repeat(auto-fill, minmax(16rem, 1fr))`, écart 28px (4 colonnes à 1440px, 3 à 1024px, 1 sur mobile). |
 | Carte (`PartnerCard`) | Fond blanc, bordure 1px `filet` → `garance` au survol (et au focus du lien). Zone logo 170px sur toile de lin (`bg-lin`), filet garance 3px en bas, logo centré 104px de haut max, 80 % de large max, **sans pastille blanche** (comme la V1). Nom en H3 1.5rem interligne 1.15, padding 20px 22px ; lien vers le site (nouvel onglet, souligné, garance) s'il existe. Description interligne 1.6, padding 8px 22px 24px. Sans description, le H3 prend 24px en bas. |
 | Devenir partenaire | Fond **pierre**, colonne de 760px, padding 96px, écart 28px : H2 à fil rouge à gauche, texte centré `text-lead`, bouton plein centré. |
+
+## 9 sexies. Contact (`/contact-organiser-un-atelier/`)
+
+Textes dans `src/content/contact.ts` (provisoire, en attendant Sanity), espaces insécables avant « ? » et « : ». Comparée à la V1 à 1024px (positions identiques à quelques pixels près) et à 375px (pas de débordement).
+
+| Bloc | Composant | Détails |
+|---|---|---|
+| Coordonnées + formulaire | `page.tsx`, `ContactDetails.tsx` | Padding 80px / 112px. Grille 45 % / 55 %, écart 112px (une colonne sous **782px**, écart 56px). À gauche : H1 **à fil rouge** (pas à filets, comme la V1) `clamp(3rem,6vw,4.6rem)` interligne 1, texte 1.1rem (28px au-dessus, 40px dessous), liste de coordonnées (`<dl>`, filet encre en haut, lignes à filet `filet`, padding 18px, colonnes 130px / reste, une seule sous 521px ; libellés en petites capitales grises 0.78rem ; téléphone en 600 chiffres tabulaires + nom en gris ; Instagram et Facebook icône 24px + libellé, empilés), puis bouton `outline-thin` vers le livre d'or (32px au-dessus). À droite : H2 « Écrivez-nous » `clamp(1.6rem,2.4vw,2rem)` (28px dessous), formulaire, mention RGPD 1.2rem dessous. |
+| Formulaire | `ContactForm.tsx` | Écart 20px. Nom / Prénom sur 2 colonnes (une sous 521px), e-mail, objet, projet, bouton `large` « Envoyer ». Validation côté client au clic (focus sur le premier champ en erreur), champ piège + délai de 2s. Pour l'instant un envoi valide affiche directement « Merci, votre message est bien parti ! » (route API en phase 3). |
+| FAQ | `Faq.tsx` | 1.2rem sous la section précédente, padding 96px / 112px, écart 40px. Titre à filets, puis grille 36 % / 64 %, écart 80px (une colonne sous 782px) : photo 4/5 (`hero-tissage.jpg`) + texte d'intro à gauche ; accordéon `<details>` natif à droite : question Cormorant 700 1.35rem, padding 20px 44px 20px 0, « + » en deux traits garance 16×2px qui devient « − » (0.25s), question ouverte ou survolée en garance, filet encre au-dessus de la première, filets `filet` entre les autres ; réponse interligne 1.7, 64ch max. Balisage JSON-LD `FAQPage`. |
 
 ## 10. Accessibilité et mouvement
 

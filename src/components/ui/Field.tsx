@@ -6,7 +6,7 @@ const control =
 
 type FieldShellProps = {
   id: string;
-  label: string;
+  label: ReactNode;
   error?: string;
   hint?: ReactNode;
   className?: string;
@@ -101,6 +101,8 @@ export function FormMessage({ tone, children }: { tone: "ok" | "error"; children
 }
 
 /** Mention RGPD sous un formulaire. */
-export function FormLegal({ children }: { children: ReactNode }) {
-  return <p className="max-w-[70ch] text-small leading-[1.6] text-gris [&_a]:underline-offset-[3px]">{children}</p>;
+export function FormLegal({ className, children }: { className?: string; children: ReactNode }) {
+  return (
+    <p className={cn("max-w-[70ch] text-small leading-[1.6] text-gris [&_a]:underline-offset-[3px]", className)}>{children}</p>
+  );
 }

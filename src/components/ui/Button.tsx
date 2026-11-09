@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { ComponentProps, ReactNode } from "react";
 import { cn } from "@/lib/cn";
 
-type Variant = "primary" | "outline" | "outline-garance" | "on-red" | "on-ink";
+type Variant = "primary" | "outline" | "outline-thin" | "outline-garance" | "on-red" | "on-ink";
 type Size = "default" | "compact" | "large";
 
 const base =
@@ -13,6 +13,8 @@ const variants: Record<Variant, string> = {
   primary: "bg-garance text-creme hover:bg-garance-dark hover:text-creme",
   // Contour encre, survol fond encre
   outline: "border-2 border-ink text-ink hover:bg-ink hover:text-blanc",
+  // Contour encre fin (1px), survol fond encre (« Lire et laisser un avis… » de la page Contact)
+  "outline-thin": "border border-ink text-ink hover:bg-ink hover:text-blanc",
   // Contour garance, se remplit au survol (« Plus d’avis », « Refuser »)
   "outline-garance": "border border-garance text-garance hover:bg-garance hover:text-blanc",
   // Sur fond rouge : fond crème, texte garance foncé, survol encre
