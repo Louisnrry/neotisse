@@ -40,4 +40,6 @@ Au premier lancement, copier `.env.example` vers `.env.local` et renseigner les 
 
 Stack : Next.js 16 (App Router, Cache Components), React 19, TypeScript, Tailwind CSS v4, Sanity (Studio embarqué sur `/studio`). Hébergement prévu : Netlify.
 
-Contenu : les pages lisent Sanity via `src/sanity/queries/` ; une publication dans le Studio met le site à jour en quelques secondes (`<SanityLive />`). Les champs encore vides affichent les textes de la V1 (`src/content/`).
+Contenu : les pages lisent Sanity via `src/sanity/queries/` ; une publication dans le Studio met le site à jour en quelques secondes (`<SanityLive />`). Le site affiche exactement ce qui est publié : un champ vide n’affiche rien.
+
+Livre d’or : les avis envoyés arrivent dans Studio → Avis → À modérer. Il faut `SANITY_API_WRITE_TOKEN` (token Sanity, rôle Editor) dans `.env.local` et sur Netlify.

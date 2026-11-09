@@ -1,7 +1,7 @@
 # TODO — Néotisse V2
 
 > À tenir à jour pendant le travail : cocher ce qui est fait, ajouter ce qui est découvert.
-> Dernière mise à jour : 10/11/2026.
+> Dernière mise à jour : 09/11/2026.
 
 ## Phase 1 : design (en cours)
 
@@ -68,20 +68,25 @@
   - Singletons protégés (pas de doublon, pas de suppression accidentelle)
   - `.env.example` ajouté ; `.env.local` ignoré par git
   - Vérifié : `npx sanity schemas validate` (0 erreur), TypeScript et `npm run build` OK, Studio accessible sur `/studio`
-- [ ] Décider du stockage de `review.email` / `review.ip` avant la mise en ligne (dataset public en plan Free)
+- [x] Stockage de `review.email` / `review.ip` : gardés malgré le dataset public, avec information des visiteurs (décision de Louis du 09/11)
 - [ ] Ajouter le domaine de production (et l’URL Netlify) dans les CORS Sanity : nécessaire à `<SanityLive />` (plus besoin de webhook de revalidation)
-- [x] **Contenus de la V1 importés dans Sanity** (10/11) avec `scripts/import-v1.ts` : 9 pages, réglages complétés, 5 ateliers (« Expérimentation » ajouté ; les 4 saisis à la main sont gardés tels quels), 2 événements, 7 partenaires avec logos, 10 questions, 2 membres d’équipe, 9 images
+- [x] **Contenus de la V1 importés dans Sanity** (09/11) avec `scripts/import-v1.ts` : 9 pages, réglages complétés, 5 ateliers (« Expérimentation » ajouté ; les 4 saisis à la main sont gardés tels quels), 2 événements, 7 partenaires avec logos, 10 questions, 2 membres d’équipe, 9 images
   - Vérifié : `sanity documents validate` (0 erreur), rendu des 9 pages identique avant/après l’import (seul changement : la page Contact affiche le téléphone de la V1)
-- [ ] Avis du livre d’or non importés (avis de test de la V1, sans e-mail) : le site affiche encore ceux de `src/content/reviews.ts` ; décider lesquels garder
+- [x] **Avis de la V1 dans Sanity** (09/11) : les 6 avis repris du WordPress (nom, e-mail, note, date), en « Publiés » ; à trier dans le Studio (ce sont surtout des avis de test)
 - [ ] Événement « Atelier participatif au musée de Tautavel » : importé avec le texte provisoire de la V1 (lorem ipsum), à remplacer dans le Studio
 - [ ] Description SEO de l’accueil : 164 caractères (texte de la V1), au-delà des 160 conseillés
-- [x] **Site branché sur Sanity** (10/11) : toutes les pages, l’en-tête/pied de page et les métadonnées SEO lisent Sanity (`src/sanity/queries/`), avec repli sur les textes de la V1 tant qu’un champ est vide
+- [x] **Site branché sur Sanity** (09/11) : toutes les pages, l’en-tête/pied de page et les métadonnées SEO lisent Sanity (`src/sanity/queries/`), avec repli sur les textes de la V1 tant qu’un champ est vide
   - Mise à jour en direct à la publication (`<SanityLive />`), sans webhook
   - Images Sanity servies par `next/image` (`cdn.sanity.io` autorisé) ; photos de l’équipe et visuel 21/9 d’À propos affichés dès qu’ils sont saisis
   - Vérifié : TypeScript, lint, `npm run build`, `sanity schemas validate` ; rendu inchangé sur toutes les pages (ateliers : photo et textes venus de Sanity)
 - [ ] **Réglages du site dans Sanity : e-mail et téléphone de test** (louisnourry07@gmail.com, 06 40 93 42 70), non écrasés par l’import : l’e-mail s’affiche dans le pied de page et sur Contact, à corriger dans le Studio (le téléphone de Contact vient maintenant de la page Contact)
-- [ ] Supprimer les contenus de secours (`src/content/*.ts`, `withFallback`) une fois la migration terminée
-- [ ] Rendre dynamiques l’e-mail des textes légaux et des mentions sous les formulaires, et les « [À COMPLÉTER] » depuis `siteSettings.legal`
+- [x] **Le site n’affiche plus que le Studio** (09/11) : contenus de secours et `src/content/` supprimés ; champ vide = rien d’affiché, bouton sans destination masqué, photo absente = cadre provisoire
+- [x] **Bandeau cookies et mentions sous les formulaires éditables** (09/11) : document « Bandeau cookies », champ « Mention sous le formulaire » sur Contact et Livre d’or
+- [x] **Formulaire du livre d’or branché** (09/11) : route `POST /api/livre-dor/`, avis créé « À modérer » avec e-mail et IP ; politique de confidentialité, mentions légales et mention sous le formulaire mises à jour (données techniquement lisibles via l’API)
+  - Vérifié sans token : validation, champ piège, délai, JSON invalide, message d’erreur dans le formulaire
+- [ ] **Créer le token d’écriture** (sanity.io/manage → API → Tokens, rôle Editor), le mettre dans `.env.local` (`SANITY_API_WRITE_TOKEN`) puis tester un vrai envoi et sa modération ; le mettre aussi dans les variables d’environnement Netlify
+- [ ] Limite de 5 avis par IP et par heure : compteur en mémoire, remis à zéro à chaque démarrage de fonction sur Netlify (protection partielle)
+- [ ] Champs encore inutilisés de « Réglages du site » : `legal` (siège, RNA, SIRET), `contactRecipient`, `gaMeasurementId`, `logo` ; les « [À COMPLÉTER] » se corrigent directement dans le texte des pages légales
 - [ ] Passer les images de `public/images` dans Sanity
 - [ ] Faire relire le Studio par l’association (libellés, aide, parcours de la cliente)
 

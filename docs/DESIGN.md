@@ -188,7 +188,7 @@ Quicksand 600, angles droits, transitions 0.2s. `href` interne → `next/link`, 
 
 ## 9 bis. Accueil (`src/components/home/`)
 
-Textes dans `src/content/home.ts` (provisoire, en attendant Sanity). Mesures prises sur la V1 à 1440px ; les hauteurs de section de la V2 sont à quelques pixels près (héro 900, partenaires 462, univers 899, événement 895, ateliers 1200, avis 650, contact 473).
+Textes dans Sanity (repris de la V1). Mesures prises sur la V1 à 1440px ; les hauteurs de section de la V2 sont à quelques pixels près (héro 900, partenaires 462, univers 899, événement 895, ateliers 1200, avis 650, contact 473).
 
 | Section | Composant | Détails |
 |---|---|---|
@@ -205,7 +205,7 @@ Textes dans `src/content/home.ts` (provisoire, en attendant Sanity). Mesures pri
 
 ## 9 ter. Ateliers (`/ateliers-tissage-teinture/`)
 
-Textes dans `src/content/ateliers.ts` (provisoire, en attendant Sanity). Page comparée à la V1 à 1440px : positions identiques au pixel pour l'en-tête et les 4 premiers ateliers ; à 375px, pas de débordement.
+Textes dans Sanity (repris de la V1). Page comparée à la V1 à 1440px : positions identiques au pixel pour l'en-tête et les 4 premiers ateliers ; à 375px, pas de débordement.
 
 | Bloc | Détails |
 |---|---|
@@ -218,7 +218,7 @@ Textes dans `src/content/ateliers.ts` (provisoire, en attendant Sanity). Page co
 
 ## 9 quater. À propos (`src/components/a-propos/`)
 
-Textes dans `src/content/a-propos.ts` (provisoire, en attendant Sanity). Comparée à la V1 à 1024 et 375px : positions identiques. Les sections blanches sont séparées de 1.2rem comme sur la V1.
+Textes dans Sanity (repris de la V1). Comparée à la V1 à 1024 et 375px : positions identiques. Les sections blanches sont séparées de 1.2rem comme sur la V1.
 
 | Section | Composant | Détails |
 |---|---|---|
@@ -233,7 +233,7 @@ Textes dans `src/content/a-propos.ts` (provisoire, en attendant Sanity). Compar�
 
 ## 9 quinquies. Partenaires (`/partenaires/`)
 
-Textes dans `src/content/partenaires.ts`, cartes depuis `src/content/partners.ts` (provisoire, en attendant Sanity). Comparée à la V1 à 1024px (positions identiques à 3–5px près) et à 375px.
+Textes dans Sanity (repris de la V1). Comparée à la V1 à 1024px (positions identiques à 3–5px près) et à 375px.
 
 | Bloc | Détails |
 |---|---|
@@ -244,7 +244,7 @@ Textes dans `src/content/partenaires.ts`, cartes depuis `src/content/partners.ts
 
 ## 9 sexies. Contact (`/contact-organiser-un-atelier/`)
 
-Textes dans `src/content/contact.ts` (provisoire, en attendant Sanity), espaces insécables avant « ? » et « : ». Comparée à la V1 à 1024px et 1440px (positions mesurées identiques à 4px près) et à 375px (pas de débordement).
+Textes dans Sanity (repris de la V1), espaces insécables avant « ? » et « : ». Comparée à la V1 à 1024px et 1440px (positions mesurées identiques à 4px près) et à 375px (pas de débordement).
 
 | Bloc | Composant | Détails |
 |---|---|---|
@@ -254,7 +254,7 @@ Textes dans `src/content/contact.ts` (provisoire, en attendant Sanity), espaces 
 
 ## 9 septies. Livre d’or (`/livre-dor/`)
 
-Textes dans `src/content/livre-dor.ts`, avis dans `src/content/reviews.ts` (provisoire, en attendant Sanity). Comparée à la V1 à 1440px (en-tête, titre et note moyenne aux mêmes positions au pixel) et à 375px (pas de débordement).
+Textes dans Sanity (repris de la V1). Comparée à la V1 à 1440px (en-tête, titre et note moyenne aux mêmes positions au pixel) et à 375px (pas de débordement).
 
 | Bloc | Composant | Détails |
 |---|---|---|
@@ -264,7 +264,7 @@ Textes dans `src/content/livre-dor.ts`, avis dans `src/content/reviews.ts` (prov
 
 ## 9 octies. Politique de confidentialité (`/politique-de-confidentialite/`)
 
-Textes dans `src/content/confidentialite.ts` (provisoire, en attendant Sanity). Comparée à la V1 à 1024px (positions identiques à 1px près) et à 375px (pas de débordement).
+Textes dans Sanity (repris de la V1). Comparée à la V1 à 1024px (positions identiques à 1px près) et à 375px (pas de débordement).
 
 | Bloc | Détails |
 |---|---|
@@ -276,7 +276,7 @@ Textes dans `src/content/confidentialite.ts` (provisoire, en attendant Sanity). 
 
 ## 9 octies. Bandeau cookies (« Gérer mes cookies »)
 
-Copie du bandeau **Complianz de la V1** (mêmes textes, mêmes mesures : hauteurs identiques au pixel à 1440px, vue simple 242px, vue « Personnaliser » 349px). Textes dans `src/content/cookies.ts`. Affiché sur toutes les pages tant qu’aucun choix n’est enregistré ; le lien « Gérer mes cookies » du pied de page le rouvre et met le focus sur « Accepter ».
+Copie du bandeau **Complianz de la V1** (mêmes textes, mêmes mesures : hauteurs identiques au pixel à 1440px, vue simple 242px, vue « Personnaliser » 349px). Textes dans Sanity (document « Bandeau cookies »). Affiché sur toutes les pages tant qu’aucun choix n’est enregistré ; le lien « Gérer mes cookies » du pied de page le rouvre et met le focus sur « Accepter ».
 
 | Élément | Détails |
 |---|---|
@@ -290,7 +290,7 @@ Copie du bandeau **Complianz de la V1** (mêmes textes, mêmes mesures : hauteur
 
 ## 9 octies. Calendrier (`/calendrier-des-ateliers/`)
 
-Textes dans `src/content/calendrier.ts`, événements dans `src/content/events.ts` (provisoire, en attendant Sanity). Reprend `templates/agenda.html`, `a-venir.html` et `assets/js/calendrier.js` de l’extension `neotisse-core`. Comparée à la V1 à 1024px (positions identiques au pixel jusqu’au bas du calendrier) et à 375px (identique, pas de débordement).
+Textes dans Sanity (repris de la V1). Reprend `templates/agenda.html`, `a-venir.html` et `assets/js/calendrier.js` de l’extension `neotisse-core`. Comparée à la V1 à 1024px (positions identiques au pixel jusqu’au bas du calendrier) et à 375px (identique, pas de débordement).
 
 | Bloc | Composant | Détails |
 |---|---|---|
