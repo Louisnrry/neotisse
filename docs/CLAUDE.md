@@ -68,6 +68,8 @@
 
 - Livre d’or (V1, page 126) : une seule colonne de 860px (padding 72px / 112px, écart 28px). Les H2 « Ils nous ont laissé un mot » et « Signer le livre d’or » sont à **fil rouge** alignés à gauche (pas à filets). La carte du formulaire a son propre titre « Laisser un avis ». Champs : Nom, Adresse e-mail (2 colonnes, une sous 561px), Titre de votre avis, Votre note, Votre avis, « Je confirme ne pas être un robot. ». Sur la V1, le CSS de l’extension WP Customer Reviews écrase une partie du style voulu dans `neotisse-core` (titres d’avis en 13,6px, date en italique, double séparateur entre avis) : la V2 reproduit ce rendu **à l’identique** (décision de Louis du 09/11/2026 : titre Cormorant 0.8em, date et auteur en italique, double séparateur filet + pointillés, étoiles sprite de l’extension). Écarts assumés : astérisques sur les champs obligatoires (comme Contact) et confirmation en ligne au lieu de l’alerte en anglais de l’extension.
 
+- Mentions légales (V1, page 197) : en-tête dans une colonne de 860px (H1 à filets, date « Dernière mise à jour » centrée en 0.95rem), corps dans une colonne de 760px, intertitres H2 en `clamp(1.5rem, 2.4vw, 1.9rem)` à 48px au-dessus. Écarts de contenu voulus : hébergeur **Netlify, Inc.** (la V1 cite OVH), directrice « Marie-Salomé Perrichon » et téléphone renseignés. Les champs encore inconnus restent affichés en « [À COMPLÉTER : …] » comme sur la V1.
+
 ### Contenus provisoires
 
 Tant que le site n’est pas branché sur Sanity, les contenus sont dans `src/content/*.ts` (repris de la V1), chacun marqué `TODO(sanity)`. Les composants n’y accèdent que par ces modules : il suffira de remplacer les fonctions (`getNextEvent`, `getLatestReviews`…) par des requêtes GROQ.

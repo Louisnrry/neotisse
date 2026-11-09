@@ -41,10 +41,14 @@
   - Textes et SEO repris du WordPress (page 126) dans `src/content/livre-dor.ts`
   - Comparée à la V1 à 1440px et à 375px (pas de débordement)
 
+- [x] **Page Mentions légales** (09/11) : en-tête (H1 à filets + date de mise à jour), 7 rubriques en colonne de 760px, `noindex, follow`
+  - Textes repris du WordPress (page 197) dans `src/content/mentions-legales.ts`, mis à jour pour la V2 : directrice Marie-Salomé Perrichon, téléphone, hébergeur **Netlify** (au lieu d’OVH)
+  - Comparée à la V1 à 1440px (positions identiques au pixel) et à 375px (pas de débordement)
+
 ### À faire (design)
 - [ ] Cartes « À venir », calendrier mensuel et modale événement
 - [ ] Bandeau de cookies sur mesure (§ 7.5) : le lien « Gérer mes cookies » émet déjà l’événement `neotisse:open-cookie-banner`
-- [ ] Construire les pages : Calendrier, Mentions légales, Politique de confidentialité
+- [ ] Construire les pages : Calendrier, Politique de confidentialité
 - [ ] Récupérer les textes de chaque page depuis le WordPress (MCP Novamira)
 - [ ] Comparer chaque page avec la V1 à 375, 768 et 1440px
 
@@ -74,7 +78,7 @@
 ## Phase 4 : mise en ligne (plus tard)
 - [ ] Déploiement sur Netlify
 - [ ] Achat du domaine
-- [ ] Mentions légales complètes (siège, RNA, téléphone, SIRET bLaNk, hébergeur Netlify)
+- [ ] Mentions légales complètes : siège, RNA, fonction de Marie-Salomé, SIRET / adresse / TVA de bLaNk (encore « [À COMPLÉTER] » sur la page) ; vérifier l’adresse de Netlify au moment du déploiement
 
 ## Questions ouvertes
 - Contact : le téléphone (06 48 65 58 16, Marie-Salomé) est affiché sur la V1 mais absent de `siteSettings` (CLAUDE.md § 8 ne prévoit que `legal.phone`) : à ajouter au schéma
