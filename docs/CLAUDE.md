@@ -59,6 +59,9 @@
 - Ateliers : chaque atelier a, en plus de CLAUDE.md § 6.2, une accroche et 3 **repères** (Format, Pour qui…) ; mise en page en lignes alternées 40/60 (pas de cartes) ; le bloc rouge final a son titre aligné à gauche. Le gras dans les textes est en 400 (gras relatif sur un corps en 300).
 - Intro animée : **jouée à chaque visite de l’accueil**, comme la V1 (décision de Louis du 09/11/2026 ; ce fichier disait « une fois par session »). Y compris en revenant sur l’accueil par un lien interne.
 
+- À propos (V1, page 19) : pas de citation isolée. L’ordre réel est : en-tête (H1 à filets, sous-titre, texte) ; « Notre démarche… » (photo 4/5 + texte avec la phrase en exergue « C’est de ce constat qu’est née Néotisse. ») ; « Nos engagements… » (3 cartes, décalages de 48 et 96px seulement à partir de 900px) ; « Une médiation… par le geste et la matière » (visuel 21/9 et encart blanc qui le chevauche, avec une ombre douce) ; « Notre équipe » (fond pierre, rôle « Co-créatrice de Néotisse » pour les deux) ; « Travaillons ensemble » (fond garance). Les titres à fil rouge y sont alignés à gauche.
+- WordPress ajoute 1.2rem d’espace entre les grandes sections de la page À propos : reproduit entre sections blanches, **mais pas** la bande blanche qu’il laisse entre « Notre équipe » (pierre) et « Travaillons ensemble » (garance), qui ressemble à un défaut.
+
 ### Contenus provisoires
 
 Tant que Sanity n’existe pas, les contenus sont dans `src/content/*.ts` (repris de la V1), chacun marqué `TODO(sanity)`. Les composants n’y accèdent que par ces modules : il suffira de remplacer les fonctions (`getNextEvent`, `getLatestReviews`…) par des requêtes GROQ.
@@ -262,6 +265,7 @@ Règles générales :
 - « Nos engagements… » : 3 cartes décalées verticalement : **L’originalité** (fond `garance`, texte crème), **La rigueur scientifique** (bordure 2px `garance`, décalée de 48px), **La flexibilité** (fond `ink`, décalée de 96px).
 - Citation en grand italique `garance`.
 - « Notre équipe » : 2 membres, **Émilie Roma Sert** et **Marie-Salomé Perrichon** (photo, nom, rôle, bio, lien).
+- Agencement réel de la V1 (ordre, encart chevauchant, phrase en exergue) : voir § 0 « Écarts constatés ». Implémenté dans `src/components/a-propos/`.
 - « Travaillons ensemble » + « Prenez contact ».
 
 ### 6.7 Contact

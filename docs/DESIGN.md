@@ -75,6 +75,10 @@ Les deux polices sont des **fichiers variables** (axe de graisse 300–700), sou
 | `text-hero` | `clamp(4rem, 11vw, 8.5rem)` | « Néotisse » du héro (interligne 0.95) |
 | `text-intro` | `clamp(4.5rem, 18vw, 19rem)` | Mot coupé de l'intro animée |
 | `text-event-date` | `clamp(2.2rem, 4.5vw, 3.4rem)` | Grande date du prochain événement |
+| `text-lead` | `clamp(0.875rem, …, 1.2rem)` | Textes d’introduction centrés (V1 : 1.2rem rendu « fluide » par WordPress) |
+| `text-tagline` | `clamp(0.875rem, …, 1.3rem)` | Accroches italiques des cartes engagements, rôle des membres |
+| `text-subtitle-lg` | `clamp(1.198rem, …, 1.9rem)` | Sous-titre de l’en-tête À propos |
+| `text-pull` | `clamp(1.6rem, 2.6vw, 2.1rem)` | Phrase en exergue (Cormorant italique 700 garance) |
 | `text-kicker` | `0.78rem` | Surtitres et petites capitales |
 | `text-small` | `0.85rem` | Labels, mentions sous formulaires |
 | `text-legal` | `0.88rem` | Ligne basse du pied de page |
@@ -200,6 +204,21 @@ Textes dans `src/content/ateliers.ts` (provisoire, en attendant Sanity). Page co
 | Ligne d'atelier (`WorkshopRow`) | Grille 40 % visuel / 60 % texte, écart 88px, padding vertical `clamp(48px,7vw,96px)`, filet `filet` en bas (sauf la dernière). Une ligne sur deux inversée (60/40, visuel à droite). Sous **782px** : une colonne, écart 50px, visuel toujours au-dessus. Visuel 4/5 (photo ou aplat garance / garance-dark / ink). |
 | Texte d'un atelier | Surtitre (`Kicker`), H2 8px dessous (ancre `id`), sous-titre Cormorant italique 600 garance 1.5rem, accroche 1.22rem 500 interligne 1.55, puis **repères** (`<dl>`, max 600px, filet encre en haut, lignes `filet` en bas, padding 10px, colonnes 150px / reste, une seule colonne sous 521px, libellé garance en 400) et paragraphes interligne 1.75 ; écart de 1.2rem entre blocs. Le gras des paragraphes est en **400** (gras relatif sur un corps en 300, comme la V1). |
 | Bloc final | Fond garance, padding 96px, colonne de 760px, écart 28px : H2 à fil crème **aligné à gauche**, texte centré 1.2rem, bouton `on-red` centré (comme la V1). |
+
+---
+
+## 9 quater. À propos (`src/components/a-propos/`)
+
+Textes dans `src/content/a-propos.ts` (provisoire, en attendant Sanity). Comparée à la V1 à 1024 et 375px : positions identiques. Les sections blanches sont séparées de 1.2rem comme sur la V1.
+
+| Section | Composant | Détails |
+|---|---|---|
+| En-tête | `AboutIntro.tsx` | Colonne de 860px, padding 72px / 40px, écart 20px : H1 à filets, sous-titre Cormorant italique 600 garance `text-subtitle-lg`, texte centré `text-lead`. |
+| Notre démarche | `Demarche.tsx` | Padding 48px / 96px. Grille 42 % / 58 %, écart 88px (30px une fois empilée sous 768px), alignée en haut : photo 4/5 (`hero-atelier.jpg`), H2 à fil rouge, texte, phrase en exergue `text-pull`, texte terminé par la conviction en gras. |
+| Nos engagements | `Engagements.tsx` | Padding 96px. H2 à fil rouge à gauche, intro centrée `text-lead`, 3 cartes (padding 36/32px, écart interne 12px, 24px entre cartes) : garance + texte crème ; contour 2px garance ; encre + accroche `garance-soft`. Décalages de 48 et 96px **à partir de 900px** seulement. |
+| Médiation par le geste | `Mediation.tsx` | Padding 48px / 96px. Visuel 21/9 (aplat garance-dark provisoire), puis encart blanc de 640px aligné à droite, padding 44px, qui chevauche le visuel de 96px (40px sous 700px), ombre `0 30px 60px -34px rgba(30,43,51,.3)` comme la V1. |
+| Notre équipe | `Team.tsx` | Fond pierre, colonne de 1040px, padding 96px / 112px. Titre à filets collé aux membres (comme la V1), un membre par ligne (photo 4/5 à 26 %, texte à 74 %, écart 48px ; 64px entre membres). Rôle en Cormorant italique garance `text-tagline`. Lien LinkedIn sous un filet `filet`, en 600. |
+| Travaillons ensemble | `WorkTogether.tsx` | Fond garance, colonne de 760px, padding 96px, écart 28px : H2 à fil rouge crème à gauche, texte centré `text-lead`, bouton `on-red` centré. |
 
 ---
 

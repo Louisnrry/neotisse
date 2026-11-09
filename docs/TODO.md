@@ -25,14 +25,16 @@
 - [x] URL avec barre finale, identiques à la V1 (`trailingSlash: true`)
 - [x] **Page Ateliers** (09/11) : en-tête avec index d'ancres, 5 ateliers en alternance (repères, textes complets), bloc rouge « Des ateliers de tissage adaptés à vos projets » ; textes et SEO repris du WordPress (`src/content/ateliers.ts`) ; comparée à la V1 à 1440 et 375px
 - [x] Tous les `.md` rangés dans `docs/` ; `next dev` ne recrée plus `AGENTS.md` à la racine
+- [x] **Page À propos** (09/11) : en-tête, démarche, 3 engagements décalés, médiation par le geste, équipe, « Travaillons ensemble »
+  - Textes repris du WordPress (page 19) dans `src/content/a-propos.ts`
+  - Comparée à la V1 à 1024px (positions identiques au pixel jusqu’à l’équipe) et à 375px (mêmes hauteurs de blocs, pas de débordement)
 
 ### À faire (design)
 - [ ] Cartes « À venir », calendrier mensuel et modale événement
 - [ ] FAQ en accordéon (page Contact)
-- [ ] 3 cartes décalées « Nos engagements » (À propos)
 - [ ] Cartes partenaires (fond de lin)
 - [ ] Bandeau de cookies sur mesure (§ 7.5) : le lien « Gérer mes cookies » émet déjà l’événement `neotisse:open-cookie-banner`
-- [ ] Construire les pages : Calendrier, Partenaires, Livre d’or, À propos, Contact, Mentions légales, Politique de confidentialité
+- [ ] Construire les pages : Calendrier, Partenaires, Livre d’or, Contact, Mentions légales, Politique de confidentialité
 - [ ] Récupérer les textes de chaque page depuis le WordPress (MCP Novamira)
 - [ ] Comparer chaque page avec la V1 à 375, 768 et 1440px
 
@@ -64,5 +66,8 @@
 - Service d’e-mail pour le formulaire de contact
 - Statistiques : GA4 ou autre ?
 - Stockage des messages de contact dans Sanity : pas pour l’instant
-- Liens LinkedIn de l’équipe
+- Liens LinkedIn de l’équipe (seule Marie-Salomé en a un sur la V1)
+- Photos de l’équipe et visuel 21/9 de la page À propos : aplats provisoires sur la V1, à fournir
+- Accueil : les textes à 1.2rem sont fixes, alors que la V1 les rend « fluides » (plus petits sur mobile) ; les passer au token `text-lead` ?
+- À propos : sur la V1, le titre « Notre équipe » touche la première photo (aucun espace) ; reproduit tel quel, à corriger ?
 - Année du © et du titre SEO du calendrier : à rendre dynamiques ? (le © l’est déjà)

@@ -34,6 +34,11 @@
   /* Tailles de texte */
   --text-body: clamp(0.875rem, 0.875rem + ((1vw - 0.2rem) * 0.295), 1.063rem);
   --text-button: clamp(0.875rem, 0.875rem + ((1vw - 0.2rem) * 0.196), 1rem);
+  /* Tailles « fluides » de la V1 (WordPress transforme 1.2rem, 1.3rem, 1.9rem en clamp) */
+  --text-lead: clamp(0.875rem, 0.875rem + ((1vw - 0.2rem) * 0.51), 1.2rem);
+  --text-tagline: clamp(0.875rem, 0.875rem + ((1vw - 0.2rem) * 0.667), 1.3rem);
+  --text-subtitle-lg: clamp(1.198rem, 1.198rem + ((1vw - 0.2rem) * 1.101), 1.9rem);
+  --text-pull: clamp(1.6rem, 2.6vw, 2.1rem);
   --text-h1: clamp(2.8rem, 6vw, 4.6rem);
   --text-h2: clamp(2rem, 3.6vw, 2.9rem);
   --text-h3: clamp(1.5rem, 2.2vw, 1.9rem);
