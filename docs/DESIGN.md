@@ -21,6 +21,7 @@ Aperçu de tous les éléments : page **`/styleguide`** (non indexée).
 | Section, conteneur | `src/components/ui/Layout.tsx` |
 | Cadre photo provisoire, carte à filet rouge, étoiles | `src/components/ui/Media.tsx` |
 | Sections de l'accueil, intro animée | `src/components/home/*` (voir § 9 bis) |
+| Page Partenaires (carte partenaire) | `src/components/partenaires/PartnerCard.tsx` (voir § 9 quinquies) |
 | Page Ateliers (ligne d'atelier) | `src/components/ateliers/WorkshopRow.tsx` (voir § 9 ter) |
 | Styles de l'intro, du héro et du bandeau défilant | `src/app/globals.css` (`@layer components`) |
 | Champs de formulaire, case à cocher, message, mention RGPD | `src/components/ui/Field.tsx` |
@@ -221,6 +222,17 @@ Textes dans `src/content/a-propos.ts` (provisoire, en attendant Sanity). Compar�
 | Travaillons ensemble | `WorkTogether.tsx` | Fond garance, colonne de 760px, padding 96px, écart 28px : H2 à fil rouge crème à gauche, texte centré `text-lead`, bouton `on-red` centré. |
 
 ---
+
+## 9 quinquies. Partenaires (`/partenaires/`)
+
+Textes dans `src/content/partenaires.ts`, cartes depuis `src/content/partners.ts` (provisoire, en attendant Sanity). Comparée à la V1 à 1024px (positions identiques à 3–5px près) et à 375px.
+
+| Bloc | Détails |
+|---|---|
+| En-tête | Colonne de 860px, padding 72px / 24px, écart 20px : H1 à filets, intro centrée `text-lead`. |
+| Grille | 1.2rem sous l'en-tête, padding 32px / 112px, contenu 1240px. Colonnes `repeat(auto-fill, minmax(16rem, 1fr))`, écart 28px (4 colonnes à 1440px, 3 à 1024px, 1 sur mobile). |
+| Carte (`PartnerCard`) | Fond blanc, bordure 1px `filet` → `garance` au survol (et au focus du lien). Zone logo 170px sur toile de lin (`bg-lin`), filet garance 3px en bas, logo centré 104px de haut max, 80 % de large max, **sans pastille blanche** (comme la V1). Nom en H3 1.5rem interligne 1.15, padding 20px 22px ; lien vers le site (nouvel onglet, souligné, garance) s'il existe. Description interligne 1.6, padding 8px 22px 24px. Sans description, le H3 prend 24px en bas. |
+| Devenir partenaire | Fond **pierre**, colonne de 760px, padding 96px, écart 28px : H2 à fil rouge à gauche, texte centré `text-lead`, bouton plein centré. |
 
 ## 10. Accessibilité et mouvement
 

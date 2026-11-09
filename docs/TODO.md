@@ -29,12 +29,15 @@
   - Textes repris du WordPress (page 19) dans `src/content/a-propos.ts`
   - Comparée à la V1 à 1024px (positions identiques au pixel jusqu’à l’équipe) et à 375px (mêmes hauteurs de blocs, pas de débordement)
 
+- [x] **Page Partenaires** (09/11) : en-tête, grille des 7 cartes (logo sur toile de lin, nom lié au site, description), bloc « Devenir l’un de nos partenaires ? » sur fond pierre
+  - Textes et SEO repris du WordPress (page 13) dans `src/content/partenaires.ts` ; textes alternatifs des logos alignés sur la V1
+  - Comparée à la V1 à 1024px (positions identiques à 3–5px près) et à 375px (pas de débordement)
+
 ### À faire (design)
 - [ ] Cartes « À venir », calendrier mensuel et modale événement
 - [ ] FAQ en accordéon (page Contact)
-- [ ] Cartes partenaires (fond de lin)
 - [ ] Bandeau de cookies sur mesure (§ 7.5) : le lien « Gérer mes cookies » émet déjà l’événement `neotisse:open-cookie-banner`
-- [ ] Construire les pages : Calendrier, Partenaires, Livre d’or, Contact, Mentions légales, Politique de confidentialité
+- [ ] Construire les pages : Calendrier, Livre d’or, Contact, Mentions légales, Politique de confidentialité
 - [ ] Récupérer les textes de chaque page depuis le WordPress (MCP Novamira)
 - [ ] Comparer chaque page avec la V1 à 375, 768 et 1440px
 

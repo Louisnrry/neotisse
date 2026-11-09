@@ -61,6 +61,7 @@
 
 - À propos (V1, page 19) : pas de citation isolée. L’ordre réel est : en-tête (H1 à filets, sous-titre, texte) ; « Notre démarche… » (photo 4/5 + texte avec la phrase en exergue « C’est de ce constat qu’est née Néotisse. ») ; « Nos engagements… » (3 cartes, décalages de 48 et 96px seulement à partir de 900px) ; « Une médiation… par le geste et la matière » (visuel 21/9 et encart blanc qui le chevauche, avec une ombre douce) ; « Notre équipe » (fond pierre, rôle « Co-créatrice de Néotisse » pour les deux) ; « Travaillons ensemble » (fond garance). Les titres à fil rouge y sont alignés à gauche.
 - WordPress ajoute 1.2rem d’espace entre les grandes sections de la page À propos : reproduit entre sections blanches, **mais pas** la bande blanche qu’il laisse entre « Notre équipe » (pierre) et « Travaillons ensemble » (garance), qui ressemble à un défaut.
+- Partenaires (V1, page 13) : le bloc « Devenir l’un de nos partenaires ? » est sur fond **pierre** (titre à fil rouge à gauche, texte centré, bouton plein), pas rouge. Le logo des cartes est posé directement sur la toile de lin (la pastille blanche du § 6.4 est annulée sur la V1). Les noms liés sont soulignés, en garance.
 
 ### Contenus provisoires
 
