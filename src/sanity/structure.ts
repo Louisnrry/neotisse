@@ -17,6 +17,7 @@ import { UsersIcon } from "@sanity/icons/Users"
 import type { ElementType } from "react"
 import type { StructureResolver } from "sanity/structure"
 
+import { apiVersion } from "./env"
 import { singletonIds } from "./schemaTypes"
 
 type SingletonDefinition = {
@@ -88,6 +89,7 @@ export const structure: StructureResolver = (S) => {
                 .child(
                   S.documentList()
                     .title("Avis à modérer")
+                    .apiVersion(apiVersion)
                     .filter('_type == "review" && status == "pending"')
                     .defaultOrdering([{ field: "createdAt", direction: "desc" }]),
                 ),
@@ -97,6 +99,7 @@ export const structure: StructureResolver = (S) => {
                 .child(
                   S.documentList()
                     .title("Avis publiés")
+                    .apiVersion(apiVersion)
                     .filter('_type == "review" && status == "approved"')
                     .defaultOrdering([{ field: "createdAt", direction: "desc" }]),
                 ),
@@ -106,6 +109,7 @@ export const structure: StructureResolver = (S) => {
                 .child(
                   S.documentList()
                     .title("Avis refusés")
+                    .apiVersion(apiVersion)
                     .filter('_type == "review" && status == "rejected"')
                     .defaultOrdering([{ field: "createdAt", direction: "desc" }]),
                 ),
