@@ -2,18 +2,23 @@ import type { Metadata } from "next";
 import { Fragment, type ReactNode } from "react";
 import { CookieSettingsInline } from "@/components/confidentialite/CookieSettingsInline";
 import { RuledTitle } from "@/components/ui/Typography";
-import { confidentialitePage, type PrivacyText } from "@/content/confidentialite";
+import type { PrivacyText } from "@/content/confidentialite";
 import { formatDate } from "@/lib/dates";
 import { routes } from "@/lib/routes";
+import { pageMetadata } from "@/sanity/lib/metadata";
+import { getConfidentialitePage } from "@/sanity/queries/legal";
 
-// TODO(sanity) : titre, description et contenu depuis le singleton `politiqueConfidentialitePage`.
-export const metadata: Metadata = {
-  title: { absolute: confidentialitePage.seo.title },
-  description: confidentialitePage.seo.description,
-  alternates: { canonical: routes.confidentialite },
-  // Page légale non indexée, liens suivis (Rank Math sur la V1 : noindex, follow)
-  robots: { index: false, follow: true },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { seo } = await getConfidentialitePage();
+  return pageMetadata(seo, {
+    title: "Politique de confidentialité - Néotisse",
+    description:
+      "Politique de confidentialité du site de l’association Néotisse : données collectées, cookies, durées de conservation et exercice de vos droits.",
+    canonical: routes.confidentialite,
+    // Page légale non indexée, liens suivis (Rank Math sur la V1 : noindex, follow)
+    noindex: true,
+  });
+}
 
 /** Texte enrichi : gras en 400 (gras relatif sur un corps en 300, comme la V1), liens soulignés garance. */
 function Rich({ text }: { text: PrivacyText }): ReactNode {
@@ -63,8 +68,8 @@ function List({ items }: { items: PrivacyText[] }) {
  * (titre 1.2rem, liste numérotée interligne 1.9, liens encre soulignés d’un filet garance),
  * 9 sections numérotées (H2 à 56px au-dessus), intertitres H3 à 32px, 1.2rem entre les blocs.
  */
-export default function PolitiqueConfidentialitePage() {
-  const { title, updatedAt, intro, tocTitle, sections } = confidentialitePage;
+export default async function PolitiqueConfidentialitePage() {
+  const { title, updatedAt, intro, tocTitle, sections } = await getConfidentialitePage();
 
   return (
     <>

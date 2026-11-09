@@ -1,18 +1,23 @@
 import type { Metadata } from "next";
 import { Fragment, type ReactNode } from "react";
 import { RuledTitle } from "@/components/ui/Typography";
-import { mentionsLegalesPage, type Paragraph } from "@/content/mentions-legales";
+import type { Paragraph } from "@/content/mentions-legales";
 import { formatDate } from "@/lib/dates";
 import { routes } from "@/lib/routes";
+import { pageMetadata } from "@/sanity/lib/metadata";
+import { getMentionsLegalesPage } from "@/sanity/queries/legal";
 
-// TODO(sanity) : titre, description et contenu depuis le singleton `mentionsLegalesPage`.
-export const metadata: Metadata = {
-  title: { absolute: mentionsLegalesPage.seo.title },
-  description: mentionsLegalesPage.seo.description,
-  alternates: { canonical: routes.mentionsLegales },
-  // Page légale non indexée, liens suivis (Rank Math sur la V1 : noindex, follow)
-  robots: { index: false, follow: true },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { seo } = await getMentionsLegalesPage();
+  return pageMetadata(seo, {
+    title: "Mentions légales - Néotisse",
+    description:
+      "Mentions légales du site de l’association Néotisse : éditeur, directrice de la publication, hébergeur, propriété intellectuelle.",
+    canonical: routes.mentionsLegales,
+    // Page légale non indexée, liens suivis (Rank Math sur la V1 : noindex, follow)
+    noindex: true,
+  });
+}
 
 /** Texte enrichi : gras en 400 (gras relatif sur un corps en 300, comme la V1), liens soulignés garance. */
 function Rich({ paragraph }: { paragraph: Paragraph }): ReactNode {
@@ -37,8 +42,8 @@ function Rich({ paragraph }: { paragraph: Paragraph }): ReactNode {
  * Corps : colonne de 760px (padding 8px / 112px, 1.2rem plus bas), intertitres H2 à 48px au-dessus,
  * 1.2rem entre les blocs.
  */
-export default function MentionsLegalesPage() {
-  const { title, updatedAt, intro, sections } = mentionsLegalesPage;
+export default async function MentionsLegalesPage() {
+  const { title, updatedAt, intro, sections } = await getMentionsLegalesPage();
 
   return (
     <>
