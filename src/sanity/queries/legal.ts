@@ -13,7 +13,7 @@ import { SEO, type Seo } from "./fragments";
 
 const MENTIONS_QUERY = `*[_id == "mentionsLegalesPage"][0]{ ${SEO}, title, updatedAt, body }`;
 const PRIVACY_QUERY = `*[_id == "politiqueConfidentialitePage"][0]{
-  ${SEO}, title, intro, updatedAt, "sections": sections[]{ title, body }
+  ${SEO}, title, intro, updatedAt, "sections": sections[]{ title, anchor, body }
 }`;
 
 const blocksOf = (body: PortableBlock[] | null | undefined) => (body ?? []).filter((b) => b._type === "block");
@@ -80,10 +80,10 @@ export async function getConfidentialitePage(): Promise<PrivacyContent> {
     title?: string;
     intro?: string;
     updatedAt?: string;
-    sections?: { title?: string; body?: PortableBlock[] }[] | null;
+    sections?: { title?: string; anchor?: string; body?: PortableBlock[] }[] | null;
   }>(PRIVACY_QUERY);
   const sections: PrivacySection[] = (remote?.sections ?? [])
     .filter((s) => s?.title)
-    .map((s) => ({ anchor: slugify(s.title!), title: s.title!, blocks: privacyBlocks(s.body) }));
+    .map((s) => ({ anchor: s.anchor || slugify(s.title!), title: s.title!, blocks: privacyBlocks(s.body) }));
   return withFallback(remote && { ...remote, sections }, localPrivacy as PrivacyContent);
 }

@@ -38,6 +38,17 @@ export const politiqueConfidentialitePage = defineType({
               type: "string",
               validation: (rule) => rule.required(),
             }),
+            defineField({
+              name: "anchor",
+              title: "Ancre",
+              type: "string",
+              description:
+                "Identifiant du lien du sommaire (ex. vos-droits). Facultatif : à défaut, il est tiré du titre. Minuscules, chiffres et tirets.",
+              validation: (rule) =>
+                rule.custom((value) =>
+                  !value || /^[a-z0-9-]+$/.test(value) ? true : "Utilisez uniquement des minuscules, des chiffres et des tirets.",
+                ),
+            }),
             richTextField("body", "Contenu", { required: true }),
           ],
           preview: { select: { title: "title" } },
