@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/Button";
 import { Section } from "@/components/ui/Layout";
 import { RuledTitle } from "@/components/ui/Typography";
-import { home } from "@/content/home";
+import { getHomePage } from "@/sanity/queries/home";
 
 /** « Contact » : invitation centrée et bouton vers la page Contact. */
-export function ContactCta() {
-  const { title, text, cta } = home.contact;
+export async function ContactCta() {
+  const { title, text, cta } = (await getHomePage()).contact;
   return (
     <Section spacing="none" className="py-[112px]" labelledBy="contact-titre">
       <RuledTitle id="contact-titre">{title}</RuledTitle>

@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { cacheLife } from "next/cache";
 import { Button } from "@/components/ui/Button";
-import { siteSettings } from "@/content/site-settings";
+import { getSiteSettings } from "@/sanity/queries/settings";
 import { mainNav, routes } from "@/lib/routes";
 import { FacebookIcon, InstagramIcon } from "@/components/ui/SocialIcons";
 import { CookieSettingsLink } from "./CookieSettingsLink";
@@ -12,7 +12,8 @@ const footerLink = "text-creme no-underline hover:text-garance-soft";
 const legalLink = "text-creme no-underline hover:text-creme hover:underline hover:underline-offset-[3px]";
 
 /** Pied de page : fond encre, texte crème, trois colonnes (comme la V1). */
-export function Footer() {
+export async function Footer() {
+  const siteSettings = await getSiteSettings();
   return (
     <footer className="bg-ink px-s50 pt-[72px] pb-7 text-creme">
       <div className="mx-auto max-w-wide">

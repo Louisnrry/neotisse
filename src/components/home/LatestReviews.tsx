@@ -2,15 +2,16 @@ import { Button } from "@/components/ui/Button";
 import { Section } from "@/components/ui/Layout";
 import { Card, Stars } from "@/components/ui/Media";
 import { RuledTitle } from "@/components/ui/Typography";
-import { home } from "@/content/home";
-import { getLatestReviews, getReviewStats } from "@/content/reviews";
+import { getHomePage } from "@/sanity/queries/home";
+import { getReviews, reviewStats } from "@/sanity/queries/reviews";
 import { formatDate } from "@/lib/dates";
 
 /** « Ils nous ont laissé un mot » : note moyenne puis les 4 derniers avis approuvés. */
-export function LatestReviews() {
-  const { title, count, cta } = home.reviews;
-  const latest = getLatestReviews(count);
-  const stats = getReviewStats();
+export async function LatestReviews() {
+  const { title, count, cta } = (await getHomePage()).reviews;
+  const reviews = await getReviews();
+  const latest = reviews.slice(0, count);
+  const stats = reviewStats(reviews);
 
   return (
     <Section spacing="none" className="pt-24 pb-8" labelledBy="avis-titre">

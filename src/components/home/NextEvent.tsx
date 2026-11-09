@@ -4,8 +4,9 @@ import { Button } from "@/components/ui/Button";
 import { Section } from "@/components/ui/Layout";
 import { PhotoPlaceholder } from "@/components/ui/Media";
 import { RuledTitle } from "@/components/ui/Typography";
-import { eventTeaser, getNextEvent } from "@/content/events";
-import { home } from "@/content/home";
+import { eventTeaser } from "@/content/events";
+import { getAllEvents, upcomingEvents } from "@/sanity/queries/events";
+import { getHomePage } from "@/sanity/queries/home";
 import { formatEventDates } from "@/lib/dates";
 
 /**
@@ -16,8 +17,8 @@ export async function NextEvent() {
   "use cache";
   cacheLife("hours");
 
-  const event = getNextEvent();
-  const { title, empty, cta } = home.events;
+  const event = upcomingEvents(await getAllEvents())[0] ?? null;
+  const { title, empty, cta } = (await getHomePage()).events;
 
   return (
     <Section tone="garance" spacing="none" className="py-24" labelledBy={event ? "prochain-evenement" : undefined}>

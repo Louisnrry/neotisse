@@ -7,14 +7,19 @@ import { NextEvent } from "@/components/home/NextEvent";
 import { PartnersBand } from "@/components/home/PartnersBand";
 import { Univers } from "@/components/home/Univers";
 import { WorkshopTiles } from "@/components/home/WorkshopTiles";
+import { getHomePage } from "@/sanity/queries/home";
 
-// TODO(sanity) : titre et description depuis le singleton `page` « home ».
-export const metadata: Metadata = {
-  title: { absolute: "Médiation textile : 5 ateliers uniques | Néotisse" },
-  description:
-    "Néotisse anime des ateliers de médiation textile autour des savoir-faire anciens : filage, tissage et teinture végétale, pour les musées et structures culturelles.",
-  alternates: { canonical: "/" },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { seo } = await getHomePage();
+  return {
+    title: { absolute: seo?.title || "Médiation textile : 5 ateliers uniques | Néotisse" },
+    description:
+      seo?.description ||
+      "Néotisse anime des ateliers de médiation textile autour des savoir-faire anciens : filage, tissage et teinture végétale, pour les musées et structures culturelles.",
+    alternates: { canonical: "/" },
+    ...(seo?.noindex && { robots: { index: false, follow: true } }),
+  };
+}
 
 export default function HomePage() {
   return (

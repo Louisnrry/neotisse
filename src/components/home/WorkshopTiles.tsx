@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { Section } from "@/components/ui/Layout";
 import { RuledTitle } from "@/components/ui/Typography";
-import { home } from "@/content/home";
+import { getHomePage } from "@/sanity/queries/home";
 import { cn } from "@/lib/cn";
 
 const tileTones = {
@@ -11,14 +11,14 @@ const tileTones = {
   "garance-dark": "bg-garance-dark",
 } as const;
 
-type Tile = (typeof home.workshops.tiles)[number];
+type Tile = { label: string; href: string; tone: keyof typeof tileTones };
 
 /**
  * « Nos ateliers de médiation textile » : mosaïque de 3 tuiles entièrement cliquables
  * (grande à gauche, deux empilées à droite), léger zoom au survol, sans ombre.
  */
-export function WorkshopTiles() {
-  const { title, intro, tiles, more, cta } = home.workshops;
+export async function WorkshopTiles() {
+  const { title, intro, tiles, more, cta } = (await getHomePage()).workshops;
   const [main, ...others] = tiles;
   return (
     <Section spacing="none" className="py-[112px]" labelledBy="ateliers-titre">

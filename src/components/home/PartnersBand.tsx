@@ -2,8 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { RuledTitle } from "@/components/ui/Typography";
-import { home } from "@/content/home";
-import { partners, type Partner } from "@/content/partners";
+import type { Partner } from "@/content/partners";
+import { getHomePage } from "@/sanity/queries/home";
+import { getPartners } from "@/sanity/queries/partners";
 import { routes } from "@/lib/routes";
 
 /**
@@ -11,7 +12,8 @@ import { routes } from "@/lib/routes";
  * (45s, pause au survol et au focus). La liste est doublée pour une boucle sans à-coup ;
  * le double est masqué aux lecteurs d’écran et au clavier.
  */
-export function PartnersBand() {
+export async function PartnersBand() {
+  const [home, partners] = await Promise.all([getHomePage(), getPartners()]);
   return (
     <section className="bg-garance py-[72px] text-creme" aria-labelledby="partenaires-titre">
       <div className="px-s50">

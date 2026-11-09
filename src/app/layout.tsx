@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { introDecideScript } from "@/components/home/intro-script";
-import { siteSettings } from "@/content/site-settings";
+import { getSiteSettings } from "@/sanity/queries/settings";
 import "./globals.css";
 
 // Polices auto-hébergées (aucun appel à Google Fonts, RGPD).
@@ -23,14 +23,17 @@ const quicksand = localFont({
   fallback: ["system-ui", "sans-serif"],
 });
 
-export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
-  title: {
-    default: siteSettings.title,
-    template: "%s | Néotisse",
-  },
-  description: siteSettings.description,
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const siteSettings = await getSiteSettings();
+  return {
+    metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
+    title: {
+      default: siteSettings.title,
+      template: "%s | Néotisse",
+    },
+    description: siteSettings.description,
+  };
+}
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (

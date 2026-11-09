@@ -1,10 +1,10 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/Button";
-import { home } from "@/content/home";
+import { getHomePage } from "@/sanity/queries/home";
 
 /** Héro plein écran : deux photos côte à côte (une seule sur mobile), titre et bouton en bas à gauche. */
-export function Hero() {
-  const { title, tagline, cta, images } = home.hero;
+export async function Hero() {
+  const { title, tagline, cta, images } = (await getHomePage()).hero;
   return (
     <section className="relative min-h-svh overflow-hidden bg-ink" aria-labelledby="hero-title">
       <div className="neo-hero__media absolute inset-0 grid grid-cols-1 sm:grid-cols-2">

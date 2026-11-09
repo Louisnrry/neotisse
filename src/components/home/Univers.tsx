@@ -2,11 +2,11 @@ import { Button } from "@/components/ui/Button";
 import { Section } from "@/components/ui/Layout";
 import { PhotoPlaceholder } from "@/components/ui/Media";
 import { RuledTitle, ThreadHeading } from "@/components/ui/Typography";
-import { home } from "@/content/home";
+import { getHomePage } from "@/sanity/queries/home";
 
 /** « Découvrez l’univers Néotisse » : photo (provisoire) à gauche, présentation à droite. */
-export function Univers() {
-  const { kicker, title, paragraphs, cta } = home.univers;
+export async function Univers() {
+  const { kicker, title, paragraphs, cta } = (await getHomePage()).univers;
   return (
     <Section spacing="none" className="pt-16 pb-[112px]" labelledBy="univers-titre">
       <RuledTitle as="p">{kicker}</RuledTitle>

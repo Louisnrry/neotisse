@@ -2,6 +2,7 @@ import { Analytics } from "@/components/layout/Analytics";
 import { CookieBanner } from "@/components/layout/CookieBanner";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
+import { SanityLive } from "@/sanity/lib/live";
 
 export default function SiteLayout({ children }: LayoutProps<"/">) {
   return (
@@ -19,6 +20,8 @@ export default function SiteLayout({ children }: LayoutProps<"/">) {
       <Footer />
       <CookieBanner />
       <Analytics />
+      {/* Met la page à jour dès qu’un contenu est publié dans le Studio. */}
+      <SanityLive includeDrafts={false} />
     </>
   );
 }
