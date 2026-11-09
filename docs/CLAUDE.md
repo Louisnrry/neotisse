@@ -28,7 +28,8 @@
    - **Ne jamais `git push` sans demande explicite de Louis.** Push de `main` fait le 09/11/2026 à sa demande (accueil) ; chaque nouveau push reste à demander.
    - Ne pas committer `docs/Cahier_Des_Charges_Neotisse_V2.pdf` (fichier de Louis, hors périmètre).
 5. **Phase actuelle : design uniquement**. Sanity, formulaires, e-mails, analytics et domaine viendront plus tard (voir `docs/TODO.md`).
-6. Next.js 16 diffère des versions connues : lire la doc embarquée dans `node_modules/next/dist/docs/` avant d’utiliser une API (voir `AGENTS.md`).
+6. Next.js 16 diffère des versions connues : lire la doc embarquée dans `node_modules/next/dist/docs/` avant d’utiliser une API (voir `docs/AGENTS.md`).
+7. **Tous les fichiers `.md` du projet vivent dans `docs/`** (demande de Louis du 09/11/2026), y compris ce fichier, `README.md` et `AGENTS.md`. Ne pas en créer à la racine. `next.config.ts` a `agentRules: false` pour que `next dev` ne recrée pas `AGENTS.md` à la racine.
 
 ### Décisions prises (09/11/2026)
 

@@ -2,11 +2,13 @@
 
 Site vitrine de l’association Néotisse (médiation autour des savoir-faire textiles anciens), réalisé par bLaNk.
 
-- Contexte, règles et décisions : [`CLAUDE.md`](CLAUDE.md)
-- Design : [`docs/DESIGN.md`](docs/DESIGN.md) · aperçu sur `/styleguide`
-- Avancement : [`docs/TODO.md`](docs/TODO.md)
+- Contexte, règles et décisions : [`docs/CLAUDE.md`](CLAUDE.md)
+- Design : [`docs/DESIGN.md`](DESIGN.md) · aperçu sur `/styleguide`
+- Avancement : [`docs/TODO.md`](TODO.md)
 
 ## Démarrer
+
+Toutes les commandes se lancent depuis la racine du dépôt.
 
 ```bash
 npm install
