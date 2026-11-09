@@ -1,6 +1,7 @@
 import { Section } from "@/components/ui/Layout";
 import { ThreadHeading } from "@/components/ui/Typography";
-import { aPropos, type EngagementTone } from "@/content/a-propos";
+import type { EngagementTone } from "@/content/a-propos";
+import { getAProposPage } from "@/sanity/queries/aPropos";
 import { cn } from "@/lib/cn";
 
 const cardTones: Record<EngagementTone, { card: string; tagline: string }> = {
@@ -12,8 +13,8 @@ const cardTones: Record<EngagementTone, { card: string; tagline: string }> = {
 };
 
 /** « Nos engagements » : trois cartes décalées verticalement (garance, contour garance, encre). */
-export function Engagements() {
-  const { title, intro, items } = aPropos.engagements;
+export async function Engagements() {
+  const { title, intro, items } = (await getAProposPage()).engagements;
   return (
     <Section spacing="none" className="mt-[1.2rem] py-24" labelledBy="engagements-titre">
       <div className="grid gap-6">

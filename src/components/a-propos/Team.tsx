@@ -1,11 +1,12 @@
 import { Section } from "@/components/ui/Layout";
 import { PhotoPlaceholder } from "@/components/ui/Media";
 import { RuledTitle } from "@/components/ui/Typography";
-import { aPropos, type TeamMember } from "@/content/a-propos";
+import Image from "next/image";
+import { getAProposPage, type Member as TeamMember } from "@/sanity/queries/aPropos";
 
 /** « Notre équipe » : fond pierre, une ligne par membre (photo 4/5 à 26 %, texte à 74 %). */
-export function Team() {
-  const { title, members } = aPropos.team;
+export async function Team() {
+  const { title, members } = (await getAProposPage()).team;
   return (
     <Section
       tone="pierre"
@@ -29,12 +30,22 @@ export function Team() {
 function Member({ member }: { member: TeamMember }) {
   return (
     <article className="grid gap-[30px] md:grid-cols-[minmax(0,26fr)_minmax(0,74fr)] md:gap-12">
-      {/* TODO(sanity) : photo du membre */}
-      <PhotoPlaceholder
-        tone={member.photoTone}
-        label={`Photo de ${member.name} à venir`}
-        className="aspect-[4/5] w-full"
-      />
+      {member.photo ? (
+        <Image
+          src={member.photo.src}
+          alt={member.photo.alt}
+          width={member.photo.width ?? 800}
+          height={member.photo.height ?? 1000}
+          sizes="(min-width: 768px) 26vw, 100vw"
+          className="aspect-[4/5] w-full object-cover"
+        />
+      ) : (
+        <PhotoPlaceholder
+          tone={member.photoTone}
+          label={`Photo de ${member.name} à venir`}
+          className="aspect-[4/5] w-full"
+        />
+      )}
       <div className="grid content-start gap-[1.2rem]">
         <div>
           <h3>{member.name}</h3>

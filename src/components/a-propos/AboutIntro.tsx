@@ -1,10 +1,10 @@
 import { Section } from "@/components/ui/Layout";
 import { RuledTitle } from "@/components/ui/Typography";
-import { aPropos } from "@/content/a-propos";
+import { getAProposPage } from "@/sanity/queries/aPropos";
 
 /** En-tête de page : H1 à filets, sous-titre italique et présentation centrée (colonne de 860px). */
-export function AboutIntro() {
-  const { title, subtitle, text } = aPropos.intro;
+export async function AboutIntro() {
+  const { title, subtitle, text } = (await getAProposPage()).intro;
   return (
     <Section width="full" spacing="none" className="pt-[72px] pb-10">
       <div className="mx-auto grid max-w-[860px] gap-5">

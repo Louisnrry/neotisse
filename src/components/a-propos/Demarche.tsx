@@ -1,11 +1,11 @@
 import Image from "next/image";
 import { Section } from "@/components/ui/Layout";
 import { ThreadHeading } from "@/components/ui/Typography";
-import { aPropos } from "@/content/a-propos";
+import { getAProposPage } from "@/sanity/queries/aPropos";
 
 /** « Notre démarche » : photo 4/5 à gauche (42 %), texte à droite (58 %) avec une phrase en exergue. */
-export function Demarche() {
-  const { title, image, before, pull, after, conviction } = aPropos.demarche;
+export async function Demarche() {
+  const { title, image, before, pull, after, conviction } = (await getAProposPage()).demarche;
   return (
     <Section spacing="none" className="mt-[1.2rem] pt-12 pb-24" labelledBy="demarche-titre">
       <div className="grid items-start gap-[30px] md:grid-cols-[42fr_58fr] md:gap-[88px]">

@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/Button";
 import { Section } from "@/components/ui/Layout";
 import { ThreadHeading } from "@/components/ui/Typography";
-import { aPropos } from "@/content/a-propos";
+import { getAProposPage } from "@/sanity/queries/aPropos";
 
 /** « Travaillons ensemble » : section fond garance, colonne de 760px, bouton vers la page Contact. */
-export function WorkTogether() {
-  const { title, text, button } = aPropos.cta;
+export async function WorkTogether() {
+  const { title, text, button } = (await getAProposPage()).cta;
   return (
     <Section tone="garance" width="full" spacing="none" className="py-24" labelledBy="ensemble-titre">
       <div className="mx-auto grid max-w-[760px] gap-7">
