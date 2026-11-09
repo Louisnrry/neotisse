@@ -19,8 +19,9 @@
 3. **Tenir les `.md` à jour pendant tout le travail**, pas seulement à la fin :
    - `docs/DESIGN.md` : tout changement de token, composant ou comportement visuel ;
    - `docs/TODO.md` : cocher ce qui est fait, ajouter ce qui est découvert ;
-   - `CLAUDE.md` : décisions de projet, écarts constatés avec la V1, nouvelles règles ;
-   - `docs/BRIEF.md`, `docs/ARBORESCENCE.md` : si le périmètre ou les pages changent.
+   - `docs/CLAUDE.md` : décisions de projet, écarts constatés avec la V1, nouvelles règles ;
+   - `docs/BRIEF.md`, `docs/ARBORESCENCE.md` : si le périmètre ou les pages changent ;
+   - `docs/README.md` : commandes et stack, si elles changent.
    Plusieurs conversations se succèdent sur ce projet : ces fichiers sont la mémoire commune.
 4. **Git** : le dépôt GitHub `Louisnrry/neotisse` existe.
    - **Committer à chaque changement** (demande de Louis du 09/11/2026) : un commit par modification cohérente, sans attendre qu’on le demande.
@@ -102,17 +103,17 @@ Règles générales :
 | Route | Page | Contenu principal |
 |---|---|---|
 | `/` | Accueil | Intro animée, héro plein écran, bandeau partenaires défilant, « L’univers Néotisse », prochain événement, tuiles ateliers, 4 derniers avis, bloc contact |
-| `/ateliers-tissage-teinture` | Ateliers | Les 5 formats + bloc « Des ateliers de tissage adaptés à vos projets » |
-| `/calendrier-des-ateliers` | Calendrier | Liste « À venir » + calendrier mensuel + modale détail + « Comment participer » |
-| `/partenaires` | Partenaires | Grille de cartes partenaires + « Devenir l’un de nos partenaires ? » |
-| `/livre-dor` | Livre d’or | Liste des avis + formulaire « Signer le livre d’or » |
-| `/savoir-faire-textiles-anciens-a-propos` | À propos | Démarche, 3 engagements, citation, équipe, « Travaillons ensemble » |
-| `/contact-organiser-un-atelier` | Contact | Formulaire « Écrivez-nous » + FAQ en accordéon (10 questions) |
-| `/mentions-legales` | Mentions légales | noindex |
-| `/politique-de-confidentialite` | Politique de confidentialité | noindex, sommaire cliquable |
-| `/studio` | Sanity Studio | non indexé |
+| `/ateliers-tissage-teinture/` | Ateliers | Les 5 formats + bloc « Des ateliers de tissage adaptés à vos projets » |
+| `/calendrier-des-ateliers/` | Calendrier | Liste « À venir » + calendrier mensuel + modale détail + « Comment participer » |
+| `/partenaires/` | Partenaires | Grille de cartes partenaires + « Devenir l’un de nos partenaires ? » |
+| `/livre-dor/` | Livre d’or | Liste des avis + formulaire « Signer le livre d’or » |
+| `/savoir-faire-textiles-anciens-a-propos/` | À propos | Démarche, 3 engagements, citation, équipe, « Travaillons ensemble » |
+| `/contact-organiser-un-atelier/` | Contact | Formulaire « Écrivez-nous » + FAQ en accordéon (10 questions) |
+| `/mentions-legales/` | Mentions légales | noindex |
+| `/politique-de-confidentialite/` | Politique de confidentialité | noindex, sommaire cliquable |
+| `/studio/` | Sanity Studio | non indexé |
 
-**Conserver ces URL** (référencement et liens existants).
+**Conserver ces URL, barre finale comprise**, comme la V1 (référencement et liens existants). `next.config.ts` a `trailingSlash: true` : une URL sans barre finale redirige vers celle avec. Les liens passent par `src/lib/routes.ts`.
 
 **Navigation principale** : Ateliers · Calendrier · Partenaires · Livre d’or · À propos, + bouton **« Prenez contact »** (→ Contact).
 

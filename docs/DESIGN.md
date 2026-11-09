@@ -166,7 +166,7 @@ Quicksand 600, angles droits, transitions 0.2s. `href` interne → `next/link`, 
 
 - Fond encre, texte crème, padding `72px` en haut, `28px` en bas.
 - Trois colonnes 38 % / 24 % / 38 % (une seule sous 768px) : logo blanc 56px + « Néotisse » (Cormorant 2.1rem) + texte ; navigation verticale Cormorant 1.25rem ; accroche Cormorant 600 1.45rem + bouton `on-red` « Écrivez-nous » + e-mail + icônes Instagram et Facebook.
-- Liens crème, survol `garance-soft`.
+- Liens texte crème, survol `garance-soft` (classes posées sur chaque lien : un style global sur tous les `<a>` du pied de page rendait le bouton « Écrivez-nous » crème sur crème, corrigé le 09/11/2026).
 - Ligne basse 0.88rem séparée par un filet crème à 14 % : © année · Mentions légales · Gérer mes cookies · Politique de confidentialité.
 
 ---

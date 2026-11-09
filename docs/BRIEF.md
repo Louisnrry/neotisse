@@ -27,7 +27,7 @@
 - Le festival organisé par Néotisse (très important)
 - Fêtes de la Préhistoire de Tautavel (récurrent)
 - Film documentaire
-- Musée de Jergovi : tissage aux tablettes (partenaire récurrent)
+- Musée de Gergovie : tissage aux tablettes (partenaire récurrent)
 
 ## Ambiance
 - Épuré, léger, lisible, très pro

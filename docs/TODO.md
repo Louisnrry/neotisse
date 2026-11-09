@@ -21,6 +21,9 @@
   - Dates en français selon les règles de la V1 (`src/lib/dates.ts`), testées
   - Comparé à la V1 à 1440px (positions et hauteurs identiques à quelques pixels) et à 375px (pas de débordement, même largeur de contenu)
   - Vérifié : intro (lecture puis ouverture, à chaque visite, y compris en revenant par le logo), bandeau en pause au focus, copies des logos hors clavier, tuiles (zoom + contour encre au clavier)
+- [x] Bouton « Écrivez-nous » du pied de page de nouveau lisible (il était crème sur crème)
+- [x] URL avec barre finale, identiques à la V1 (`trailingSlash: true`)
+- [x] Tous les `.md` rangés dans `docs/` ; `next dev` ne recrée plus `AGENTS.md` à la racine
 
 ### À faire (design)
 - [ ] Cartes « À venir », calendrier mensuel et modale événement
