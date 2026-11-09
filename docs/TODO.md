@@ -58,7 +58,6 @@
 - [ ] Mentions légales complètes (siège, RNA, téléphone, SIRET bLaNk, hébergeur Netlify)
 
 ## Questions ouvertes
-- Page Ateliers : sur la V1 le titre du bloc rouge final est aligné à gauche alors que le texte et le bouton sont centrés (reproduit tel quel) : centrer le titre ?
 - Photos des ateliers démonstratifs, enfants, conférences et expérimentation : à fournir (cadres provisoires, seule la photo de l'atelier participatif existe)
 - Logo et burger couleur encre peu lisibles sur la photo du héro tant que l’en-tête est transparent (comme sur la V1) : passer en crème à l’arrivée ?
 - Avis de test du WordPress (« pyramide », « INCROYABLE »…) : lesquels garder à la migration ?
