@@ -2,7 +2,7 @@ import type { ComponentProps, ReactNode } from "react";
 import { cn } from "@/lib/cn";
 
 const control =
-  "w-full border border-champ bg-blanc p-3.5 font-sans text-base text-ink placeholder:text-gris/80 transition-[border-color,box-shadow] duration-200 focus:border-ink focus:shadow-[0_0_0_3px_rgb(200_54_31/0.18)] focus:outline-none aria-[invalid=true]:border-garance aria-[invalid=true]:bg-erreur-bg";
+  "w-full border border-champ bg-blanc p-3.5 font-sans text-base leading-[1.65] text-ink placeholder:text-gris/80 transition-[border-color,box-shadow] duration-200 focus:border-ink focus:shadow-[0_0_0_3px_rgb(200_54_31/0.18)] focus:outline-none aria-[invalid=true]:border-garance aria-[invalid=true]:bg-erreur-bg";
 
 type FieldShellProps = {
   id: string;
@@ -16,7 +16,7 @@ type FieldShellProps = {
 function FieldShell({ id, label, error, hint, className, children }: FieldShellProps) {
   return (
     <div className={cn("grid gap-[7px]", className)}>
-      <label htmlFor={id} className="text-small font-bold tracking-[0.04em]">
+      <label htmlFor={id} className="text-small leading-[1.4] font-bold tracking-[0.04em]">
         {label}
       </label>
       {children}
@@ -66,7 +66,7 @@ export function TextArea({ id, label, error, hint, className, rows = 6, ...texta
       <textarea
         id={id}
         rows={rows}
-        className={cn(control, "min-h-[150px] resize-y")}
+        className={cn(control, "h-40 min-h-[150px] resize-y")}
         aria-invalid={error ? true : undefined}
         aria-describedby={describedBy(id, error, hint)}
         {...textarea}

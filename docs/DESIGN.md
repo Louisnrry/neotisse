@@ -136,7 +136,7 @@ Point de rupture spécifique : **`nav:` = 960px**, passage au menu burger.
 |---|---|---|
 | `primary` (défaut) | fond garance, texte crème | fond garance-dark |
 | `outline` | bordure 2px encre, texte encre | fond encre, texte blanc |
-| `outline-thin` | bordure **1px** encre, texte encre (« Lire et laisser un avis… » de la page Contact, comme la V1) | fond encre, texte blanc |
+| `outline-thin` | bordure **1px** encre, texte encre, padding 15px × 35px et interligne 1.65 en taille `default` (« Lire et laisser un avis… » de la page Contact, comme la V1) | fond encre, texte blanc |
 | `outline-garance` | bordure 1px garance, texte garance | fond garance, texte blanc |
 | `on-red` | fond crème, texte garance-dark (sur fond rouge) | fond encre, texte blanc |
 | `on-ink` | fond crème, texte garance-dark (sur fond encre : pied de page, menu mobile) | **fond garance, texte crème** (un survol encre serait invisible sur fond encre) |
@@ -153,8 +153,8 @@ Quicksand 600, angles droits, transitions 0.2s. `href` interne → `next/link`, 
 
 ## 7. Formulaires (`Field.tsx`)
 
-- Label : Quicksand 700, 0.85rem, letter-spacing 0.04em, 7px au-dessus du champ.
-- Champ : padding 14px, bordure `champ`, fond blanc, texte encre. Focus : bordure encre + halo `rgba(200,54,31,.18)` de 3px.
+- Label : Quicksand 700, 0.85rem, interligne 1.4, letter-spacing 0.04em, 7px au-dessus du champ.
+- Champ : padding 14px, interligne 1.65 (56px de haut), zone de texte 160px, bordure `champ`, fond blanc, texte encre. Focus : bordure encre + halo `rgba(200,54,31,.18)` de 3px.
 - Erreur : `aria-invalid`, bordure garance, fond `erreur-bg`, message 0.88rem 600 `garance-dark` relié par `aria-describedby`.
 - Deux colonnes Nom / Prénom au-dessus de 640px, une seule en dessous.
 - Message de retour : bordure gauche 4px (encre + `succes-bg` pour un succès ; garance + `alerte-bg` pour une erreur).
@@ -240,13 +240,13 @@ Textes dans `src/content/partenaires.ts`, cartes depuis `src/content/partners.ts
 
 ## 9 sexies. Contact (`/contact-organiser-un-atelier/`)
 
-Textes dans `src/content/contact.ts` (provisoire, en attendant Sanity), espaces insécables avant « ? » et « : ». Comparée à la V1 à 1024px (positions identiques à quelques pixels près) et à 375px (pas de débordement).
+Textes dans `src/content/contact.ts` (provisoire, en attendant Sanity), espaces insécables avant « ? » et « : ». Comparée à la V1 à 1024px et 1440px (positions mesurées identiques à 4px près) et à 375px (pas de débordement).
 
 | Bloc | Composant | Détails |
 |---|---|---|
-| Coordonnées + formulaire | `page.tsx`, `ContactDetails.tsx` | Padding 80px / 112px. Grille 45 % / 55 %, écart 112px (une colonne sous **782px**, écart 56px). À gauche : H1 **à fil rouge** (pas à filets, comme la V1) `clamp(3rem,6vw,4.6rem)` interligne 1, texte 1.1rem (28px au-dessus, 40px dessous), liste de coordonnées (`<dl>`, filet encre en haut, lignes à filet `filet`, padding 18px, colonnes 130px / reste, une seule sous 521px ; libellés en petites capitales grises 0.78rem ; téléphone en 600 chiffres tabulaires + nom en gris ; Instagram et Facebook icône 24px + libellé, empilés), puis bouton `outline-thin` vers le livre d'or (32px au-dessus). À droite : H2 « Écrivez-nous » `clamp(1.6rem,2.4vw,2rem)` (28px dessous), formulaire, mention RGPD 1.2rem dessous. |
-| Formulaire | `ContactForm.tsx` | Écart 20px. Nom / Prénom sur 2 colonnes (une sous 521px), e-mail, objet, projet, bouton `large` « Envoyer ». Validation côté client au clic (focus sur le premier champ en erreur), champ piège + délai de 2s. Pour l'instant un envoi valide affiche directement « Merci, votre message est bien parti ! » (route API en phase 3). |
-| FAQ | `Faq.tsx` | 1.2rem sous la section précédente, padding 96px / 112px, écart 40px. Titre à filets, puis grille 36 % / 64 %, écart 80px (une colonne sous 782px) : photo 4/5 (`hero-tissage.jpg`) + texte d'intro à gauche ; accordéon `<details>` natif à droite : question Cormorant 700 1.35rem, padding 20px 44px 20px 0, « + » en deux traits garance 16×2px qui devient « − » (0.25s), question ouverte ou survolée en garance, filet encre au-dessus de la première, filets `filet` entre les autres ; réponse interligne 1.7, 64ch max. Balisage JSON-LD `FAQPage`. |
+| Coordonnées + formulaire | `page.tsx`, `ContactDetails.tsx` | Padding 80px / 112px. Grille 45 % / 55 %, écart 112px (une colonne sous **782px**, écart 56px). À gauche : H1 **à fil rouge** (pas à filets, comme la V1) `clamp(3rem,6vw,4.6rem)` interligne 1, texte 1.1rem (28px au-dessus, 40px dessous), liste de coordonnées (`<dl>`, filet encre en haut, lignes à filet `filet`, padding 18px, colonnes 130px / reste, une seule sous 521px ; libellés en petites capitales grises 0.78rem ; téléphone en 600 chiffres tabulaires + nom en gris ; Instagram et Facebook icône 24px + libellé, **sur une seule ligne** (écart 1.2rem, 1.2rem sous le haut de la ligne, comme la V1)), puis bouton `outline-thin` vers le livre d'or (32px au-dessus, 15px × 35px, interligne 1.65, comme la V1). À droite : H2 « Écrivez-nous » `clamp(1.6rem,2.4vw,2rem)` (28px dessous), formulaire, mention RGPD 1.2rem dessous. |
+| Formulaire | `ContactForm.tsx` | Écart 20px, 34px avant le bouton. Nom / Prénom sur 2 colonnes (une sous 521px), e-mail, objet, projet, bouton `large` « Envoyer ». Validation côté client au clic (focus sur le premier champ en erreur), champ piège + délai de 2s. Pour l'instant un envoi valide affiche directement « Merci, votre message est bien parti ! » (route API en phase 3). |
+| FAQ | `Faq.tsx` | 1.2rem sous la section précédente, padding 96px / 112px, écart 40px. Titre à filets (interlettrage 0.01em, comme la V1, au lieu des 0.06em des autres titres à filets), puis grille 36 % / 64 %, écart 80px (une colonne sous 782px) : photo 4/5 (`hero-tissage.jpg`) + texte d'intro à gauche ; accordéon `<details>` natif à droite : question Cormorant 700 1.35rem, padding 20px 44px 20px 0, « + » en deux traits garance 16×2px qui devient « − » (0.25s), question ouverte ou survolée en garance, filet encre au-dessus de la première, filets `filet` entre les autres ; réponse interligne 1.7, 64ch max. Balisage JSON-LD `FAQPage`. |
 
 ## 10. Accessibilité et mouvement
 

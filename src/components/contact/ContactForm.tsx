@@ -100,7 +100,8 @@ export function ContactForm() {
         <input id="contact-site" name="site" type="text" tabIndex={-1} autoComplete="off" />
       </div>
 
-      <div>
+      {/* 34px entre le message et le bouton, comme la V1 */}
+      <div className="mt-[14px]">
         <Button type="submit" size="large" aria-busy={status === "sending" || undefined} disabled={status === "sending"}>
           {status === "sending" ? form.sending : form.submit}
         </Button>

@@ -42,7 +42,10 @@ export function Faq() {
 
   return (
     <Section spacing="none" className="mt-[1.2rem] pt-24 pb-28" innerClassName="grid gap-10" labelledBy="faq-titre">
-      <RuledTitle id="faq-titre">{title}</RuledTitle>
+      {/* Interlettrage 0.01em (celui des titres), comme la V1 : ce titre n’a pas l’espacement large des autres titres à filets */}
+      <RuledTitle id="faq-titre" className="tracking-[0.01em]">
+        {title}
+      </RuledTitle>
       <div className="grid gap-10 min-[782px]:grid-cols-[36fr_64fr] min-[782px]:gap-20">
         <div>
           {/* TODO(sanity) : image de la page */}

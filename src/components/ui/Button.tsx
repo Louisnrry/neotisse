@@ -6,7 +6,7 @@ type Variant = "primary" | "outline" | "outline-thin" | "outline-garance" | "on-
 type Size = "default" | "compact" | "large";
 
 const base =
-  "inline-flex items-center justify-center gap-2 font-sans font-semibold leading-[1.3] no-underline transition-colors duration-200 cursor-pointer disabled:cursor-not-allowed disabled:opacity-70";
+  "inline-flex items-center justify-center gap-2 font-sans font-semibold no-underline transition-colors duration-200 cursor-pointer disabled:cursor-not-allowed disabled:opacity-70";
 
 const variants: Record<Variant, string> = {
   // Plein garance, survol garance foncé
@@ -41,8 +41,17 @@ type ButtonAsButton = CommonProps & { href?: undefined } & Omit<ComponentProps<"
 
 export function buttonClasses({ variant = "primary", size = "default", className }: Omit<CommonProps, "children">) {
   // Les variantes à contour compensent l’épaisseur de la bordure pour garder la même taille.
-  const borderFix = variant === "outline" ? "px-[calc(1.7em-2px)] py-[calc(0.85em-2px)]" : "";
-  return cn(base, variants[variant], sizes[size], size === "default" && borderFix, className);
+  // (`cn` ne fusionne pas les classes : on choisit une seule valeur de padding et d’interligne.)
+  let sizeClasses = sizes[size];
+  let leading = "leading-[1.3]";
+  if (size === "default" && variant === "outline") {
+    sizeClasses = "px-[calc(1.7em-2px)] py-[calc(0.85em-2px)] text-button";
+  } else if (size === "default" && variant === "outline-thin") {
+    // Mesures du bouton à contour de la V1 (page Contact) : 15px × 35px, interligne 1.65.
+    sizeClasses = "px-[35px] py-[15px] text-button";
+    leading = "leading-[1.65]";
+  }
+  return cn(base, leading, variants[variant], sizeClasses, className);
 }
 
 export function Button(props: ButtonAsLink | ButtonAsButton) {
