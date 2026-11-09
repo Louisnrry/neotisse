@@ -19,6 +19,13 @@ Le site tourne sur http://localhost:3000. Le Studio Sanity est sur http://localh
 
 Au premier lancement, copier `.env.example` vers `.env.local` et renseigner les variables (le projet Sanity `t4k96qs7` et le dataset `production` sont déjà indiqués).
 
+## Studio Sanity
+
+- URL locale : http://localhost:3000/studio
+- Connexion avec le compte Google utilisé pour créer le projet Sanity.
+- Les pages et les réglages sont des documents uniques : les remplir puis cliquer sur **Publier**.
+- Les avis se modèrent dans **Avis → À modérer** (passer le statut en `approved` puis publier).
+
 ## Commandes
 
 | Commande | Rôle |
