@@ -1,5 +1,6 @@
 import { EMPTY_LINK, withDefaults } from "../lib/fallback";
 import { fetchSanity } from "../lib/live";
+import { orderByPageList, orderedListQuery } from "../lib/ordering";
 import { toParagraphs, type PortableBlock } from "../lib/portableText";
 import type { Link, Workshop } from "../types";
 import { IMAGE, imageOrUndefined, SEO, type SanityImage, type Seo } from "./fragments";
@@ -14,13 +15,11 @@ const ATELIERS_QUERY = `{
   "page": *[_id == "ateliersPage"][0]{
     ${SEO}, title, intro, audience, cta{ title, text, button{ label, href } }
   },
-  "workshops": coalesce(
-    *[_id == "ateliersPage"][0].workshops[]->${WORKSHOP_FIELDS},
-    *[_type == "workshop"] | order(order asc)${WORKSHOP_FIELDS}
-  )
+  "workshops": ${orderedListQuery("workshop", "ateliersPage", "workshops", WORKSHOP_FIELDS)}
 }`;
 
 type RemoteWorkshop = Partial<Omit<Workshop, "paragraphs" | "image">> & {
+  _id: string;
   paragraphs?: PortableBlock[] | null;
   image?: Partial<SanityImage> | null;
 };
@@ -55,8 +54,8 @@ const EMPTY_WORKSHOP: Workshop = {
 
 /** Page Ateliers et ses ateliers (ceux sans titre ou sans ancre sont ignorés). */
 export async function getAteliersPage(): Promise<AteliersContent> {
-  const remote = await fetchSanity<{ page: unknown; workshops: (RemoteWorkshop | null)[] | null }>(ATELIERS_QUERY);
-  const workshops = (remote?.workshops ?? [])
+  const remote = await fetchSanity<{ page: unknown; workshops: { refs: string[] | null; docs: (RemoteWorkshop | null)[] | null } | null }>(ATELIERS_QUERY);
+  const workshops = orderByPageList(remote?.workshops ?? null)
     .filter((w): w is RemoteWorkshop => Boolean(w?.anchor && w.title))
     .map(({ paragraphs, image, ...w }) =>
       withDefaults({ ...w, paragraphs: toParagraphs(paragraphs), image: imageOrUndefined(image) }, EMPTY_WORKSHOP),

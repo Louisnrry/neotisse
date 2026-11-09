@@ -1,5 +1,6 @@
 import { EMPTY_LINK, withDefaults } from "../lib/fallback";
 import { fetchSanity } from "../lib/live";
+import { orderByPageList, orderedListQuery } from "../lib/ordering";
 import { toParagraphs, type PortableBlock } from "../lib/portableText";
 import type { ContentImage, FaqItem, Link, Paragraph, RichPart } from "../types";
 import { getSiteSettings } from "./settings";
@@ -14,11 +15,7 @@ const CONTACT_QUERY = `{
     form{ title, subjectPlaceholder, projectPlaceholder, submit, sending, legal },
     faq{ title, intro, "image": image${IMAGE} }
   },
-  // Ordre choisi sur la page Contact (glisser-déposer) ; sinon le champ « Ordre d’affichage ».
-  "items": coalesce(
-    *[_id == "contactPage"][0].faq.items[]->${FAQ_FIELDS},
-    *[_type == "faqItem"] | order(order asc)${FAQ_FIELDS}
-  )
+  "items": ${orderedListQuery("faqItem", "contactPage", "faq.items", FAQ_FIELDS)}
 }`;
 
 /** Réponse en texte enrichi → morceaux de texte et liens (les paragraphes sont mis bout à bout). */
@@ -82,7 +79,7 @@ type Remote = {
         faq?: ({ image?: Partial<SanityImage> | null } & Record<string, unknown>) | null;
       } & Record<string, unknown>)
     | null;
-  items: ({ question?: string; answer?: PortableBlock[] } | null)[] | null;
+  items: { refs: string[] | null; docs: ({ _id: string; question?: string; answer?: PortableBlock[] } | null)[] | null } | null;
 };
 
 /** Page Contact et FAQ. */
@@ -107,9 +104,9 @@ export async function getContactPage(): Promise<ContactContent> {
     faq: {
       ...merged.faq,
       image: imageOrUndefined(page?.faq?.image),
-      items: (remote?.items ?? [])
+      items: orderByPageList(remote?.items ?? null)
         .filter((it) => it?.question)
-        .map((it) => ({ question: it!.question!, answer: answerParts(it!.answer) })),
+        .map((it) => ({ question: it.question!, answer: answerParts(it.answer) })),
     },
   };
 }

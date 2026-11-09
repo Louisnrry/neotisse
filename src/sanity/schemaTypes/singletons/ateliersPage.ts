@@ -35,7 +35,8 @@ export const ateliersPage = defineType({
       name: "workshops",
       title: "Ateliers affichés",
       type: "array",
-      description: "L’ordre de cette liste détermine l’ordre des ateliers sur la page.",
+      description:
+        "Facultatif, pour choisir l’ordre : faites glisser les ateliers. Tous les ateliers publiés s’affichent ; ceux qui ne sont pas dans cette liste viennent à la suite, selon leur « Ordre d’affichage ».",
       of: [defineArrayMember({ type: "reference", to: [{ type: "workshop" }] })],
       validation: (rule) => rule.min(1),
     }),

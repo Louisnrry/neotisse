@@ -1,5 +1,6 @@
 import { EMPTY_LINK, withDefaults } from "../lib/fallback";
 import { fetchSanity } from "../lib/live";
+import { orderByPageList, orderedListQuery } from "../lib/ordering";
 import { blockText, type PortableBlock } from "../lib/portableText";
 import type { ContentImage, EngagementTone, Link, TeamMember } from "../types";
 import { IMAGE, imageOrUndefined, SEO, stripNulls, type SanityImage, type Seo } from "./fragments";
@@ -16,11 +17,7 @@ const A_PROPOS_QUERY = `{
     team{ title },
     cta{ title, text, button{ label, href } }
   },
-  // Ordre choisi sur la page À propos (glisser-déposer) ; sinon le champ « Ordre d’affichage ».
-  "members": coalesce(
-    *[_id == "aProposPage"][0].team.members[]->${MEMBER_FIELDS},
-    *[_type == "teamMember"] | order(order asc)${MEMBER_FIELDS}
-  )
+  "members": ${orderedListQuery("teamMember", "aProposPage", "team.members", MEMBER_FIELDS)}
 }`;
 
 export type Engagement = { tone: EngagementTone; title: string; tagline: string; text: string };
@@ -50,6 +47,7 @@ const EMPTY: Omit<AProposContent, "team" | "demarche" | "mediation"> & {
 };
 
 type RemoteMember = {
+  _id: string;
   name?: string;
   role?: string | null;
   bio?: PortableBlock[] | null;
@@ -64,7 +62,7 @@ type RemoteSection = ({ image?: Partial<SanityImage> | null } & Record<string, u
 export async function getAProposPage(): Promise<AProposContent> {
   const remote = await fetchSanity<{
     page: ({ demarche?: RemoteSection; mediation?: RemoteSection; engagements?: Record<string, unknown> | null } & Record<string, unknown>) | null;
-    members: (RemoteMember | null)[] | null;
+    members: { refs: string[] | null; docs: (RemoteMember | null)[] | null } | null;
   }>(A_PROPOS_QUERY);
   const r = remote?.page;
   const merged = withDefaults(r, EMPTY);
@@ -73,7 +71,7 @@ export async function getAProposPage(): Promise<AProposContent> {
     .filter((it) => it?.title)
     .map((it) => withDefaults(it, { tone: "garance" as EngagementTone, title: "", tagline: "", text: "" }));
 
-  const members: TeamMember[] = (remote?.members ?? [])
+  const members: TeamMember[] = orderByPageList(remote?.members ?? null)
     .filter((m): m is RemoteMember & { name: string } => Boolean(m?.name))
     .map(({ bio, photo, photoTone, link, ...m }) =>
       stripNulls({

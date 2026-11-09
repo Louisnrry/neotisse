@@ -90,6 +90,8 @@ export const contactPage = defineType({
         defineField({
           name: "items",
           title: "Questions",
+          description:
+            "Facultatif, pour choisir l’ordre : faites glisser les questions. Toutes les questions publiées s’affichent ; celles qui ne sont pas dans cette liste viennent à la suite, selon leur « Ordre d’affichage ».",
           type: "array",
           of: [defineArrayMember({ type: "reference", to: [{ type: "faqItem" }] })],
           validation: (rule) => rule.min(1),

@@ -94,6 +94,8 @@ export const aProposPage = defineType({
         defineField({
           name: "members",
           title: "Membres",
+          description:
+            "Facultatif, pour choisir l’ordre : faites glisser les membres. Tous les membres publiés s’affichent ; ceux qui ne sont pas dans cette liste viennent à la suite, selon leur « Ordre d’affichage ».",
           type: "array",
           of: [defineArrayMember({ type: "reference", to: [{ type: "teamMember" }] })],
           validation: (rule) => rule.min(1),

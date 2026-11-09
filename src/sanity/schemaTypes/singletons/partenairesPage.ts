@@ -28,7 +28,8 @@ export const partenairesPage = defineType({
       name: "partners",
       title: "Partenaires affichés",
       type: "array",
-      description: "L’ordre de cette liste détermine l’ordre des cartes sur la page.",
+      description:
+        "Facultatif, pour choisir l’ordre : faites glisser les partenaires. Tous les partenaires publiés s’affichent ; ceux qui ne sont pas dans cette liste viennent à la suite, selon leur « Ordre d’affichage ».",
       of: [defineArrayMember({ type: "reference", to: [{ type: "partner" }] })],
       validation: (rule) => rule.min(1),
     }),
