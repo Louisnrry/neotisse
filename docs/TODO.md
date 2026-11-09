@@ -49,9 +49,11 @@
   - Textes repris du WordPress (page 201) dans `src/content/confidentialite.ts`, mis à jour pour la V2 (voir CLAUDE.md § 0)
   - Comparée à la V1 à 1024px (positions identiques à 1px près) et à 375px (pas de débordement)
 
+- [x] **Bandeau cookies / « Gérer mes cookies »** (09/11) : copie du bandeau Complianz de la V1 (textes, mesures, Personnaliser avec Fonctionnel et Statistiques), rouvert par le lien du pied de page ; choix gardé 365 jours ; GA4 chargé seulement après acceptation
+  - Comparé à la V1 à 1440px (positions et hauteurs identiques au pixel, vue simple et vue Personnaliser) et à 375px (pas de débordement)
+
 ### À faire (design)
 - [ ] Cartes « À venir », calendrier mensuel et modale événement
-- [ ] Bandeau de cookies sur mesure (§ 7.5) : le lien « Gérer mes cookies » émet déjà l’événement `neotisse:open-cookie-banner`
 - [ ] Construire les pages : Calendrier
 - [ ] Récupérer les textes de chaque page depuis le WordPress (MCP Novamira)
 - [ ] Comparer chaque page avec la V1 à 375, 768 et 1440px
@@ -86,6 +88,8 @@
 - [ ] Politique de confidentialité complète : fonction de Marie-Salomé, siège, lieu et durée de conservation des sauvegardes (encore « [À COMPLÉTER] ») ; nommer le prestataire d’e-mails et confirmer Google Analytics une fois choisis ; mettre à jour la date en haut de page
 
 ## Questions ouvertes
+- Cookies : la V1 affiche le bandeau alors qu’aucun traceur n’est actif (GA non configuré) ; CLAUDE.md § 7.5 dit de ne pas l’afficher dans ce cas. La V2 suit la V1 : à trancher quand les statistiques seront décidées
+- Cookies : sur la V1 le titre du bandeau disparaît sous 426px et « Toujours activé » est en vert (réglages par défaut de Complianz) : reproduits tels quels, à corriger ?
 - Contact : le téléphone (06 48 65 58 16, Marie-Salomé) est affiché sur la V1 mais absent de `siteSettings` (CLAUDE.md § 8 ne prévoit que `legal.phone`) : à ajouter au schéma
 - Contact : le texte d’intro est à 1.1rem fixe, la V1 le rend « fluide » (plus petit sur mobile)
 - Photos des ateliers démonstratifs, enfants, conférences et expérimentation : à fournir (cadres provisoires, seule la photo de l'atelier participatif existe)

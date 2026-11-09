@@ -72,6 +72,8 @@
 
 - Politique de confidentialité (V1, page 201) : même en-tête que les mentions légales ; corps en 760px : intro, « Sommaire » (H2 1.2rem fluide, 40px au-dessus) puis liste numérotée (interligne 1.9, liens encre soulignés d’un filet garance de 1px, garance au survol), 9 H2 numérotés à **56px** au-dessus, H3 en 1.35rem fluide à 32px, listes à puces (retrait 40px, 8px entre éléments). Écarts de contenu voulus pour la V2 : hébergeur **Netlify** (États-Unis, d’où un transfert hors UE) au lieu d’OVH ; **Sanity** (avis) et le prestataire d’e-mails ajoutés aux destinataires ; cookie de consentement `neotisse_consent` (12 mois) au lieu de Complianz ; cookies de commentaires WordPress et stockage des émojis retirés ; accès au Studio au lieu de l’administration WordPress ; représentante « Marie-Salomé Perrichon » renseignée. Les champs inconnus restent en « [À COMPLÉTER : …] ».
 
+- Cookies (V1 : bandeau Complianz, pas de page dédiée) : « Gérer mes cookies » **rouvre le bandeau**. La V1 l’affiche même sans traceur actif et garde le choix **365 jours** (et non 6 mois) : la V2 fait pareil. Catégories visibles : Fonctionnel (toujours activé) et Statistiques seulement. Le titre est masqué sous 426px et « Toujours activé » est en vert, comme la V1. Détails : `docs/DESIGN.md` § 9 octies.
+
 ### Contenus provisoires
 
 Tant que le site n’est pas branché sur Sanity, les contenus sont dans `src/content/*.ts` (repris de la V1), chacun marqué `TODO(sanity)`. Les composants n’y accèdent que par ces modules : il suffira de remplacer les fonctions (`getNextEvent`, `getLatestReviews`…) par des requêtes GROQ.
@@ -333,7 +335,7 @@ Règles générales :
   - Titre « Cookies & confidentialité » (Cormorant 700, ~1.55rem).
   - Texte : « Nous utilisons des cookies de mesure d’audience pour comprendre comment le site est utilisé. Vous pouvez accepter, refuser ou personnaliser vos choix à tout moment. »
   - Boutons **« Accepter »** (plein garance) et **« Refuser »** (contour garance, se remplit au survol) **de même taille** ; **« Personnaliser »** en lien souligné → interrupteurs par catégorie (Fonctionnel : toujours actif ; Statistiques : désactivé par défaut), bouton « Enregistrer mes choix ».
-  - Choix mémorisé **6 mois** (13 mois max), puis redemandé.
+  - Choix mémorisé **365 jours** comme la V1 (13 mois max), puis redemandé.
 - **Google Analytics 4** chargé **uniquement après acceptation** de « Statistiques » (aucune requête Google avant). Cookie `_ga` limité à 13 mois. ID GA dans les variables d’environnement.
 - Lien **« Gérer mes cookies »** dans le pied de page qui rouvre le bandeau.
 - Si aucun traceur n’est actif, ne pas afficher le bandeau.

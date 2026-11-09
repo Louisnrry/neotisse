@@ -29,6 +29,7 @@ Aperçu de tous les éléments : page **`/styleguide`** (non indexée).
 | Styles de l'intro, du héro et du bandeau défilant | `src/app/globals.css` (`@layer components`) |
 | Champs de formulaire, case à cocher, message, mention RGPD | `src/components/ui/Field.tsx` |
 | En-tête, pied de page | `src/components/layout/Header.tsx`, `Footer.tsx` |
+| Bandeau cookies, chargement des statistiques | `src/components/layout/CookieBanner.tsx`, `Analytics.tsx`, `src/lib/consent.ts` (voir § 9 octies) |
 
 Tailwind v4 : **il n'y a pas de `tailwind.config.ts`**. Les tokens sont déclarés en CSS dans `@theme` et génèrent les classes (`bg-garance`, `text-h2`, `px-s50`, `max-w-wide`…). Les palettes Tailwind par défaut sont **désactivées** (`--color-*: initial`) : seules les couleurs de la charte existent.
 
@@ -270,6 +271,20 @@ Textes dans `src/content/confidentialite.ts` (provisoire, en attendant Sanity). 
 | Sommaire | `<nav>` : H2 « Sommaire » `text-lead` à 40px au-dessus, liste numérotée (retrait 1.4em, interligne 1.9, 8px entre éléments) ; liens encre **sans soulignement**, filet garance de 1px en bas, garance au survol et au focus. |
 | Sections | H2 numérotés `clamp(1.5rem,2.4vw,1.9rem)` à 56px au-dessus (ancres `#responsable`… `#modifications`), H3 1.35rem fluide à 32px, listes à puces retrait 40px, 8px entre éléments. |
 | Gérer mes cookies | `confidentialite/CookieSettingsInline.tsx` : bouton dans le texte, style de lien (garance souligné), rouvre le bandeau via `reopenConsent()`. |
+
+## 9 octies. Bandeau cookies (« Gérer mes cookies »)
+
+Copie du bandeau **Complianz de la V1** (mêmes textes, mêmes mesures : hauteurs identiques au pixel à 1440px, vue simple 242px, vue « Personnaliser » 349px). Textes dans `src/content/cookies.ts`. Affiché sur toutes les pages tant qu’aucun choix n’est enregistré ; le lien « Gérer mes cookies » du pied de page le rouvre et met le focus sur « Accepter ».
+
+| Élément | Détails |
+|---|---|
+| Encart | Fixe en bas à gauche (10px des bords), fond crème, filet garance 4px en haut, angles droits, ombre `rgba(0,0,0,.19) 0 10px 20px, rgba(0,0,0,.23) 0 6px 6px`, padding 24px 24px 20px, écart 10px entre les lignes, 440px de large minimum (499px réels, imposés par l’en-tête 100px / titre / 100px). Sous 768px : pleine largeur, collé en bas, boutons empilés. |
+| Titre | « Cookies & confidentialité », Cormorant 700 1.55rem, interligne 1.1, centré. **Masqué sous 426px**, comme la V1. |
+| Texte | 14px, interligne 1.6, 398px de large au-dessus de 768px. |
+| Boutons | 45px de haut, 15px Quicksand 500, interlettrage 0.04em, bordure 1px : « Accepter » plein garance (survol garance-dark), « Refuser » contour garance (se remplit au survol), « Personnaliser » souligné sans bordure (survol garance). Focus : contour encre 3px, décalage 2px. |
+| Personnaliser | Les catégories apparaissent en fondu (1s) : fond `rgba(239,239,239,.5)`, padding 10px, 10px entre elles ; titre 14px 500 ; « Toujours activé » 12px 500 **vert** (`#008000`, comme la V1) pour Fonctionnel ; interrupteur 28×15px (gris → garance, pastille crème) pour Statistiques ; chevron qui déplie la description (14px). « Personnaliser » laisse la place à « Enregistrer mes choix ». |
+| Choix | Cookie propriétaire `neotisse_consent` (JSON `{statistics, date}`), **365 jours** comme la V1. Refuser ou retirer son accord supprime les cookies `_ga`. |
+| Statistiques | `Analytics.tsx` charge GA4 seulement si « Statistiques » est accepté **et** si `NEXT_PUBLIC_GA_MEASUREMENT_ID` est renseigné (cookie `_ga` limité à 13 mois). Aucune requête Google avant. |
 
 ## 10. Accessibilité et mouvement
 

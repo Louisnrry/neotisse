@@ -1,3 +1,5 @@
+import { Analytics } from "@/components/layout/Analytics";
+import { CookieBanner } from "@/components/layout/CookieBanner";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 
@@ -15,6 +17,8 @@ export default function SiteLayout({ children }: LayoutProps<"/">) {
         {children}
       </main>
       <Footer />
+      <CookieBanner />
+      <Analytics />
     </>
   );
 }
