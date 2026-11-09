@@ -11,6 +11,7 @@
   "dependencies": {
     "@sanity/icons": "^5.3.0",
     "@sanity/image-url": "^2.1.1",
+    "@sanity/locale-fr-fr": "^1.2.37",
     "@sanity/vision": "^5.31.2",
     "next": "16.4.5",
     "next-sanity": "^13.4.0",

@@ -382,6 +382,7 @@ page (singletons : home, ateliers, calendrier, partenaires, livreDor, aPropos, c
 **Implémentation (09/11/2026)** :
 
 - Configuration du Studio : `sanity.config.ts` ; schémas : `src/sanity/schemaTypes/` ; navigation en français : `src/sanity/structure.ts` ; route Next.js : `src/app/studio/[[...tool]]/page.tsx`.
+- Interface de travail traduite en français avec le plugin `@sanity/locale-fr-fr`.
 - Les pages et les réglages sont des **singletons** : un seul document par type, avec un identifiant fixe égal au nom du type (`siteSettings`, `homePage`…). Le menu « Créer » ne les propose pas et les actions « Supprimer » / « Dupliquer » sont masquées.
 - Les listes ordonnées (tuiles d’ateliers de l’accueil, ateliers, partenaires, équipe, questions) utilisent des **références Sanity** : l’ordre se règle en faisant glisser les éléments dans le Studio.
 - Modération des avis : Studio → **Avis → À modérer** (statut `pending`), puis passage en `approved` ou `rejected`.

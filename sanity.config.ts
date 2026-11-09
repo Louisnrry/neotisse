@@ -5,6 +5,7 @@
  * Le Studio est disponible sur /studio.
  */
 
+import { frFRLocale } from '@sanity/locale-fr-fr'
 import { visionTool } from '@sanity/vision'
 import { defineConfig } from 'sanity'
 import { structureTool } from 'sanity/structure'
@@ -33,6 +34,7 @@ export default defineConfig({
         : prev,
   },
   plugins: [
+    frFRLocale(),
     structureTool({ structure }),
     // Vision permet d’interroger le contenu avec GROQ depuis le Studio.
     // https://www.sanity.io/docs/the-vision-plugin

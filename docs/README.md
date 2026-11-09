@@ -24,6 +24,7 @@ Au premier lancement, copier `.env.example` vers `.env.local` et renseigner les 
 - URL locale : http://localhost:3000/studio
 - Connexion avec le compte Google utilisé pour créer le projet Sanity.
 - Les pages et les réglages sont des documents uniques : les remplir puis cliquer sur **Publier**.
+- L’interface de travail est en français (plugin `@sanity/locale-fr-fr`).
 - Les avis se modèrent dans **Avis → À modérer** (passer le statut en `approved` puis publier).
 
 ## Commandes
