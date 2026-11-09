@@ -37,10 +37,14 @@
   - Textes, téléphone et SEO repris du WordPress (page 11) dans `src/content/contact.ts`
   - Comparée à la V1 à 1024px (positions identiques à quelques pixels près) et à 375px (pas de débordement)
 
+- [x] **Page Livre d’or** (09/11) : note moyenne, avis 5 par 5 avec « Plus d’avis », formulaire « Signer le livre d’or » (note en étoiles accessible, validation côté client, champ piège, délai de 2s), mention RGPD
+  - Textes et SEO repris du WordPress (page 126) dans `src/content/livre-dor.ts`
+  - Comparée à la V1 à 1440px et à 375px (pas de débordement)
+
 ### À faire (design)
 - [ ] Cartes « À venir », calendrier mensuel et modale événement
 - [ ] Bandeau de cookies sur mesure (§ 7.5) : le lien « Gérer mes cookies » émet déjà l’événement `neotisse:open-cookie-banner`
-- [ ] Construire les pages : Calendrier, Livre d’or, Mentions légales, Politique de confidentialité
+- [ ] Construire les pages : Calendrier, Mentions légales, Politique de confidentialité
 - [ ] Récupérer les textes de chaque page depuis le WordPress (MCP Novamira)
 - [ ] Comparer chaque page avec la V1 à 375, 768 et 1440px
 
@@ -53,7 +57,7 @@
 
 ## Phase 3 : fonctionnalités (plus tard)
 - [ ] Formulaire de contact : brancher `ContactForm` sur une route API (e-mail, validation serveur) ; aujourd’hui la confirmation s’affiche sans rien envoyer
-- [ ] Livre d’or : soumission, modération dans Sanity, 5 avis par 5
+- [ ] Livre d’or : brancher `GuestbookForm` sur une route API (document `review` en `pending`, IP stockée côté serveur), modération dans Sanity ; aujourd’hui la confirmation s’affiche sans rien envoyer
 - [ ] Anti-spam : honeypot + délai minimal (limite par IP : à décider)
 - [ ] Statistiques (GA4 ou autre : à décider) chargées uniquement après consentement
 - [ ] SEO : métadonnées, Open Graph, sitemap, robots, JSON-LD
@@ -77,4 +81,5 @@
 - Photos de l’équipe et visuel 21/9 de la page À propos : aplats provisoires sur la V1, à fournir
 - Accueil : les textes à 1.2rem sont fixes, alors que la V1 les rend « fluides » (plus petits sur mobile) ; les passer au token `text-lead` ?
 - À propos : sur la V1, le titre « Notre équipe » touche la première photo (aucun espace) ; reproduit tel quel, à corriger ?
+- Livre d’or : la V1 publie les avis en balisage Schema.org (LocalBusiness + AggregateRating) ; Google ignore les avis « auto-hébergés » d’une organisation sur son propre site : garder un JSON-LD ou non ?
 - Année du © et du titre SEO du calendrier : à rendre dynamiques ? (le © l’est déjà)

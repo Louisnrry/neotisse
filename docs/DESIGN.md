@@ -23,6 +23,7 @@ Aperçu de tous les éléments : page **`/styleguide`** (non indexée).
 | Sections de l'accueil, intro animée | `src/components/home/*` (voir § 9 bis) |
 | Page Partenaires (carte partenaire) | `src/components/partenaires/PartnerCard.tsx` (voir § 9 quinquies) |
 | Page Contact (coordonnées, formulaire, FAQ) | `src/components/contact/*` (voir § 9 sexies) |
+| Page Livre d'or (liste des avis, formulaire) | `src/components/livre-dor/*` (voir § 9 septies) |
 | Icônes Instagram et Facebook | `src/components/ui/SocialIcons.tsx` (pied de page, page Contact) |
 | Page Ateliers (ligne d'atelier) | `src/components/ateliers/WorkshopRow.tsx` (voir § 9 ter) |
 | Styles de l'intro, du héro et du bandeau défilant | `src/app/globals.css` (`@layer components`) |
@@ -247,6 +248,16 @@ Textes dans `src/content/contact.ts` (provisoire, en attendant Sanity), espaces 
 | Coordonnées + formulaire | `page.tsx`, `ContactDetails.tsx` | Padding 80px / 112px. Grille 45 % / 55 %, écart 112px (une colonne sous **782px**, écart 56px). À gauche : H1 **à fil rouge** (pas à filets, comme la V1) `clamp(3rem,6vw,4.6rem)` interligne 1, texte 1.1rem (28px au-dessus, 40px dessous), liste de coordonnées (`<dl>`, filet encre en haut, lignes à filet `filet`, padding 18px, colonnes 130px / reste, une seule sous 521px ; libellés en petites capitales grises 0.78rem ; téléphone en 600 chiffres tabulaires + nom en gris ; Instagram et Facebook icône 24px + libellé, **sur une seule ligne** (écart 1.2rem, 1.2rem sous le haut de la ligne, comme la V1)), puis bouton `outline-thin` vers le livre d'or (32px au-dessus, 15px × 35px, interligne 1.65, comme la V1). À droite : H2 « Écrivez-nous » `clamp(1.6rem,2.4vw,2rem)` (28px dessous), formulaire, mention RGPD 1.2rem dessous. |
 | Formulaire | `ContactForm.tsx` | Écart 20px, 34px avant le bouton. Nom / Prénom sur 2 colonnes (une sous 521px), e-mail, objet, projet, bouton `large` « Envoyer ». Validation côté client au clic (focus sur le premier champ en erreur), champ piège + délai de 2s. Pour l'instant un envoi valide affiche directement « Merci, votre message est bien parti ! » (route API en phase 3). |
 | FAQ | `Faq.tsx` | 1.2rem sous la section précédente, padding 96px / 112px, écart 40px. Titre à filets (interlettrage 0.01em, comme la V1, au lieu des 0.06em des autres titres à filets), puis grille 36 % / 64 %, écart 80px (une colonne sous 782px) : photo 4/5 (`hero-tissage.jpg`) + texte d'intro à gauche ; accordéon `<details>` natif à droite : question Cormorant 700 1.35rem, padding 20px 44px 20px 0, « + » en deux traits garance 16×2px qui devient « − » (0.25s), question ouverte ou survolée en garance, filet encre au-dessus de la première, filets `filet` entre les autres ; réponse interligne 1.7, 64ch max. Balisage JSON-LD `FAQPage`. |
+
+## 9 septies. Livre d’or (`/livre-dor/`)
+
+Textes dans `src/content/livre-dor.ts`, avis dans `src/content/reviews.ts` (provisoire, en attendant Sanity). Comparée à la V1 à 1440px (en-tête, titre et note moyenne aux mêmes positions au pixel) et à 375px (pas de débordement).
+
+| Bloc | Composant | Détails |
+|---|---|---|
+| Page | `page.tsx` | Une colonne de 860px, padding 72px / 112px, écart 28px. H1 à filets, intro centrée `text-lead`, H2 à fil rouge à gauche 48px puis 64px sous le bloc précédent. |
+| Avis | `livre-dor/ReviewList.tsx` | Ligne « Note moyenne : ★★★★★ N avis » (0.85rem 600, filet encre en bas, padding 14px / 18px). Chaque avis : padding 22px, filet `filet` en bas ; étoiles + date + « par **Nom** » en 0.85rem gris ; titre Cormorant 1.5rem (8px dessus) ; texte avec liseré garance 3px, padding gauche 20px, interligne 1.7 (12px dessus). **5 par 5** : bouton « Plus d’avis » centré 32px dessous (contour 1px garance, Quicksand 700 0.95rem, interlettrage 0.04em, padding 14px 28px, se remplit au survol), le focus passe au premier avis ajouté. |
+| Formulaire | `livre-dor/GuestbookForm.tsx` | Carte à filet rouge, padding `clamp(24px,4vw,40px)`, titre « Laisser un avis » Cormorant 700 `clamp(1.6rem,2.4vw,2rem)`. Nom / E-mail sur 2 colonnes (une sous 561px), titre, **note** (5 boutons radio natifs masqués sous des étoiles garance de 28px, survol qui prévisualise, contour garance au focus clavier), avis, case anti-robot, bouton `large` « Envoyer ». Validation côté client, champ piège + délai de 2s. Mention RGPD 60px sous la carte, sur toute la largeur (comme la V1). |
 
 ## 10. Accessibilité et mouvement
 

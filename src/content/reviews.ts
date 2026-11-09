@@ -51,6 +51,11 @@ export const reviews: Review[] = [
   { id: "129", name: "louis", title: "INCROYABLE", rating: 5, text: "j'ai adoré", createdAt: "2026-11-03" },
 ];
 
+/** Tous les avis approuvés, du plus récent au plus ancien (page Livre d’or). */
+export function getReviews() {
+  return reviews;
+}
+
 /** Les `count` avis les plus récents (l’ordre du tableau est déjà antéchronologique). */
 export function getLatestReviews(count: number) {
   return reviews.slice(0, count);
