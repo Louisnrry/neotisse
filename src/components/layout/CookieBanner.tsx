@@ -117,7 +117,7 @@ function Banner({
 
 // Boutons : mesures du bandeau de la V1 (45px de haut, 15px, 500, interlettrage 0.04em, bordure 1px).
 const btn =
-  "min-h-[45px] w-full cursor-pointer border p-[10px] text-center text-[15px] leading-[20px] font-medium tracking-[0.04em] whitespace-nowrap transition-colors duration-200 focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ink";
+  "min-h-[45px] w-full cursor-pointer rounded-[4px] border p-[10px] text-center text-[15px] leading-[20px] font-medium tracking-[0.04em] whitespace-nowrap transition-colors duration-200 focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-ink";
 const accept = "border-garance bg-garance text-creme hover:border-garance-dark hover:bg-garance-dark";
 const deny = "border-garance bg-creme text-garance hover:bg-garance hover:text-creme";
 const settings = "border-creme bg-creme text-ink";

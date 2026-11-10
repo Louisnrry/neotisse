@@ -51,7 +51,10 @@ export function buttonClasses({ variant = "primary", size = "default", className
     sizeClasses = "px-[35px] py-[15px] text-button";
     leading = "leading-[1.65]";
   }
-  return cn(base, leading, variants[variant], sizeClasses, className);
+  // Coins arrondis de 4px sur tous les boutons (demande de Louis du 10/11/2026),
+  // sauf si `className` impose son propre rayon (bouton « Contact » de la navbar : 16px).
+  const radius = className?.includes("rounded-") ? undefined : "rounded-[4px]";
+  return cn(base, leading, radius, variants[variant], sizeClasses, className);
 }
 
 export function Button(props: ButtonAsLink | ButtonAsButton) {

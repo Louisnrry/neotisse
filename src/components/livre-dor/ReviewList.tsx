@@ -115,7 +115,7 @@ export function ReviewList({
             <button
               type="button"
               onClick={showMore}
-              className="cursor-pointer border border-garance px-7 py-3.5 font-sans text-[0.95rem] leading-none font-bold tracking-[0.04em] text-garance transition-colors duration-200 hover:bg-garance hover:text-blanc"
+              className="cursor-pointer rounded-[4px] border border-garance px-7 py-3.5 font-sans text-[0.95rem] leading-none font-bold tracking-[0.04em] text-garance transition-colors duration-200 hover:bg-garance hover:text-blanc"
             >
               {moreLabel}
             </button>

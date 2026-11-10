@@ -344,14 +344,14 @@ function EventDialog({
                   href={e.placeUrl}
                   target="_blank"
                   rel="noopener"
-                  className="inline-block bg-garance px-[1.5em] py-[0.8em] font-semibold text-creme no-underline transition-colors duration-200 hover:bg-garance-dark hover:text-blanc"
+                  className="inline-block rounded-[4px] bg-garance px-[1.5em] py-[0.8em] font-semibold text-creme no-underline transition-colors duration-200 hover:bg-garance-dark hover:text-blanc"
                 >
                   {e.placeUrlLabel ?? "Site du lieu"} ↗<span className="sr-only"> (nouvel onglet)</span>
                 </a>
               )}
               <Link
                 href={contact.href}
-                className="inline-block border-2 border-ink px-[1.5em] py-[0.8em] font-semibold text-ink no-underline transition-colors duration-200 hover:bg-ink hover:text-blanc"
+                className="inline-block rounded-[4px] border-2 border-ink px-[1.5em] py-[0.8em] font-semibold text-ink no-underline transition-colors duration-200 hover:bg-ink hover:text-blanc"
               >
                 {contact.label}
               </Link>
