@@ -130,7 +130,7 @@ export function Header() {
     >
       <div
         className={cn(
-          "mx-auto grid max-w-wide grid-cols-[1fr_auto_1fr] items-center gap-6 rounded-[24px] border px-3 py-2.5",
+          "mx-auto grid max-w-wide grid-cols-[1fr_auto_1fr] items-center gap-6 rounded-[24px] border px-3 py-2.5 nav:w-fit",
           "transition-[background-color,border-color,box-shadow] duration-[350ms] nav:gap-14 nav:px-6 nav:py-3",
           transparent
             ? "border-transparent bg-transparent"
@@ -138,7 +138,7 @@ export function Header() {
         )}
       >
         {/* Liens de gauche (grand écran) */}
-        <nav aria-label="Navigation principale, début" className="hidden justify-self-end nav:block">
+        <nav aria-label="Navigation principale, début" className="hidden justify-self-start nav:block">
           <ul className="flex items-center gap-9">
             {leftNav.map((item) => (
               <li key={item.href}>
