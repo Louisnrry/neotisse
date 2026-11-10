@@ -258,7 +258,7 @@ Règles générales :
 2. **« Ils nous ont fait confiance »** : section fond rouge, titre à filets crème, bandeau de logos défilant, bouton « Découvrir tous nos partenaires ».
 3. **« Découvrez l’univers Néotisse »** (titre à filets, en paragraphe) puis H2 avec fil rouge « Néotisse : l’art de faire revivre un savoir-faire », texte, photo décalée, bouton « Connaître notre histoire ».
 4. **« Tenez-vous au courant des prochains événements »** : section fond rouge, titre à filets crème ; **prochain événement dynamique** (§ 7.1) : grande date en Cormorant (`clamp(2.2rem,4.5vw,3.4rem)`), titre H2 crème, lieu (600), extrait, bouton « Voir tous nos événements » ; à droite l’image de l’événement au format **4/5** (aplat `garance-dark` tramé si pas d’image). Sans événement à venir : « Pas d’événement programmé pour le moment, revenez bientôt ! » + bouton.
-5. **« Nos ateliers de médiation textile »** : titre à filets, texte d’intro, puis les ateliers choisis dans Sanity. **Refait le 10/11/2026** d’après une maquette de Louis (écart voulu avec la V1 et sa mosaïque de 3 tuiles) : section **épinglée** au défilement, un atelier à la fois (compteur, titre à fil rouge, accroche de l’atelier, lien « Découvrir l’atelier → » à gauche ; carte photo ou aplat 4/3 sans cadre à droite), texte et carte qui apparaissent en fondu en remontant légèrement, **fil vertical en 3 parties** qui suit le défilement ; empilés sous 900px. Détails : `docs/DESIGN.md` § 9 bis. Puis « Et bien plus encore à découvrir » + bouton « Voir tous nos ateliers ».
+5. **« Nos ateliers de médiation textile »** : titre à filets, texte d’intro, puis les ateliers choisis dans Sanity. **Refait le 10/11/2026** d’après une maquette de Louis (écart voulu avec la V1 et sa mosaïque de 3 tuiles) : section **épinglée** au défilement, un atelier à la fois (compteur, titre à fil rouge, accroche de l’atelier, lien « Découvrir l’atelier → » à gauche ; carte photo ou aplat sans cadre, haute (74 % de l’écran), coins arrondis 8px, à droite), texte et carte qui apparaissent en fondu en remontant légèrement, **fil vertical en 3 parties** qui suit le défilement ; empilés sous 900px. Détails : `docs/DESIGN.md` § 9 bis. Puis « Et bien plus encore à découvrir » + bouton « Voir tous nos ateliers ».
 6. **« Ils nous ont laissé un mot »** : titre à filets, **4 derniers avis approuvés** sur une ligne (2 colonnes < 1100px, 1 < 640px), cartes blanches à filet rouge en haut, titre de l’avis en Cormorant, étoiles, texte avec liseré gauche `garance` ; bouton « Lire tout le livre d’or ».
 7. **« Contact »** : titre à filets, texte d’invitation, bouton « Prenez contact ».
 
@@ -461,7 +461,7 @@ page (singletons : home, ateliers, calendrier, partenaires, livreDor, aPropos, c
 
 ## 12. Ce qu’il ne faut pas faire
 
-- Pas de `border-radius` (seule exception : la navbar flottante et son bouton « Contact », voir § 5.1), pas d’ombres portées décoratives sur les tuiles (retirées volontairement).
+- Pas de `border-radius` (exceptions : la navbar flottante et son bouton « Contact », voir § 5.1 ; les cartes des ateliers de l’accueil, 8px, voir § 6.1), pas d’ombres portées décoratives sur les tuiles (retirées volontairement).
 - Pas de Google Fonts distantes, pas de reCAPTCHA, pas de script tiers avant consentement.
 - Ne pas changer les URL existantes.
 - Ne pas exposer de token Sanity d’écriture côté client.

@@ -97,7 +97,8 @@ function Pinned({ tiles }: { tiles: HomeTile[] }) {
           </div>
 
           {/* Cartes : empilées, la suivante se pose sur la précédente en remontant */}
-          <div className="relative aspect-[4/3] w-full">
+          {/* Hauteur : 74 % de l’écran, entre 420 et 760px, pour laisser la place à la navbar */}
+          <div className="relative h-[clamp(420px,74svh,760px)] w-full">
             {tiles.map((tile, i) => {
               const state = i === active ? "in" : i < active ? "past" : "future";
               return (
@@ -163,7 +164,7 @@ function Stacked({ tiles }: { tiles: HomeTile[] }) {
     <ol className="grid gap-16 min-[900px]:hidden">
       {tiles.map((tile, i) => (
         <li key={tile.href} className="grid gap-7">
-          <motion.div {...reveal} className="relative aspect-[4/3] w-full">
+          <motion.div {...reveal} className="relative aspect-[4/5] w-full">
             <TileCard tile={tile} />
           </motion.div>
           <motion.div {...reveal}>
@@ -211,7 +212,7 @@ function TileText({
 /** Carte : photo de l’atelier, ou aplat de sa couleur. Cliquable (le lien du texte reste celui du clavier). */
 function TileCard({ tile }: { tile: HomeTile }) {
   return (
-    <Link href={tile.href} tabIndex={-1} aria-hidden="true" className="group absolute inset-0 block overflow-hidden">
+    <Link href={tile.href} tabIndex={-1} aria-hidden="true" className="group absolute inset-0 block overflow-hidden rounded-[8px]">
       {tile.image ? (
         <Image
           src={tile.image.src}
