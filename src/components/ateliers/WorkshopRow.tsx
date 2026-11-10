@@ -43,7 +43,7 @@ export function WorkshopRow({ workshop, reverse = false }: { workshop: Workshop;
         <TypeText className="mt-1.5 font-serif text-[1.5rem] font-semibold italic text-garance" value={subtitle} />
         <TypeText className="mt-[1.2rem] text-[1.22rem] leading-[1.55] font-medium" value={hook} />
 
-        <dl className="mt-[1.2rem] max-w-[600px] border-t border-ink">
+        <dl className="mt-[1.2rem] max-w-[600px]">
           {facts.map((f) => (
             <div
               key={f.label}
