@@ -46,7 +46,6 @@
   --text-h2: clamp(1.6rem, 0.9rem + 2.6vw, 2.5rem);
   --text-h3: clamp(1.3rem, 1rem + 1vw, 1.65rem);
   --text-hero: clamp(3.4rem, 10vw, 7.4rem);
-  --text-event-date: clamp(2.2rem, 4.5vw, 3.4rem);
   --text-kicker: 0.78rem;
   --text-small: 0.85rem;
   --text-legal: 0.88rem;
