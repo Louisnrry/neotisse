@@ -9,6 +9,7 @@ import { routes } from "@/lib/routes";
 import { pageMetadata } from "@/sanity/lib/metadata";
 import { getLivreDorPage } from "@/sanity/queries/livreDor";
 import { getReviews, reviewStats } from "@/sanity/queries/reviews";
+import { TypeText } from "@/components/ui/Reveal";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { seo } = await getLivreDorPage();
@@ -33,7 +34,7 @@ export default async function LivreDorPage() {
     <Section width="full" spacing="none" className="pt-[72px] pb-28">
       <div className="mx-auto grid max-w-[860px] gap-7">
         <RuledTitle as="h1">{title}</RuledTitle>
-        <p className="text-center text-lead">{intro}</p>
+        <TypeText className="text-center text-lead" value={intro} />
 
         <section aria-labelledby="avis-titre" className="mt-5 grid gap-7">
           <ThreadHeading id="avis-titre">{list.title}</ThreadHeading>

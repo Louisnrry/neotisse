@@ -26,7 +26,8 @@
 - [x] **Nouvelle navbar** (10/11) d’après la maquette Figma « navbar à faire » : barre flottante crème arrondie, « Néotisse » en Eagle Lake au centre, « Contact » à droite ; comportement conservé ; vérifiée à 1440, 1200 et 375px (mot centré, pas de débordement), menu burger (focus, Échap), accueil transparent avec texte crème lisible sur la photo
 - [x] **Titres en Eagle Lake** (10/11) : police auto-hébergée, tailles adaptées ; vérifié à 375px sur les 9 pages (aucun débordement, après correction du titre du mois du calendrier) et à 1440px
 - [x] **GSAP installé** (10/11) : `gsap` et `@gsap/react`, en plus de Motion et Lenis ; répartition et règles dans `docs/DESIGN.md` § 10 bis
-- [ ] **Animations du site** (prochain chantier) : brancher Lenis sur ScrollTrigger à la première animation au défilement
+- [x] **Animations d'apparition** (10/11) avec Motion : titres (mots en fondu + filets et fil rouge qui s'étendent), images (fondu et montée), paragraphes courts écrits lettre par lettre ; une fois par élément, reduced-motion et sans-JS gérés ; vérifié à 1440 et 375px (aucun débordement sur les 9 pages)
+- [ ] Si une animation GSAP ScrollTrigger est ajoutée : brancher Lenis dessus (voir `docs/DESIGN.md` § 10 bis)
 - [x] Bouton « Écrivez-nous » du pied de page de nouveau lisible (il était crème sur crème)
 - [x] URL avec barre finale, identiques à la V1 (`trailingSlash: true`)
 - [x] **Page Ateliers** (09/11) : en-tête avec index d'ancres, 5 ateliers en alternance (repères, textes complets), bloc rouge « Des ateliers de tissage adaptés à vos projets » ; textes et SEO repris du WordPress (`src/content/ateliers.ts`) ; comparée à la V1 à 1440 et 375px
@@ -110,6 +111,7 @@
 - [ ] Politique de confidentialité complète : fonction de Marie-Salomé, siège, lieu et durée de conservation des sauvegardes (encore « [À COMPLÉTER] ») ; nommer le prestataire d’e-mails et confirmer Google Analytics une fois choisis ; mettre à jour la date en haut de page
 
 ## Questions ouvertes
+- Titres à filets sur mobile : un titre trop long pour sa ligne (« Politique de confidentialité » à 375px) perd ses filets (largeur 0), déjà le cas avant les animations
 - Boutons pleins : les boutons WordPress de la V1 (ex. « Programmer un atelier ») ont un interligne de 1.65 (52px de haut), le `<Button>` de la V2 1.3 (46px) : aligner sur la V1 partout ?
 - Calendrier : le CSS de la V1 limite la liste « À venir » à 880px mais WordPress l’affiche sur 1040px ; la V2 reproduit l’affichage réel
 - Cookies : la V1 affiche le bandeau alors qu’aucun traceur n’est actif (GA non configuré) ; CLAUDE.md § 7.5 dit de ne pas l’afficher dans ce cas. La V2 suit la V1 : à trancher quand les statistiques seront décidées

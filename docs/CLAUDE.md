@@ -62,6 +62,7 @@
 - Intro animée : **écart volontaire avec la V1** depuis le 10/11/2026 (décision de Louis) : « Néotisse » en Eagle Lake qui s’écrit à la plume avec Motion (voir § 5.2), au lieu du mot en Cormorant qui apparaît en fondu.
 - Défilement doux avec **Lenis** (ajout du 10/11/2026, demande de Louis ; la V1 n’en avait pas) : inertie légère, molette et pavé tactile seulement, défilement natif au doigt. Détails dans `docs/DESIGN.md` § 10.
 - Navbar : **écart volontaire avec la V1** depuis le 10/11/2026 (maquette Figma « navbar à faire ») : barre flottante crème arrondie, « Néotisse » en Eagle Lake au centre, bouton « Contact » au lieu de « Prenez contact ». Les coins arrondis sont la seule exception à la règle des angles droits (§ 12).
+- **Animations d'apparition au défilement** : **écart volontaire avec la V1** depuis le 10/11/2026 (demande de Louis), avec Motion : mots des titres qui montent en fondu pendant que les filets et le fil rouge s'étendent lentement, images en fondu et montée de 24px, paragraphes courts écrits lettre par lettre (1,2 s au plus). Une seule fois par élément. Détails dans `docs/DESIGN.md` § 10 ter.
 - Titres : **Eagle Lake** au lieu de Cormorant Garamond depuis le 10/11/2026 (demande de Louis). Cormorant reste pour la navigation, les **titres des avis** (accueil et livre d’or), les sous-titres et citations en italique, les grands chiffres de dates et les questions de la FAQ. Tailles de titres réduites d’environ 15 %. Détails dans `docs/DESIGN.md` § 3.
 
 - À propos (V1, page 19) : pas de citation isolée. L’ordre réel est : en-tête (H1 à filets, sous-titre, texte) ; « Notre démarche… » (photo 4/5 + texte avec la phrase en exergue « C’est de ce constat qu’est née Néotisse. ») ; « Nos engagements… » (3 cartes, décalages de 48 et 96px seulement à partir de 900px) ; « Une médiation… par le geste et la matière » (visuel 21/9 et encart blanc qui le chevauche, avec une ombre douce) ; « Notre équipe » (fond pierre, rôle « Co-créatrice de Néotisse » pour les deux) ; « Travaillons ensemble » (fond garance). Les titres à fil rouge y sont alignés à gauche.
@@ -244,6 +245,7 @@ Règles générales :
 - **Tuiles ateliers** (accueil) : entièrement cliquables, **léger zoom (scale 1.03) au survol, sans ombre**.
 - **Cartes « À venir »** (calendrier) : bordure `garance` + translateX(4px) au survol ; « En savoir plus → » dont la flèche avance de 4px.
 - **Logos / cartes partenaires** : bordure `filet` → `garance` au survol.
+- **Apparition au défilement** (10/11/2026, voir § 0 et `docs/DESIGN.md` § 10 ter) : titres (mots + filets / fil rouge qui s'étendent), images (fondu et montée), paragraphes courts écrits lettre par lettre.
 - Toutes les animations respectent `prefers-reduced-motion`.
 
 ---

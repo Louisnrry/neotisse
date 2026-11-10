@@ -3,6 +3,7 @@ import { ThreadHeading } from "@/components/ui/Typography";
 import type { EngagementTone } from "@/sanity/types";
 import { getAProposPage } from "@/sanity/queries/aPropos";
 import { cn } from "@/lib/cn";
+import { TypeText } from "@/components/ui/Reveal";
 
 const cardTones: Record<EngagementTone, { card: string; tagline: string }> = {
   garance: { card: "bg-garance text-creme", tagline: "text-creme" },
@@ -19,7 +20,7 @@ export async function Engagements() {
     <Section spacing="none" className="mt-[1.2rem] py-24" labelledBy="engagements-titre">
       <div className="grid gap-6">
         <ThreadHeading id="engagements-titre">{title}</ThreadHeading>
-        <p className="text-center text-lead">{intro}</p>
+        <TypeText className="text-center text-lead" value={intro} />
       </div>
       <ul className="mt-8 grid items-start gap-[30px] md:grid-cols-3 md:gap-6">
         {items.map((item) => (
@@ -33,7 +34,7 @@ export async function Engagements() {
             >
               {item.tagline}
             </p>
-            <p>{item.text}</p>
+            <TypeText value={item.text} />
           </li>
         ))}
       </ul>

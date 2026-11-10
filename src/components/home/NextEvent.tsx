@@ -8,6 +8,7 @@ import { eventTeaser } from "@/lib/events";
 import { getAllEvents, upcomingEvents } from "@/sanity/queries/events";
 import { getHomePage } from "@/sanity/queries/home";
 import { formatEventDates } from "@/lib/dates";
+import { RevealImage, TypeText } from "@/components/ui/Reveal";
 
 /**
  * « Tenez-vous au courant des prochains événements » : section rouge avec le prochain événement
@@ -36,13 +37,14 @@ export async function NextEvent() {
               {event.title}
             </h2>
             {event.place && <p className="font-semibold">{event.place}</p>}
-            <p>{eventTeaser(event)}</p>
+            <TypeText value={eventTeaser(event)} />
             <div>
               <Button href={cta.href} variant="on-red">
                 {cta.label}
               </Button>
             </div>
           </div>
+          <RevealImage>
           {event.image ? (
             <div className="relative aspect-[4/5] bg-garance-dark">
               <Image src={event.image.src} alt={event.image.alt} fill sizes="(min-width: 768px) 40vw, 100vw" className="object-cover" />
@@ -50,10 +52,11 @@ export async function NextEvent() {
           ) : (
             <PhotoPlaceholder tone="garance-dark" className="aspect-[4/5] w-full" label={`Visuel à venir : ${event.title}`} />
           )}
+          </RevealImage>
         </div>
       ) : (
         <div className="mt-12 flex flex-col items-center gap-6 text-center">
-          <p>{empty}</p>
+          <TypeText value={empty} />
           <Button href={cta.href} variant="on-red">
             {cta.label}
           </Button>

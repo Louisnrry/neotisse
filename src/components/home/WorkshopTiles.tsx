@@ -4,6 +4,7 @@ import { Section } from "@/components/ui/Layout";
 import { RuledTitle } from "@/components/ui/Typography";
 import { getHomePage } from "@/sanity/queries/home";
 import { cn } from "@/lib/cn";
+import { TypeText } from "@/components/ui/Reveal";
 
 const tileTones = {
   garance: "bg-garance",
@@ -23,7 +24,7 @@ export async function WorkshopTiles() {
   return (
     <Section spacing="none" className="py-[112px]" labelledBy="ateliers-titre">
       <RuledTitle id="ateliers-titre">{title}</RuledTitle>
-      <p className="mt-10 px-[8%] text-center text-[1.2rem]">{intro}</p>
+      <TypeText className="mt-10 px-[8%] text-center text-[1.2rem]" value={intro} />
 
       <div className="mt-12 grid gap-5 md:grid-cols-[55fr_45fr]">
         <WorkshopTile tile={main} className="min-h-[420px] md:min-h-[600px]" />

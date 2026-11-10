@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { cn } from "@/lib/cn";
+import { AnimatedHeading } from "./Reveal";
 
 type Tone = "ink" | "creme";
 type TitleTag = "h1" | "h2" | "h3" | "p";
@@ -13,7 +14,7 @@ const sizeByTag: Record<TitleTag, string> = {
 };
 
 /**
- * Titre à filets : texte centré entre deux lignes horizontales de 2px.
+ * Titre à filets (animé à l’entrée à l’écran, voir Reveal.tsx) : texte centré entre deux lignes horizontales de 2px.
  * Encre sur fond clair, crème sur fond rouge ou encre.
  * Utiliser `as="p"` quand il sert de surtitre et qu’un H2 suit (un seul H1 par page).
  */
@@ -31,7 +32,9 @@ export function RuledTitle({
   children: ReactNode;
 }) {
   return (
-    <Tag
+    <AnimatedHeading
+      as={Tag}
+      kind="ruled"
       id={id}
       className={cn(
         "ruled min-w-0 font-display font-normal leading-[1.08]",
@@ -41,7 +44,7 @@ export function RuledTitle({
       )}
     >
       {children}
-    </Tag>
+    </AnimatedHeading>
   );
 }
 
@@ -62,7 +65,9 @@ export function ThreadHeading({
   children: ReactNode;
 }) {
   return (
-    <Tag
+    <AnimatedHeading
+      as={Tag}
+      kind="thread"
       id={id}
       className={cn(
         "thread",
@@ -72,7 +77,7 @@ export function ThreadHeading({
       )}
     >
       {children}
-    </Tag>
+    </AnimatedHeading>
   );
 }
 

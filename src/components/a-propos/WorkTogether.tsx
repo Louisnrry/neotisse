@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/Button";
 import { Section } from "@/components/ui/Layout";
 import { ThreadHeading } from "@/components/ui/Typography";
 import { getAProposPage } from "@/sanity/queries/aPropos";
+import { TypeText } from "@/components/ui/Reveal";
 
 /** « Travaillons ensemble » : section fond garance, colonne de 760px, bouton vers la page Contact. */
 export async function WorkTogether() {
@@ -12,7 +13,7 @@ export async function WorkTogether() {
         <ThreadHeading id="ensemble-titre" tone="creme">
           {title}
         </ThreadHeading>
-        <p className="text-center text-lead">{text}</p>
+        <TypeText className="text-center text-lead" value={text} />
         <div className="flex justify-center">
           <Button href={button.href} variant="on-red">
             {button.label}

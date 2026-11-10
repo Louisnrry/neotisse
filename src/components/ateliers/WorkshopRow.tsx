@@ -1,9 +1,9 @@
 import Image from "next/image";
 import { PhotoPlaceholder } from "@/components/ui/Media";
 import { Kicker } from "@/components/ui/Typography";
-import { RichText } from "@/components/ui/RichText";
 import type { Workshop } from "@/sanity/types";
 import { cn } from "@/lib/cn";
+import { RevealImage, TypeText } from "@/components/ui/Reveal";
 
 /**
  * Un atelier de la page Ateliers (comme la V1) : visuel 4/5 sur 40 % et texte sur 60 %, écart de 88px,
@@ -19,7 +19,7 @@ export function WorkshopRow({ workshop, reverse = false }: { workshop: Workshop;
         reverse ? "min-[782px]:grid-cols-[60fr_40fr]" : "min-[782px]:grid-cols-[40fr_60fr]",
       )}
     >
-      <div className={cn(reverse && "min-[782px]:order-2")}>
+      <RevealImage className={cn(reverse && "min-[782px]:order-2")}>
         {image ? (
           <Image
             src={image.src}
@@ -33,15 +33,15 @@ export function WorkshopRow({ workshop, reverse = false }: { workshop: Workshop;
           // TODO(sanity) : photo de l’atelier
           <PhotoPlaceholder tone={placeholder} className="aspect-[4/5] w-full" />
         )}
-      </div>
+      </RevealImage>
 
       <div>
         <Kicker>{kicker}</Kicker>
         <h2 id={anchor} className="mt-2">
           {title}
         </h2>
-        <p className="mt-1.5 font-serif text-[1.5rem] font-semibold italic text-garance">{subtitle}</p>
-        <p className="mt-[1.2rem] text-[1.22rem] leading-[1.55] font-medium">{hook}</p>
+        <TypeText className="mt-1.5 font-serif text-[1.5rem] font-semibold italic text-garance" value={subtitle} />
+        <TypeText className="mt-[1.2rem] text-[1.22rem] leading-[1.55] font-medium" value={hook} />
 
         <dl className="mt-[1.2rem] max-w-[600px] border-t border-ink">
           {facts.map((f) => (
@@ -56,9 +56,7 @@ export function WorkshopRow({ workshop, reverse = false }: { workshop: Workshop;
         </dl>
 
         {paragraphs.map((p, i) => (
-          <p key={i} className="mt-[1.2rem] leading-[1.75]">
-            <RichText value={p} />
-          </p>
+          <TypeText key={i} className="mt-[1.2rem] leading-[1.75]" value={p} />
         ))}
       </div>
     </article>

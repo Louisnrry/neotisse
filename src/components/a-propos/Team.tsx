@@ -4,6 +4,7 @@ import { RuledTitle } from "@/components/ui/Typography";
 import Image from "next/image";
 import { getAProposPage } from "@/sanity/queries/aPropos";
 import type { TeamMember } from "@/sanity/types";
+import { RevealImage, TypeText } from "@/components/ui/Reveal";
 
 /** « Notre équipe » : fond pierre, une ligne par membre (photo 4/5 à 26 %, texte à 74 %). */
 export async function Team() {
@@ -31,6 +32,7 @@ export async function Team() {
 function Member({ member }: { member: TeamMember }) {
   return (
     <article className="grid gap-[30px] md:grid-cols-[minmax(0,26fr)_minmax(0,74fr)] md:gap-12">
+      <RevealImage>
       {member.photo ? (
         <Image
           src={member.photo.src}
@@ -47,6 +49,7 @@ function Member({ member }: { member: TeamMember }) {
           className="aspect-[4/5] w-full"
         />
       )}
+      </RevealImage>
       <div className="grid content-start gap-[1.2rem]">
         <div>
           <h3>{member.name}</h3>
@@ -55,7 +58,7 @@ function Member({ member }: { member: TeamMember }) {
           </p>
         </div>
         {member.bio.map((p) => (
-          <p key={p.slice(0, 24)}>{p}</p>
+          <TypeText key={p.slice(0, 24)} value={p} />
         ))}
         {member.link && (
           <p className="border-t border-filet pt-3.5 font-semibold">

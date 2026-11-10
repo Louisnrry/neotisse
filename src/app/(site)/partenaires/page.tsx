@@ -7,6 +7,7 @@ import { routes } from "@/lib/routes";
 import { pageMetadata } from "@/sanity/lib/metadata";
 import { getPartenairesPage } from "@/sanity/queries/partenaires";
 import { getPartners } from "@/sanity/queries/partners";
+import { TypeText } from "@/components/ui/Reveal";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { seo } = await getPartenairesPage();
@@ -26,7 +27,7 @@ export default async function PartenairesPage() {
       <Section width="full" spacing="none" className="pt-[72px] pb-6">
         <div className="mx-auto grid max-w-[860px] gap-5">
           <RuledTitle as="h1">{title}</RuledTitle>
-          <p className="text-center text-lead">{intro}</p>
+          <TypeText className="text-center text-lead" value={intro} />
         </div>
       </Section>
 
@@ -43,7 +44,7 @@ export default async function PartenairesPage() {
       <Section tone="pierre" width="full" spacing="none" className="mt-[1.2rem] py-24" labelledBy="devenir-partenaire">
         <div className="mx-auto grid max-w-[760px] gap-7">
           <ThreadHeading id="devenir-partenaire">{cta.title}</ThreadHeading>
-          <p className="text-center text-lead">{cta.text}</p>
+          <TypeText className="text-center text-lead" value={cta.text} />
           <div className="flex justify-center">
             <Button href={cta.button.href}>{cta.button.label}</Button>
           </div>

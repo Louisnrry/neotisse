@@ -5,6 +5,7 @@ import { PhotoPlaceholder } from "@/components/ui/Media";
 import { RuledTitle } from "@/components/ui/Typography";
 import { getContactPage, plainAnswer } from "@/sanity/queries/contact";
 import type { RichPart } from "@/sanity/types";
+import { RevealImage, TypeText } from "@/components/ui/Reveal";
 
 function Rich({ parts }: { parts: RichPart[] }) {
   return parts.map((part, i) => {
@@ -50,6 +51,7 @@ export async function Faq() {
       </RuledTitle>
       <div className="grid gap-10 min-[782px]:grid-cols-[36fr_64fr] min-[782px]:gap-20">
         <div>
+          <RevealImage>
           {image ? (
             <div className="relative aspect-[4/5] w-full overflow-hidden">
               <Image src={image.src} alt={image.alt} fill sizes="(min-width: 782px) 30vw, 100vw" className="object-cover" />
@@ -57,7 +59,8 @@ export async function Faq() {
           ) : (
             <PhotoPlaceholder tone="garance" className="aspect-[4/5] w-full" />
           )}
-          <p className="mt-[1.2rem]">{intro}</p>
+          </RevealImage>
+          <TypeText className="mt-[1.2rem]" value={intro} />
         </div>
         <div>
           {items.map((item) => (

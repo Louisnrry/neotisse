@@ -172,6 +172,11 @@
     scroll-margin-top: 110px;
   }
 
+  /* Paragraphes écrits lettre par lettre (components/ui/Reveal.tsx) : lettres cachées jusqu'à l'animation */
+  [data-type] [data-c] {
+    opacity: 0;
+  }
+
   /* Page figée derrière une modale ouverte (modale événement du calendrier) */
   html:has(dialog[open]) {
     overflow: hidden;
@@ -206,6 +211,14 @@
     flex: 1;
     height: 2px;
     background: currentColor;
+    /* Animation des titres (components/ui/Reveal.tsx) : les filets s'étendent depuis le texte */
+    transform: scaleX(var(--rule-progress, 1));
+  }
+  &::before {
+    transform-origin: right;
+  }
+  &::after {
+    transform-origin: left;
   }
 }
 
@@ -218,11 +231,15 @@
     height: 4px;
     margin-top: 0.45em;
     background: var(--thread-color, var(--color-garance));
+    /* Animation des titres (components/ui/Reveal.tsx) : le fil se déroule de gauche à droite */
+    transform: scaleX(var(--thread-progress, 1));
+    transform-origin: left;
   }
 }
 @utility thread-center {
   &::after {
     margin-inline: auto;
+    transform-origin: center;
   }
 }
 

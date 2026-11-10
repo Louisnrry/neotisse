@@ -4,11 +4,11 @@ import { CalendarBoard } from "@/components/calendrier/CalendarBoard";
 import { Button } from "@/components/ui/Button";
 import { Section } from "@/components/ui/Layout";
 import { PhotoPlaceholder } from "@/components/ui/Media";
-import { RichText } from "@/components/ui/RichText";
 import { RuledTitle, ThreadHeading } from "@/components/ui/Typography";
 import { routes } from "@/lib/routes";
 import { pageMetadata } from "@/sanity/lib/metadata";
 import { getCalendrierPage } from "@/sanity/queries/calendrier";
+import { RevealImage, TypeText } from "@/components/ui/Reveal";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { seo } = await getCalendrierPage();
@@ -33,7 +33,7 @@ export default async function CalendrierPage() {
       <Section width="full" spacing="none" className="pt-[72px] pb-4">
         <div className="mx-auto grid max-w-[860px] gap-5">
           <RuledTitle as="h1">{title}</RuledTitle>
-          <p className="text-center text-lead">{intro}</p>
+          <TypeText className="text-center text-lead" value={intro} />
         </div>
       </Section>
 
@@ -41,6 +41,7 @@ export default async function CalendrierPage() {
 
       <Section spacing="none" className="mt-[1.2rem] pt-8 pb-28" labelledBy="participer-titre">
         <div className="grid items-center gap-y-[30px] min-[782px]:grid-cols-[40fr_60fr] min-[782px]:gap-x-20">
+          <RevealImage>
           {participation.image ? (
             <Image
               src={participation.image.src}
@@ -53,18 +54,15 @@ export default async function CalendrierPage() {
           ) : (
             <PhotoPlaceholder tone="garance" className="aspect-[4/5] w-full" />
           )}
+          </RevealImage>
           {/* Paragraphes en `text-wrap: pretty`, comme les styles globaux de la V1 */}
           <div className="grid gap-[1.2rem] [&_p]:text-pretty">
             <ThreadHeading id="participer-titre">{participation.title}</ThreadHeading>
             {participation.paragraphs.map((p, i) => (
-              <p key={i}>
-                <RichText value={p} />
-              </p>
+              <TypeText key={i} value={p} />
             ))}
             <h3>{structures.title}</h3>
-            <p>
-              <RichText value={structures.text} />
-            </p>
+            <TypeText value={structures.text} />
             <div>
               <Button href={structures.button.href}>{structures.button.label}</Button>
             </div>

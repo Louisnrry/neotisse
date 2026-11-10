@@ -3,6 +3,7 @@ import { Section } from "@/components/ui/Layout";
 import { PhotoPlaceholder } from "@/components/ui/Media";
 import { ThreadHeading } from "@/components/ui/Typography";
 import { getAProposPage } from "@/sanity/queries/aPropos";
+import { RevealImage, TypeText } from "@/components/ui/Reveal";
 
 /** « Notre démarche » : photo 4/5 à gauche (42 %), texte à droite (58 %) avec une phrase en exergue. */
 export async function Demarche() {
@@ -10,6 +11,7 @@ export async function Demarche() {
   return (
     <Section spacing="none" className="mt-[1.2rem] pt-12 pb-24" labelledBy="demarche-titre">
       <div className="grid items-start gap-[30px] md:grid-cols-[42fr_58fr] md:gap-[88px]">
+        <RevealImage>
         {image ? (
           <div className="relative aspect-[4/5] w-full overflow-hidden">
             <Image src={image.src} alt={image.alt} fill sizes="(min-width: 768px) 42vw, 100vw" className="object-cover" />
@@ -17,13 +19,12 @@ export async function Demarche() {
         ) : (
           <PhotoPlaceholder tone="garance" className="aspect-[4/5] w-full" />
         )}
+        </RevealImage>
         <div className="grid gap-[1.2rem]">
           <ThreadHeading id="demarche-titre">{title}</ThreadHeading>
-          <p>{before}</p>
-          <p className="font-serif text-pull font-bold italic leading-[1.2] text-garance">{pull}</p>
-          <p>
-            {after} <strong>{conviction}</strong>
-          </p>
+          <TypeText value={before} />
+          <TypeText className="font-serif text-pull font-bold italic leading-[1.2] text-garance" value={pull} />
+          <TypeText value={[`${after} `, { strong: conviction }]} />
         </div>
       </div>
     </Section>

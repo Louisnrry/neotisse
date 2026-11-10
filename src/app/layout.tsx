@@ -50,6 +50,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="fr" className={`${cormorant.variable} ${eagleLake.variable} ${quicksand.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: introDecideScript }} />
+        {/* Sans JavaScript, les éléments animés au défilement (components/ui/Reveal.tsx) s'affichent tout de suite. */}
+        <noscript>
+          <style>{`[data-reveal]{--rule-progress:1!important;--thread-progress:1!important}[data-reveal-item],[data-reveal] [data-reveal-item],[data-type] [data-c]{opacity:1!important;transform:none!important}`}</style>
+        </noscript>
       </head>
       <body className="flex min-h-svh flex-col">{children}</body>
     </html>

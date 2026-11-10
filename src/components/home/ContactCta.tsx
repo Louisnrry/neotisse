@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/Button";
 import { Section } from "@/components/ui/Layout";
 import { RuledTitle } from "@/components/ui/Typography";
 import { getHomePage } from "@/sanity/queries/home";
+import { TypeText } from "@/components/ui/Reveal";
 
 /** « Contact » : invitation centrée et bouton vers la page Contact. */
 export async function ContactCta() {
@@ -9,7 +10,7 @@ export async function ContactCta() {
   return (
     <Section spacing="none" className="py-[112px]" labelledBy="contact-titre">
       <RuledTitle id="contact-titre">{title}</RuledTitle>
-      <p className="mx-auto mt-8 max-w-[62ch] text-center text-[1.2rem]">{text}</p>
+      <TypeText className="mx-auto mt-8 max-w-[62ch] text-center text-[1.2rem]" value={text} />
       <div className="mt-6 flex justify-center">
         <Button href={cta.href} className="text-[1.075rem]">
           {cta.label}

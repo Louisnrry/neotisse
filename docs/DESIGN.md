@@ -330,6 +330,22 @@ Règles :
 - `prefers-reduced-motion` : passer par `gsap.matchMedia()` (GSAP) ou `useReducedMotion()` (Motion) et afficher l'état final directement. Le reset CSS du § 10 ne suffit pas, car il ne neutralise pas les animations en JavaScript.
 - Animer de préférence `transform` et `opacity` (pas de `top`, `width`, `height`) pour rester fluide sur mobile.
 
+## 10 ter. Animations d'apparition au défilement (`src/components/ui/Reveal.tsx`)
+
+Ajoutées le 10/11/2026 à la demande de Louis (écart voulu avec la V1, qui n'en avait pas). Faites avec **Motion**, jouées **une seule fois**, quand l'élément entre à l'écran (30 % visible, 20 % pour les images). Courbe commune `cubic-bezier(.22, 1, .36, 1)` (départ rapide, arrivée très lente, sans rebond).
+
+| Élément | Composant | Animation |
+|---|---|---|
+| **Titres à filets** et **titres à fil rouge** (`<RuledTitle>`, `<ThreadHeading>`, donc tous les titres de section et les H1 des pages) | `AnimatedHeading`, appelé par `Typography.tsx` | Les **mots montent en fondu** l'un après l'autre (0.35em, 0,8 s, 70 ms d'écart). En même temps, les **filets s'étendent lentement depuis le titre** vers les bords (1,6 s) ; le **fil rouge se déroule** de gauche à droite (depuis le centre s'il est centré), avec 0,35 s de retard. Les traits restent des pseudo-éléments CSS : leur `scaleX` suit les variables `--rule-progress` / `--thread-progress` (1 par défaut), que Motion fait passer de 0 à 1. Les espaces insécables gardent leurs voisins ensemble (« Contact ? »). Un titre qui contient autre chose que du texte apparaît en fondu d'un bloc. |
+| **Images** et cadres photo provisoires du contenu | `RevealImage` | **Fondu et montée de 24px**, 1,1 s. Posé sur : univers (accueil), prochain événement, lignes d'ateliers, démarche, médiation, équipe, FAQ, « Comment participer ». Pas sur le héro (il a sa propre animation), ni sur les logos partenaires et les tuiles d'ateliers. |
+| **Paragraphes courts** | `TypeText` | Le texte **s'écrit lettre par lettre**, vite : 16 ms par lettre, **1,2 s au plus** quelle que soit la longueur (chaque lettre apparaît en 0,12 s). Gras et liens conservés. Posé sur les intros sous les H1, les textes de sections et les accroches (accueil, ateliers, à propos, calendrier, partenaires, contact, livre d'or). **Pas** sur les pages légales, la FAQ, les avis, la modale du calendrier, les cartes partenaires ni les formulaires (trop longs ou à lire tout de suite). |
+
+Accessibilité et robustesse :
+- Le texte est toujours rendu côté serveur, en entier (référencement). Pour les paragraphes, les lecteurs d'écran lisent une copie entière masquée (`sr-only`) et ignorent les lettres découpées ; un paragraphe qui contient un lien est lu tel quel, pour que le lien reste utilisable.
+- **Sans JavaScript**, une balise `<noscript>` du layout racine affiche tout (`[data-reveal]`, `[data-reveal-item]`, `[data-c]`).
+- **Reduced-motion** : `useReducedMotion()` met les durées à 0, l'état final s'affiche directement.
+- Mots et lettres découpés en `<span>` sans espace entre eux : les lignes se coupent comme avant (aucun débordement à 375px sur les 9 pages).
+
 ---
 
 ## 11. Assets repris de la V1

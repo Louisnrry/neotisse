@@ -10,6 +10,7 @@ import { ThreadHeading } from "@/components/ui/Typography";
 import { routes } from "@/lib/routes";
 import { pageMetadata } from "@/sanity/lib/metadata";
 import { getContactPage } from "@/sanity/queries/contact";
+import { TypeText } from "@/components/ui/Reveal";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { seo } = await getContactPage();
@@ -32,7 +33,7 @@ export default async function ContactPage() {
             <ThreadHeading as="h1" className="text-[clamp(3rem,6vw,4.6rem)] leading-none">
               {title}
             </ThreadHeading>
-            <p className="mt-7 mb-10 text-[1.1rem]">{intro}</p>
+            <TypeText className="mt-7 mb-10 text-[1.1rem]" value={intro} />
             <ContactDetails />
             <div className="mt-8">
               <Button href={guestbookLink.href} variant="outline-thin">

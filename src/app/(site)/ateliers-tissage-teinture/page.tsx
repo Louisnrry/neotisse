@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/Button";
 import { RuledTitle, ThreadHeading } from "@/components/ui/Typography";
 import { routes } from "@/lib/routes";
 import { getAteliersPage } from "@/sanity/queries/ateliers";
+import { TypeText } from "@/components/ui/Reveal";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { seo } = await getAteliersPage();
@@ -24,8 +25,8 @@ export default async function AteliersPage() {
       <div className="px-s50 pt-[72px] pb-6">
         <div className="mx-auto max-w-section">
           <RuledTitle as="h1">{title}</RuledTitle>
-          <p className="mt-6 text-center text-[1.2rem]">{intro}</p>
-          <p className="mt-6 text-center font-semibold text-gris">{audience}</p>
+          <TypeText className="mt-6 text-center text-[1.2rem]" value={intro} />
+          <TypeText className="mt-6 text-center font-semibold text-gris" value={audience} />
           <nav aria-label="Nos formats d’ateliers" className="mt-8">
             <ul className="flex flex-wrap justify-center gap-x-9 gap-y-2 border-y border-ink py-3.5">
               {workshops.map((w) => (
@@ -56,7 +57,7 @@ export default async function AteliersPage() {
           <ThreadHeading id="ateliers-cta" tone="creme">
             {cta.title}
           </ThreadHeading>
-          <p className="text-center text-[1.2rem]">{cta.text}</p>
+          <TypeText className="text-center text-[1.2rem]" value={cta.text} />
           <div className="flex justify-center">
             <Button href={cta.button.href} variant="on-red">
               {cta.button.label}
