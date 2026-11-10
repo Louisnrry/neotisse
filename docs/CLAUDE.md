@@ -61,6 +61,7 @@
 - Intro animée : **jouée à chaque visite de l’accueil**, comme la V1 (décision de Louis du 09/11/2026 ; ce fichier disait « une fois par session »). Y compris en revenant sur l’accueil par un lien interne.
 - Intro animée : **écart volontaire avec la V1** depuis le 10/11/2026 (décision de Louis) : « Néotisse » en Eagle Lake qui s’écrit à la plume avec Motion (voir § 5.2), au lieu du mot en Cormorant qui apparaît en fondu.
 - Défilement doux avec **Lenis** (ajout du 10/11/2026, demande de Louis ; la V1 n’en avait pas) : inertie légère, molette et pavé tactile seulement, défilement natif au doigt. Détails dans `docs/DESIGN.md` § 10.
+- Navbar : **écart volontaire avec la V1** depuis le 10/11/2026 (maquette Figma « navbar à faire ») : barre flottante crème arrondie, « Néotisse » en Eagle Lake au centre, bouton « Contact » au lieu de « Prenez contact ». Les coins arrondis sont la seule exception à la règle des angles droits (§ 12).
 
 - À propos (V1, page 19) : pas de citation isolée. L’ordre réel est : en-tête (H1 à filets, sous-titre, texte) ; « Notre démarche… » (photo 4/5 + texte avec la phrase en exergue « C’est de ce constat qu’est née Néotisse. ») ; « Nos engagements… » (3 cartes, décalages de 48 et 96px seulement à partir de 900px) ; « Une médiation… par le geste et la matière » (visuel 21/9 et encart blanc qui le chevauche, avec une ombre douce) ; « Notre équipe » (fond pierre, rôle « Co-créatrice de Néotisse » pour les deux) ; « Travaillons ensemble » (fond garance). Les titres à fil rouge y sont alignés à gauche.
 - WordPress ajoute 1.2rem d’espace entre les grandes sections de la page À propos : reproduit entre sections blanches, **mais pas** la bande blanche qu’il laisse entre « Notre équipe » (pierre) et « Travaillons ensemble » (garance), qui ressemble à un défaut.
@@ -225,14 +226,9 @@ Règles générales :
 ## 5. En-tête, intro et animations
 
 ### 5.1 En-tête (navbar)
-- Sticky, fond `rgba(255,255,255,.96)` + `backdrop-blur(8px)`, filet bas `filet`.
-- Logo Néotisse (≈52px de large), léger zoom (scale 1.12) au survol, **sans contour au clic**.
-- Liens en Cormorant 700, 1.2rem ; soulignement `garance` de 2px qui se déploie de gauche à droite au survol et sur la page active (couleur `garance`).
-- Bouton « Prenez contact » compact (`padding .5em 1.1em`, 0.9rem).
-- **Se cache au scroll vers le bas, réapparaît au scroll vers le haut** (transition 0.35s).
-- **Accueil** : header en `position: fixed` par-dessus le héro, **transparent à l’arrivée** (sans fond ni bordure), fond blanc dès qu’on défile.
-- Retour cliente : la navbar d’origine était à refaire → garder une navbar **compacte et légère**.
-- Mobile : menu burger accessible (focus piégé, Échap pour fermer).
+- **Refaite le 10/11/2026** d’après la maquette Figma « navbar à faire » (node `407:10`), à la demande de Louis : barre **flottante** crème aux **coins arrondis** (24px ; bouton « Contact » à 16px), trois liens à gauche, **« Néotisse » en Eagle Lake au centre** (lien vers l’accueil, remplace le logo), deux liens et le bouton « Contact » à droite. Détails dans `docs/DESIGN.md` § 8.
+- Comportement conservé : collante, **se cache au scroll vers le bas, réapparaît au scroll vers le haut** (transition 0.35s) ; sur l’accueil, fixée par-dessus le héro et **transparente à l’arrivée** (texte crème), crème dès qu’on défile ; soulignement garance au survol et sur la page active.
+- Mobile (sous 1200px) : mot centré + menu burger accessible (focus piégé, Échap pour fermer).
 
 ### 5.2 Intro animée (accueil, à chaque visite)
 - **Refaite le 10/11/2026 à la demande de Louis** (elle ne reprend plus la V1 sur ce point) : le mot « Néotisse » est en **Eagle Lake** (police réservée à l’intro) et **s’écrit à la plume** sur fond garance, avec la librairie **Motion** (`motion/react`).
@@ -460,7 +456,7 @@ page (singletons : home, ateliers, calendrier, partenaires, livreDor, aPropos, c
 
 ## 12. Ce qu’il ne faut pas faire
 
-- Pas de `border-radius`, pas d’ombres portées décoratives sur les tuiles (retirées volontairement).
+- Pas de `border-radius` (seule exception : la navbar flottante et son bouton « Contact », voir § 5.1), pas d’ombres portées décoratives sur les tuiles (retirées volontairement).
 - Pas de Google Fonts distantes, pas de reCAPTCHA, pas de script tiers avant consentement.
 - Ne pas changer les URL existantes.
 - Ne pas exposer de token Sanity d’écriture côté client.

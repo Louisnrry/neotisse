@@ -115,7 +115,7 @@ Liens : `garance`, survol `garance-dark`.
 
 Mise en page des sections (mesurée sur la V1) : padding latéral `s50` puis contenu plafonné à 1240px. À 1440px le contenu commence à 100px du bord ; à 375px, à 30px (contenu de 315px). L'en-tête et le pied de page, eux, vont jusqu'à 1340px.
 
-Point de rupture spécifique : **`nav:` = 960px**, passage au menu burger.
+Point de rupture spécifique : **`nav:` = 1200px** (75rem), passage au menu burger : la barre flottante à 5 liens + mot centré a besoin de cette largeur.
 
 ---
 
@@ -169,13 +169,14 @@ Quicksand 600, angles droits, transitions 0.2s. `href` interne → `next/link`, 
 
 ## 8. En-tête
 
-- Collant, fond `blanc/96` + flou 8px, filet bas `filet`, padding vertical 4px.
-- Logo 52px, zoom ×1.12 au survol et au focus, sans contour au clic.
-- Liens Cormorant 700 1.2rem, écart 32px ; soulignement garance de 2px qui se déploie de gauche à droite (survol et page active, page active en garance, `aria-current="page"`).
-- Bouton « Prenez contact » en taille `compact`.
+Refait le 10/11/2026 d'après la maquette Figma **« navbar à faire »** (node `407:10`), couleurs adaptées à la DA. Le comportement est inchangé.
+
+- **Barre flottante** : décollée des bords (`px-s50`, 16px en haut), largeur max 1340px, **coins arrondis 24px** (exception voulue à la règle des angles droits), fond `creme/95` + flou 8px, filet `filet`, ombre douce `0 10px 30px -18px` encre. Padding 12px / 24px (10px / 12px sur mobile), symétrique pour que le mot soit exactement centré.
+- **Disposition** (grille `1fr auto 1fr`) : Ateliers · Calendrier · Partenaires à gauche ; **« Néotisse » en Eagle Lake** au centre (`<Wordmark>`, mêmes tracés que l'intro, 40px de haut, 32px sur mobile ; ramène à l'accueil ; zoom ×1.05 au survol) ; Livre d'or · À propos + bouton **« Contact »** à droite (bouton garance, **coins arrondis 16px**). Écart 56px entre les trois blocs, 36px entre les liens.
+- Liens Cormorant 700 1.2rem, encre ; soulignement garance de 2px qui se déploie de gauche à droite au survol et sur la page active (page active en garance, `aria-current="page"`).
 - Se cache au scroll vers le bas (seuil 6px, à partir de 80px), revient au scroll vers le haut ou quand le focus entre dans l'en-tête ; transition 0.35s.
-- **Accueil** : `position: fixed` par-dessus le héro, **transparent** jusqu'au premier défilement (> 10px), puis fond blanc définitivement (comme la V1).
-- **Sous 960px** : bouton burger → menu plein écran fond encre, liens Cormorant 2.2rem crème (survol `garance-soft`), bouton « Prenez contact » `on-ink`. Focus piégé, Échap ferme et rend le focus au burger, défilement de la page bloqué.
+- **Accueil** : `position: fixed` par-dessus le héro, **transparent** (sans fond, filet ni ombre) jusqu'au premier défilement (> 10px), puis crème définitivement. Pendant la transparence, le texte passe en **crème** (mot, liens avec une légère ombre portée, soulignement crème, burger) pour rester lisible sur la photo.
+- **Sous 1200px** (`nav:` = 75rem) : mot centré + bouton burger à droite → menu plein écran fond encre, liens Cormorant 2.2rem crème (survol `garance-soft`), bouton « Contact » `on-ink` arrondi 16px. Focus piégé, Échap ferme et rend le focus au burger, défilement de la page bloqué.
 
 ## 9. Pied de page
 

@@ -63,8 +63,8 @@
   --container-section: 1240px; /* contenu des sections */
   --container-reading: 880px;
 
-  /* Points de rupture : « nav » = passage au menu burger */
-  --breakpoint-nav: 60rem;
+  /* Points de rupture : « nav » = passage au menu burger (barre flottante à 5 liens + mot centré) */
+  --breakpoint-nav: 75rem;
 
   /* Angles droits partout */
   --radius-*: initial;
