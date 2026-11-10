@@ -54,7 +54,7 @@ export default function StyleguidePage() {
           <ul className="grid grid-cols-[repeat(auto-fill,minmax(14rem,1fr))] gap-4">
             {colors.map((c) => (
               <li key={c.token} className="border border-filet">
-                <div className={`${swatchBg[c.token]} ${c.text} flex h-28 items-end p-3 font-serif text-xl font-bold`}>
+                <div className={`${swatchBg[c.token]} ${c.text} flex h-28 items-end p-3 font-display text-xl font-normal`}>
                   {c.token}
                 </div>
                 <div className="p-3 text-small">
@@ -68,8 +68,8 @@ export default function StyleguidePage() {
 
         <Block title="Typographie">
           <div className="grid gap-6">
-            <p className="font-serif text-hero leading-[0.95] font-bold">Néotisse</p>
-            <h2 className="text-h1">Titre H1 · Cormorant Garamond 700</h2>
+            <p className="font-display text-hero leading-[0.95] font-normal">Néotisse</p>
+            <h2 className="text-h1">Titre H1 · Eagle Lake</h2>
             <h2>Titre H2 · l’art de faire revivre un savoir-faire</h2>
             <h3>Titre H3 · Ateliers démonstratifs</h3>
             <p className="max-w-[65ch]">

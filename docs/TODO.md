@@ -24,6 +24,7 @@
 - [x] **Nouvelle intro** (10/11) : « Néotisse » en Eagle Lake qui s’écrit à la plume avec Motion (N centré qui se trace, glisse, puis le reste du mot), ouverture conservée ; vérifié à 1440 et 375px (coupe entre « Néo » et « tisse », copies alignées) et au clic (le mot se termine pendant l’ouverture)
 - [x] **Défilement doux avec Lenis** (10/11) : inertie légère, natif au doigt ; vérifié : molette lissée (≈ 0,8 s), ancres douces à 110px sous l’en-tête, changement de page instantané en haut, pause pendant l’intro, le menu mobile et la modale du calendrier
 - [x] **Nouvelle navbar** (10/11) d’après la maquette Figma « navbar à faire » : barre flottante crème arrondie, « Néotisse » en Eagle Lake au centre, « Contact » à droite ; comportement conservé ; vérifiée à 1440, 1200 et 375px (mot centré, pas de débordement), menu burger (focus, Échap), accueil transparent avec texte crème lisible sur la photo
+- [x] **Titres en Eagle Lake** (10/11) : police auto-hébergée, tailles adaptées ; vérifié à 375px sur les 9 pages (aucun débordement, après correction du titre du mois du calendrier) et à 1440px
 - [x] Bouton « Écrivez-nous » du pied de page de nouveau lisible (il était crème sur crème)
 - [x] URL avec barre finale, identiques à la V1 (`trailingSlash: true`)
 - [x] **Page Ateliers** (09/11) : en-tête avec index d'ancres, 5 ateliers en alternance (repères, textes complets), bloc rouge « Des ateliers de tissage adaptés à vos projets » ; textes et SEO repris du WordPress (`src/content/ateliers.ts`) ; comparée à la V1 à 1440 et 375px

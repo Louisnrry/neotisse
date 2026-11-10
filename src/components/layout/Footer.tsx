@@ -26,7 +26,7 @@ export async function Footer() {
               height={55}
               className="w-14 opacity-90 brightness-0 invert"
             />
-            <p className="mt-5 font-serif text-[2.1rem] leading-none font-bold">Néotisse</p>
+            <p className="mt-5 font-display text-[2.1rem] leading-none font-normal">Néotisse</p>
             <p className="mt-4 max-w-[34ch]">{siteSettings.footerText}</p>
           </div>
 

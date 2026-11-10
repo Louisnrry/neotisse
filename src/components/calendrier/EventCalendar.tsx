@@ -140,7 +140,7 @@ export function EventCalendar({
                     </span>
                     <span>
                       <span className="text-kicker font-bold tracking-[0.12em] text-gris uppercase">{typeLabel(e)}</span>
-                      <span className="block font-serif text-[1.6rem] leading-[1.15] font-bold">{e.title}</span>
+                      <span className="block font-display text-[1.6rem] leading-[1.15] font-normal">{e.title}</span>
                       <span className="block text-[0.95rem] font-semibold text-garance">
                         {[dates, e.place].filter(Boolean).join(" · ")}
                       </span>
@@ -170,7 +170,7 @@ export function EventCalendar({
             <NavButton label="Mois précédent" onClick={() => shift(-1)} d="M15 5l-7 7 7 7" />
             <p
               aria-live="polite"
-              className="min-w-[9ch] text-center font-serif text-[clamp(1.9rem,3.5vw,2.6rem)] leading-[1.1] font-bold capitalize"
+              className="min-w-[9ch] text-center font-display text-[clamp(1.3rem,0.75rem+2.4vw,2.2rem)] leading-[1.1] font-normal capitalize"
             >
               {monthLabel}
             </p>

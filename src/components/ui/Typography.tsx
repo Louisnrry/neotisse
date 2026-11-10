@@ -34,7 +34,7 @@ export function RuledTitle({
     <Tag
       id={id}
       className={cn(
-        "ruled font-serif font-bold leading-[1.08]",
+        "ruled min-w-0 font-display font-normal leading-[1.08]",
         sizeByTag[Tag],
         tone === "creme" ? "text-creme" : "text-ink",
         className,

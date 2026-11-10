@@ -62,6 +62,7 @@
 - Intro animée : **écart volontaire avec la V1** depuis le 10/11/2026 (décision de Louis) : « Néotisse » en Eagle Lake qui s’écrit à la plume avec Motion (voir § 5.2), au lieu du mot en Cormorant qui apparaît en fondu.
 - Défilement doux avec **Lenis** (ajout du 10/11/2026, demande de Louis ; la V1 n’en avait pas) : inertie légère, molette et pavé tactile seulement, défilement natif au doigt. Détails dans `docs/DESIGN.md` § 10.
 - Navbar : **écart volontaire avec la V1** depuis le 10/11/2026 (maquette Figma « navbar à faire ») : barre flottante crème arrondie, « Néotisse » en Eagle Lake au centre, bouton « Contact » au lieu de « Prenez contact ». Les coins arrondis sont la seule exception à la règle des angles droits (§ 12).
+- Titres : **Eagle Lake** au lieu de Cormorant Garamond depuis le 10/11/2026 (demande de Louis). Cormorant reste pour la navigation, les sous-titres et citations en italique, les grands chiffres de dates et les questions de la FAQ. Tailles de titres réduites d’environ 15 %. Détails dans `docs/DESIGN.md` § 3.
 
 - À propos (V1, page 19) : pas de citation isolée. L’ordre réel est : en-tête (H1 à filets, sous-titre, texte) ; « Notre démarche… » (photo 4/5 + texte avec la phrase en exergue « C’est de ce constat qu’est née Néotisse. ») ; « Nos engagements… » (3 cartes, décalages de 48 et 96px seulement à partir de 900px) ; « Une médiation… par le geste et la matière » (visuel 21/9 et encart blanc qui le chevauche, avec une ombre douce) ; « Notre équipe » (fond pierre, rôle « Co-créatrice de Néotisse » pour les deux) ; « Travaillons ensemble » (fond garance). Les titres à fil rouge y sont alignés à gauche.
 - WordPress ajoute 1.2rem d’espace entre les grandes sections de la page À propos : reproduit entre sections blanches, **mais pas** la bande blanche qu’il laisse entre « Notre équipe » (pierre) et « Travaillons ensemble » (garance), qui ressemble à un défaut.
@@ -197,7 +198,7 @@ Règles générales :
 | Texte courant, boutons, formulaires, étiquettes | **Quicksand** | 400, 500, 600, 700 |
 
 - Corps : Quicksand **1.0625rem**, interligne **1.65**, couleur `ink`.
-- Titres : Cormorant 700, interligne 1.08, letter-spacing 0.01em, couleur `ink`.
+- Titres : **Eagle Lake 400** (depuis le 10/11/2026, voir § 0), interligne 1.08, letter-spacing 0.01em, couleur `ink`.
   - H1 : `clamp(2.8rem, 6vw, 4.6rem)`
   - H2 : `clamp(2rem, 3.6vw, 2.9rem)`
   - H3 : `clamp(1.5rem, 2.2vw, 1.9rem)`
@@ -346,7 +347,7 @@ Règles générales :
 ### 7.5 Cookies & statistiques
 - **Bandeau de consentement sur mesure** aux couleurs du site (pas d’outil tiers lourd) :
   - Encart **en bas à gauche**, 440px max, fond `creme`, **filet `garance` de 4px en haut**, angles droits, légère ombre.
-  - Titre « Cookies & confidentialité » (Cormorant 700, ~1.55rem).
+  - Titre « Cookies & confidentialité » (Eagle Lake, ~1.55rem).
   - Texte : « Nous utilisons des cookies de mesure d’audience pour comprendre comment le site est utilisé. Vous pouvez accepter, refuser ou personnaliser vos choix à tout moment. »
   - Boutons **« Accepter »** (plein garance) et **« Refuser »** (contour garance, se remplit au survol) **de même taille** ; **« Personnaliser »** en lien souligné → interrupteurs par catégorie (Fonctionnel : toujours actif ; Statistiques : désactivé par défaut), bouton « Enregistrer mes choix ».
   - Choix mémorisé **365 jours** comme la V1 (13 mois max), puis redemandé.

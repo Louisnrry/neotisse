@@ -29,6 +29,8 @@
   /* Polices (variables fournies par next/font dans layout.tsx) */
   --font-*: initial;
   --font-serif: var(--font-cormorant), "Cormorant Garamond", Garamond, serif;
+  /* Titres : Eagle Lake (400 seulement, pas d’italique) */
+  --font-display: var(--font-eagle-lake), "Eagle Lake", Georgia, serif;
   --font-sans: var(--font-quicksand), Quicksand, system-ui, sans-serif;
 
   /* Tailles de texte */
@@ -39,10 +41,11 @@
   --text-tagline: clamp(0.875rem, 0.875rem + ((1vw - 0.2rem) * 0.667), 1.3rem);
   --text-subtitle-lg: clamp(1.198rem, 1.198rem + ((1vw - 0.2rem) * 1.101), 1.9rem);
   --text-pull: clamp(1.6rem, 2.6vw, 2.1rem);
-  --text-h1: clamp(2.8rem, 6vw, 4.6rem);
-  --text-h2: clamp(2rem, 3.6vw, 2.9rem);
-  --text-h3: clamp(1.5rem, 2.2vw, 1.9rem);
-  --text-hero: clamp(4rem, 11vw, 8.5rem);
+  /* Titres en Eagle Lake : ≈ 15 % plus petits qu’en Cormorant (lettres plus hautes et plus larges) */
+  --text-h1: clamp(1.85rem, 0.9rem + 4.4vw, 3.9rem);
+  --text-h2: clamp(1.6rem, 0.9rem + 2.6vw, 2.5rem);
+  --text-h3: clamp(1.3rem, 1rem + 1vw, 1.65rem);
+  --text-hero: clamp(3.4rem, 10vw, 7.4rem);
   --text-event-date: clamp(2.2rem, 4.5vw, 3.4rem);
   --text-kicker: 0.78rem;
   --text-small: 0.85rem;
@@ -121,9 +124,14 @@
   h5,
   h6 {
     color: inherit;
-    font-family: var(--font-serif);
-    font-weight: 700;
+    font-family: var(--font-display);
+    font-weight: 400;
+    /* Pas de faux gras ni de faux italique : Eagle Lake n’a qu’une graisse et pas d’italique. */
+    font-synthesis: none;
     letter-spacing: 0.01em;
+    /* Filet de sécurité sur petit écran : un mot trop long se coupe avec un trait d’union. */
+    overflow-wrap: break-word;
+    hyphens: auto;
     line-height: 1.08;
     text-wrap: balance;
   }
@@ -377,4 +385,12 @@
       display: none;
     }
   }
+}
+
+/* Titres en Eagle Lake hors balises h1–h6 (titres à filets en <p>, tuiles…) : pas de faux gras ni faux italique. */
+@utility font-display {
+  font-family: var(--font-display);
+  font-synthesis: none;
+  overflow-wrap: break-word;
+  hyphens: auto;
 }

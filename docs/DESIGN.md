@@ -67,20 +67,21 @@ Règles :
 
 | Rôle | Police | Graisse |
 |---|---|---|
-| Titres, navigation, grands chiffres de dates, citations | **Cormorant Garamond** (`font-serif`) | 700 ; 600 pour certains textes d'accroche ; italique 600–700 |
-| « Néotisse » de l'intro animée **uniquement** | **Eagle Lake** (SIL Open Font License), converti en tracés SVG | 400 |
+| **Titres** (h1–h6, titres à filets, titres de cartes et d'événements, tuiles des ateliers, « Néotisse » du pied de page, titre du bandeau de cookies, mois du calendrier) | **Eagle Lake** (`font-display`, SIL Open Font License, auto-hébergée) | 400 seulement, pas d'italique (`font-synthesis: none` : jamais de faux gras) |
+| Navigation, grands chiffres de dates, sous-titres et citations en italique, questions de la FAQ | **Cormorant Garamond** (`font-serif`) | 700 ; 600 pour certains textes d'accroche ; italique 600–700 |
+| « Néotisse » de l'intro animée et de la navbar | **Eagle Lake** converti en tracés SVG | 400 |
 | Texte courant, boutons, formulaires, étiquettes | **Quicksand** (`font-sans`) | **300** pour le corps (comme la V1) ; 500, 600, 700 |
 
-Les deux polices sont des **fichiers variables** (axe de graisse 300–700), sous-ensemble latin, repris de la V1.
+Cormorant et Quicksand sont des **fichiers variables** (axe de graisse 300–700), sous-ensemble latin, repris de la V1.
 
 | Token | Valeur | Usage |
 |---|---|---|
 | `text-body` | `clamp(0.875rem, …, 1.063rem)` | Corps de texte (interligne 1.65) |
 | `text-button` | `clamp(0.875rem, …, 1rem)` | Boutons |
-| `text-h1` | `clamp(2.8rem, 6vw, 4.6rem)` | H1 |
-| `text-h2` | `clamp(2rem, 3.6vw, 2.9rem)` | H2, titres à filets |
-| `text-h3` | `clamp(1.5rem, 2.2vw, 1.9rem)` | H3 |
-| `text-hero` | `clamp(4rem, 11vw, 8.5rem)` | « Néotisse » du héro (interligne 0.95) |
+| `text-h1` | `clamp(1.85rem, 0.9rem + 4.4vw, 3.9rem)` | H1 |
+| `text-h2` | `clamp(1.6rem, 0.9rem + 2.6vw, 2.5rem)` | H2, titres à filets |
+| `text-h3` | `clamp(1.3rem, 1rem + 1vw, 1.65rem)` | H3 |
+| `text-hero` | `clamp(3.4rem, 10vw, 7.4rem)` | « Néotisse » du héro (interligne 0.95) |
 | `text-event-date` | `clamp(2.2rem, 4.5vw, 3.4rem)` | Grande date du prochain événement |
 | `text-lead` | `clamp(0.875rem, …, 1.2rem)` | Textes d’introduction centrés (V1 : 1.2rem rendu « fluide » par WordPress) |
 | `text-tagline` | `clamp(0.875rem, …, 1.3rem)` | Accroches italiques des cartes engagements, rôle des membres |
@@ -90,7 +91,7 @@ Les deux polices sont des **fichiers variables** (axe de graisse 300–700), sou
 | `text-small` | `0.85rem` | Labels, mentions sous formulaires |
 | `text-legal` | `0.88rem` | Ligne basse du pied de page |
 
-Titres : Cormorant 700, interligne 1.08, letter-spacing 0.01em, `text-wrap: balance`.
+Titres : **Eagle Lake 400** (passage de Cormorant à Eagle Lake le 10/11/2026, demande de Louis), interligne 1.08, letter-spacing 0.01em, `text-wrap: balance`, coupure des mots trop longs avec trait d'union (`hyphens: auto`). Tailles réduites d'environ 15 % par rapport à Cormorant, car Eagle Lake a des lettres plus hautes et plus larges ; sur mobile, le H1 descend à 1.85rem pour que les mots longs (« confidentialité », « partenaires ») tiennent avec leurs filets. Les titres à filets ont `min-w-0` pour pouvoir rétrécir dans une grille.
 Liens : `garance`, survol `garance-dark`.
 
 **Écart V1 vs `CLAUDE.md`** : le corps de texte est en Quicksand **300** dans la V1 (CLAUDE.md disait 400). On suit la V1.
@@ -282,7 +283,7 @@ Copie du bandeau **Complianz de la V1** (mêmes textes, mêmes mesures : hauteur
 | Élément | Détails |
 |---|---|
 | Encart | Fixe en bas à gauche (10px des bords), fond crème, filet garance 4px en haut, angles droits, ombre `rgba(0,0,0,.19) 0 10px 20px, rgba(0,0,0,.23) 0 6px 6px`, padding 24px 24px 20px, écart 10px entre les lignes, 440px de large minimum (499px réels, imposés par l’en-tête 100px / titre / 100px). Sous 768px : pleine largeur, collé en bas, boutons empilés. |
-| Titre | « Cookies & confidentialité », Cormorant 700 1.55rem, interligne 1.1, centré. **Masqué sous 426px**, comme la V1. |
+| Titre | « Cookies & confidentialité », Eagle Lake 1.55rem, interligne 1.1, centré. **Masqué sous 426px**, comme la V1. |
 | Texte | 14px, interligne 1.6, 398px de large au-dessus de 768px. |
 | Boutons | 45px de haut, 15px Quicksand 500, interlettrage 0.04em, bordure 1px : « Accepter » plein garance (survol garance-dark), « Refuser » contour garance (se remplit au survol), « Personnaliser » souligné sans bordure (survol garance). Focus : contour encre 3px, décalage 2px. |
 | Personnaliser | Les catégories apparaissent en fondu (1s) : fond `rgba(239,239,239,.5)`, padding 10px, 10px entre elles ; titre 14px 500 ; « Toujours activé » 12px 500 **vert** (`#008000`, comme la V1) pour Fonctionnel ; interrupteur 28×15px (gris → garance, pastille crème) pour Statistiques ; chevron qui déplie la description (14px). « Personnaliser » laisse la place à « Enregistrer mes choix ». |

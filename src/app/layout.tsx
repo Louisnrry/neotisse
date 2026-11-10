@@ -16,6 +16,14 @@ const cormorant = localFont({
   fallback: ["Garamond", "Georgia", "serif"],
 });
 
+// Eagle Lake (SIL Open Font License) : titres du site, une seule graisse (400), pas d’italique.
+const eagleLake = localFont({
+  src: [{ path: "./fonts/eagle-lake-latin.woff2", weight: "400", style: "normal" }],
+  variable: "--font-eagle-lake",
+  display: "swap",
+  fallback: ["Georgia", "serif"],
+});
+
 const quicksand = localFont({
   src: [{ path: "./fonts/quicksand-latin.woff2", weight: "300 700", style: "normal" }],
   variable: "--font-quicksand",
@@ -39,7 +47,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     // suppressHydrationWarning : le script de l’intro ajoute une classe à <html> avant l’hydratation.
     // Le défilement doux est géré par Lenis (components/layout/SmoothScroll.tsx), pas en CSS.
-    <html lang="fr" className={`${cormorant.variable} ${quicksand.variable}`} suppressHydrationWarning>
+    <html lang="fr" className={`${cormorant.variable} ${eagleLake.variable} ${quicksand.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: introDecideScript }} />
       </head>

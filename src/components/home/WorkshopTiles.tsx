@@ -35,7 +35,7 @@ export async function WorkshopTiles() {
       </div>
 
       <div className="mt-14 flex flex-wrap items-center justify-center gap-x-6 gap-y-4">
-        <p className="font-serif text-[clamp(1.6rem,2.6vw,2.1rem)] font-bold">{more}</p>
+        <p className="font-display text-[clamp(1.6rem,2.6vw,2.1rem)] font-normal">{more}</p>
         <Button href={cta.href} variant="outline">
           {cta.label}
         </Button>
@@ -58,7 +58,7 @@ function WorkshopTile({ tile, className }: { tile: Tile; className?: string }) {
       )}
     >
       {/* TODO(sanity) : photo de l’atelier en fond */}
-      <p className="font-serif text-[clamp(1.6rem,2.6vw,2.2rem)] leading-[1.05] font-bold">
+      <p className="font-display text-[clamp(1.6rem,2.6vw,2.2rem)] leading-[1.05] font-normal">
         <Link
           href={tile.href}
           className="text-creme no-underline outline-none before:absolute before:inset-0 before:z-[3] before:content-[''] hover:text-creme"

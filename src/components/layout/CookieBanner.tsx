@@ -55,7 +55,7 @@ function Banner({
       <div className="grid grid-cols-[auto_1fr_auto] items-center min-[400px]:grid-cols-[100px_1fr_100px]">
         <p
           id={`${id}-titre`}
-          className="col-start-2 justify-self-center font-serif text-[1.55rem] leading-[1.1] font-bold max-[425px]:hidden"
+          className="col-start-2 justify-self-center font-display text-[1.55rem] leading-[1.1] font-normal max-[425px]:hidden"
         >
           {t.title}
         </p>

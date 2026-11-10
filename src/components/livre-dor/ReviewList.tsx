@@ -96,7 +96,7 @@ export function ReviewList({
                 </span>
               </div>
               {r.title && (
-                <h3 className="mt-2 font-serif text-[0.8em] leading-6 font-semibold tracking-normal [text-wrap:wrap]">
+                <h3 className="mt-2 font-display text-[0.8em] leading-6 font-normal tracking-normal [text-wrap:wrap]">
                   {r.title}
                 </h3>
               )}
