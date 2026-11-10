@@ -68,6 +68,7 @@ Règles :
 | Rôle | Police | Graisse |
 |---|---|---|
 | Titres, navigation, grands chiffres de dates, citations | **Cormorant Garamond** (`font-serif`) | 700 ; 600 pour certains textes d'accroche ; italique 600–700 |
+| « Néotisse » de l'intro animée **uniquement** | **Eagle Lake** (SIL Open Font License), converti en tracés SVG | 400 |
 | Texte courant, boutons, formulaires, étiquettes | **Quicksand** (`font-sans`) | **300** pour le corps (comme la V1) ; 500, 600, 700 |
 
 Les deux polices sont des **fichiers variables** (axe de graisse 300–700), sous-ensemble latin, repris de la V1.
@@ -80,7 +81,6 @@ Les deux polices sont des **fichiers variables** (axe de graisse 300–700), sou
 | `text-h2` | `clamp(2rem, 3.6vw, 2.9rem)` | H2, titres à filets |
 | `text-h3` | `clamp(1.5rem, 2.2vw, 1.9rem)` | H3 |
 | `text-hero` | `clamp(4rem, 11vw, 8.5rem)` | « Néotisse » du héro (interligne 0.95) |
-| `text-intro` | `clamp(4.5rem, 18vw, 19rem)` | Mot coupé de l'intro animée |
 | `text-event-date` | `clamp(2.2rem, 4.5vw, 3.4rem)` | Grande date du prochain événement |
 | `text-lead` | `clamp(0.875rem, …, 1.2rem)` | Textes d’introduction centrés (V1 : 1.2rem rendu « fluide » par WordPress) |
 | `text-tagline` | `clamp(0.875rem, …, 1.3rem)` | Accroches italiques des cartes engagements, rôle des membres |
@@ -192,7 +192,7 @@ Textes dans Sanity (repris de la V1). Mesures prises sur la V1 à 1440px ; les h
 
 | Section | Composant | Détails |
 |---|---|---|
-| Intro animée | `Intro.tsx` + `intro-script.ts` | Deux moitiés garance avec « Néo » / « tisse » (Cormorant 700 crème, `text-intro`), apparition en fondu + translateY 40px (0.9s), fil crème 3px tracé de haut en bas à 1s, ouverture à 1,65s (translateX ±101 %, 1.25s, `ease-reveal`), fin à 3s (6s maximum). Clic, touche, molette ou glissé pour passer. Jouée **à chaque visite de l'accueil** (comme la V1), sauf en reduced-motion ou dans une iframe. Au chargement, le script du `<head>` (layout racine) pose la classe `intro-play` avant l'affichage ; en arrivant par un lien interne (sans rechargement), `Intro` la pose dans un `useLayoutEffect`, donc sans flash du héro. Le point de coupe est recentré selon la largeur des deux mots. |
+| Intro animée | `Intro.tsx` + `intro-glyphs.ts` + `intro-script.ts` | Fond garance. « Néotisse » en **Eagle Lake**, crème, `min(88vw, 1180px)` de large, dessiné en tracés SVG (générés par `scripts/generate-intro-glyphs.mjs`) et animé avec **Motion** : le « N » se trace seul et centré (0,15 → 1,05 s, trait 14 unités, `pathLength`), se remplit, puis glisse à sa place (1 → 1,6 s) ; « éotisse » s'écrit lettre par lettre à partir de 1,25 s (tracé 0,45 s, décalage 0,13 s, remplissage 0,35 s). Fil crème 3px tracé entre « Néo » et « tisse » à 2,75 s, ouverture à 3,1 s (translateX ±101 %, 1.25s, `ease-reveal`), fin ≈ 4,3 s (8 s maximum). Le mot est dessiné deux fois (une copie par moitié, superposées au pixel près) ; la coupe est calculée en JS selon la taille réelle du mot, et la moitié gauche déborde d'1px pour masquer la jointure. Clic, touche, molette ou glissé : le mot finit de s'écrire en 0,3 s pendant l'ouverture. Jouée **à chaque visite de l'accueil**, sauf en reduced-motion ou dans une iframe. Au chargement, le script du `<head>` (layout racine) pose la classe `intro-play` avant l'affichage ; en arrivant par un lien interne, `Intro` la pose dans un `useLayoutEffect`, donc sans flash du héro. |
 | Héro | `Hero.tsx` | `min-h-svh`, fond encre, 2 photos côte à côte (une seule sous 640px), voile `neo-hero__veil` (sombre en bas à gauche + léger en haut). H1 « Néotisse » `text-hero`, accroche `clamp(1.15rem,1.8vw,1.5rem)`, bouton 1.075rem. Avec l'intro : contenu en fondu (délai 0.6s) et photos qui dézooment de 1.12 à 1 (1.8s). |
 | Ils nous ont fait confiance | `PartnersBand.tsx` | Fond garance, padding 72px, titre à filets crème sur toute la largeur. Logos 196×140 (padding 14px, logo 80px de haut max) sur toile de lin, écart 20px, défilement 45s linéaire, masque en dégradé sur 8 % de chaque bord, pause au survol et au focus. Liste doublée (copie `aria-hidden`, liens hors tabulation). Reduced-motion : logos statiques centrés, copie masquée. Survol : liseré intérieur encre 2px. Bouton `on-red` centré. |
 | Découvrez l'univers Néotisse | `Univers.tsx` | Padding 64px / 112px. Titre à filets (`<p>`), puis grille 42 % / 58 % centrée verticalement : cadre 4/5 garance, H2 à fil rouge, 2 paragraphes, bouton. |

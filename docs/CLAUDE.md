@@ -59,6 +59,7 @@
 - Accueil : « Découvrez l’univers Néotisse » n’a pas de photo décalée sur la V1, juste un cadre 4/5 à gauche ; « Et bien plus encore à découvrir » et son bouton sont centrés sur une même ligne ; la note moyenne s’affiche au-dessus des 4 avis.
 - Ateliers : chaque atelier a, en plus de CLAUDE.md § 6.2, une accroche et 3 **repères** (Format, Pour qui…) ; mise en page en lignes alternées 40/60 (pas de cartes) ; le bloc rouge final a son titre aligné à gauche (gardé comme la V1, décision de Louis du 09/11/2026). Le gras dans les textes est en 400 (gras relatif sur un corps en 300).
 - Intro animée : **jouée à chaque visite de l’accueil**, comme la V1 (décision de Louis du 09/11/2026 ; ce fichier disait « une fois par session »). Y compris en revenant sur l’accueil par un lien interne.
+- Intro animée : **écart volontaire avec la V1** depuis le 10/11/2026 (décision de Louis) : « Néotisse » en Eagle Lake qui s’écrit à la plume avec Motion (voir § 5.2), au lieu du mot en Cormorant qui apparaît en fondu.
 - Défilement doux avec **Lenis** (ajout du 10/11/2026, demande de Louis ; la V1 n’en avait pas) : inertie légère, molette et pavé tactile seulement, défilement natif au doigt. Détails dans `docs/DESIGN.md` § 10.
 
 - À propos (V1, page 19) : pas de citation isolée. L’ordre réel est : en-tête (H1 à filets, sous-titre, texte) ; « Notre démarche… » (photo 4/5 + texte avec la phrase en exergue « C’est de ce constat qu’est née Néotisse. ») ; « Nos engagements… » (3 cartes, décalages de 48 et 96px seulement à partir de 900px) ; « Une médiation… par le geste et la matière » (visuel 21/9 et encart blanc qui le chevauche, avec une ombre douce) ; « Notre équipe » (fond pierre, rôle « Co-créatrice de Néotisse » pour les deux) ; « Travaillons ensemble » (fond garance). Les titres à fil rouge y sont alignés à gauche.
@@ -233,11 +234,12 @@ Règles générales :
 - Retour cliente : la navbar d’origine était à refaire → garder une navbar **compacte et légère**.
 - Mobile : menu burger accessible (focus piégé, Échap pour fermer).
 
-### 5.2 Intro animée (accueil, 1re visite)
-- Plein écran fixe, **deux moitiés rouge garance** portant le mot « Néotisse » coupé en deux (Cormorant 700 crème, `clamp(4.5rem,18vw,19rem)`), qui apparaît en fondu + translateY.
-- Un **fil crème vertical** (3px) se trace de haut en bas au point de coupe (scaleY), puis les deux moitiés **s’écartent** (translateX ±101%, 1.25s, `cubic-bezier(.77,0,.18,1)`) pour révéler le héro.
+### 5.2 Intro animée (accueil, à chaque visite)
+- **Refaite le 10/11/2026 à la demande de Louis** (elle ne reprend plus la V1 sur ce point) : le mot « Néotisse » est en **Eagle Lake** (police réservée à l’intro) et **s’écrit à la plume** sur fond garance, avec la librairie **Motion** (`motion/react`).
+- Déroulé (≈ 4,3 s) : le **« N » se trace seul, centré**, puis se remplit ; il **glisse vers la gauche** pour laisser la place au reste ; « éotisse » s’écrit lettre par lettre (contour puis remplissage) ; le **fil crème vertical** (3px) se trace entre « Néo » et « tisse » ; les **deux moitiés s’écartent** (translateX ±101%, 1.25s, `cubic-bezier(.77,0,.18,1)`) pour révéler le héro.
+- Les lettres sont des **tracés SVG** générés depuis la police (`scripts/generate-intro-glyphs.mjs` → `src/components/home/intro-glyphs.ts`) : aucune police à télécharger pour le visiteur.
 - Le contenu du héro arrive ensuite en fondu (délai 0.6s) et la photo dézoome (scale 1.12 → 1, 1.8s).
-- Clic pour passer. **Désactivée** si `prefers-reduced-motion` ou dans une iframe. Jouée **à chaque visite** de l’accueil (comme la V1, voir § 0).
+- Clic, touche, molette ou glissé pour passer (le mot finit de s’écrire en 0,3 s pendant l’ouverture). **Désactivée** si `prefers-reduced-motion` ou dans une iframe. Jouée **à chaque visite** de l’accueil (comme la V1, voir § 0).
 
 ### 5.3 Autres animations
 - **Bandeau partenaires** (accueil, fond rouge) : logos qui **défilent en boucle** (45s, linéaire), masque en dégradé sur les bords, **pause au survol/focus** ; avec `reduced-motion` : logos statiques centrés.

@@ -43,7 +43,6 @@
   --text-h2: clamp(2rem, 3.6vw, 2.9rem);
   --text-h3: clamp(1.5rem, 2.2vw, 1.9rem);
   --text-hero: clamp(4rem, 11vw, 8.5rem);
-  --text-intro: clamp(4.5rem, 18vw, 19rem);
   --text-event-date: clamp(2.2rem, 4.5vw, 3.4rem);
   --text-kicker: 0.78rem;
   --text-small: 0.85rem;
@@ -236,7 +235,8 @@
   background: var(--color-lin) url("/images/textures/lin-brut.jpg") center / 260px;
 }
 
-/* ---------- Accueil : intro animée (reprend la V1) ---------- */
+/* ---------- Accueil : intro animée ---------- */
+/* « Néotisse » en Eagle Lake s’écrit à la plume (Intro.tsx, Motion), puis les moitiés s’écartent. */
 @layer components {
   .neo-intro {
     display: none;
@@ -251,44 +251,45 @@
     inset: 0;
     z-index: 100000;
     cursor: pointer;
-    --cut: calc(50% + var(--shift, 0px));
+    --cut: 50vw; /* recalculé en JS : entre « Néo » et « tisse » */
   }
   .neo-intro__half {
     position: absolute;
     top: 0;
     bottom: 0;
-    display: flex;
-    align-items: center;
+    overflow: hidden;
     background: var(--color-garance);
     transition: transform 1.25s var(--ease-reveal);
     will-change: transform;
   }
   .neo-intro__half--l {
     left: 0;
-    width: var(--cut);
-    justify-content: flex-end;
+    width: calc(var(--cut) + 1px); /* recouvre la jointure : pas de fine ligne au milieu */
   }
   .neo-intro__half--r {
     left: var(--cut);
     right: 0;
-    justify-content: flex-start;
   }
+  /* Chaque moitié contient le mot entier, calé sur l’écran : les deux copies se superposent. */
   .neo-intro__word {
-    font-family: var(--font-serif);
-    font-weight: 700;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: var(--color-creme);
-    font-size: var(--text-intro);
-    line-height: 1;
-    white-space: nowrap;
-    opacity: 0;
-    transform: translateY(40px);
-    transition:
-      opacity 0.9s var(--ease-soft),
-      transform 0.9s var(--ease-soft);
   }
-  .neo-intro.is-ready .neo-intro__word {
-    opacity: 1;
-    transform: none;
+  .neo-intro__half--r .neo-intro__word {
+    left: calc(-1 * var(--cut));
+  }
+  .neo-intro__word svg {
+    display: block;
+    width: min(88vw, 1180px);
+    height: auto;
+    overflow: visible;
   }
   .neo-intro__thread {
     position: absolute;
