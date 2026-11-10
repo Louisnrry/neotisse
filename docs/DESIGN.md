@@ -91,7 +91,7 @@ Cormorant et Quicksand sont des **fichiers variables** (axe de graisse 300–700
 | `text-small` | `0.85rem` | Labels, mentions sous formulaires |
 | `text-legal` | `0.88rem` | Ligne basse du pied de page |
 
-Titres : **Eagle Lake 400** (passage de Cormorant à Eagle Lake le 10/11/2026, demande de Louis), interligne 1.08, letter-spacing 0.01em, `text-wrap: balance`, coupure des mots trop longs avec trait d'union (`hyphens: auto`). Tailles réduites d'environ 15 % par rapport à Cormorant, car Eagle Lake a des lettres plus hautes et plus larges ; sur mobile, le H1 descend à 1.85rem pour que les mots longs (« confidentialité », « partenaires ») tiennent avec leurs filets. Les titres à filets ont `min-w-0` pour pouvoir rétrécir dans une grille.
+Titres : **Eagle Lake 400** (passage de Cormorant à Eagle Lake le 10/11/2026, demande de Louis), interligne 1.08, letter-spacing **0.009em** (0.01em réduit de 10 % le 10/11/2026, demande de Louis), `text-wrap: balance`, coupure des mots trop longs avec trait d'union (`hyphens: auto`). Tailles réduites d'environ 15 % par rapport à Cormorant, car Eagle Lake a des lettres plus hautes et plus larges ; sur mobile, le H1 descend à 1.85rem pour que les mots longs (« confidentialité », « partenaires ») tiennent avec leurs filets. Les titres à filets ont `min-w-0` pour pouvoir rétrécir dans une grille.
 Liens : `garance`, survol `garance-dark`.
 
 **Écart V1 vs `CLAUDE.md`** : le corps de texte est en Quicksand **300** dans la V1 (CLAUDE.md disait 400). On suit la V1.
@@ -122,7 +122,7 @@ Point de rupture spécifique : **`nav:` = 1200px** (75rem), passage au menu burg
 
 ## 5. Signes graphiques
 
-- **Titre à filets** (`<RuledTitle>`, utilitaire `ruled`) : texte centré entre deux lignes de 2px de la couleur du texte, `gap: clamp(16px, 3vw, 40px)`, letter-spacing 0.06em. `tone="creme"` sur fond rouge ou encre. Mettre `as="p"` quand c'est un surtitre de section suivi d'un H2.
+- **Titre à filets** (`<RuledTitle>`, utilitaire `ruled`) : texte centré entre deux lignes de 2px de la couleur du texte, `gap: clamp(16px, 3vw, 40px)`, letter-spacing **0.054em** (0.06em réduit de 10 % le 10/11/2026). `tone="creme"` sur fond rouge ou encre. Mettre `as="p"` quand c'est un surtitre de section suivi d'un H2.
 - **Fil rouge** (`<ThreadHeading>`, utilitaire `thread`) : trait 64×4px garance sous le titre, à 0.45em. `center` pour le centrer, `tone="creme"` pour un fil crème.
 - **Surtitre** (`<Kicker>`) : 0.78rem, 700, letter-spacing 0.14em, majuscules, garance, trait de 3px au-dessus (padding-top 12px).
 - **Sous-titre** (`<Subtitle>`) : Cormorant italique 600, garance.
@@ -252,7 +252,7 @@ Textes dans Sanity (repris de la V1), espaces insécables avant « ? » et « : 
 |---|---|---|
 | Coordonnées + formulaire | `page.tsx`, `ContactDetails.tsx` | Padding 80px / 112px. Grille 45 % / 55 %, écart 112px (une colonne sous **782px**, écart 56px). À gauche : H1 **à fil rouge** (pas à filets, comme la V1) `clamp(3rem,6vw,4.6rem)` interligne 1, texte 1.1rem (28px au-dessus, 40px dessous), liste de coordonnées (`<dl>`, filet encre en haut, lignes à filet `filet`, padding 18px, colonnes 130px / reste, une seule sous 521px ; libellés en petites capitales grises 0.78rem ; téléphone en 600 chiffres tabulaires + nom en gris ; Instagram et Facebook icône 24px + libellé, **sur une seule ligne** (écart 1.2rem, 1.2rem sous le haut de la ligne, comme la V1)), puis bouton `outline-thin` vers le livre d'or (32px au-dessus, 15px × 35px, interligne 1.65, comme la V1). À droite : H2 « Écrivez-nous » `clamp(1.6rem,2.4vw,2rem)` (28px dessous), formulaire, mention RGPD 1.2rem dessous. |
 | Formulaire | `ContactForm.tsx` | Écart 20px, 34px avant le bouton. Nom / Prénom sur 2 colonnes (une sous 521px), e-mail, objet, projet, bouton `large` « Envoyer ». Validation côté client au clic (focus sur le premier champ en erreur), champ piège + délai de 2s. Pour l'instant un envoi valide affiche directement « Merci, votre message est bien parti ! » (route API en phase 3). |
-| FAQ | `Faq.tsx` | 1.2rem sous la section précédente, padding 96px / 112px, écart 40px. Titre à filets (interlettrage 0.01em, comme la V1, au lieu des 0.06em des autres titres à filets), puis grille 36 % / 64 %, écart 80px (une colonne sous 782px) : photo 4/5 (`hero-tissage.jpg`) + texte d'intro à gauche ; accordéon `<details>` natif à droite : question Cormorant 700 1.35rem, padding 20px 44px 20px 0, « + » en deux traits garance 16×2px qui devient « − » (0.25s), question ouverte ou survolée en garance, filet encre au-dessus de la première, filets `filet` entre les autres ; réponse interligne 1.7, 64ch max. Balisage JSON-LD `FAQPage`. |
+| FAQ | `Faq.tsx` | 1.2rem sous la section précédente, padding 96px / 112px, écart 40px. Titre à filets (interlettrage 0.009em, celui des titres, comme la V1, au lieu des 0.054em des autres titres à filets), puis grille 36 % / 64 %, écart 80px (une colonne sous 782px) : photo 4/5 (`hero-tissage.jpg`) + texte d'intro à gauche ; accordéon `<details>` natif à droite : question Cormorant 700 1.35rem, padding 20px 44px 20px 0, « + » en deux traits garance 16×2px qui devient « − » (0.25s), question ouverte ou survolée en garance, filet encre au-dessus de la première, filets `filet` entre les autres ; réponse interligne 1.7, 64ch max. Balisage JSON-LD `FAQPage`. |
 
 ## 9 septies. Livre d’or (`/livre-dor/`)
 
