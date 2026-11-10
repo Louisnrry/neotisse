@@ -69,7 +69,7 @@
 - WordPress ajoute 1.2rem d’espace entre les grandes sections de la page À propos : reproduit entre sections blanches, **mais pas** la bande blanche qu’il laisse entre « Notre équipe » (pierre) et « Travaillons ensemble » (garance), qui ressemble à un défaut.
 - Partenaires (V1, page 13) : le bloc « Devenir l’un de nos partenaires ? » est sur fond **pierre** (titre à fil rouge à gauche, texte centré, bouton plein), pas rouge. Le logo des cartes est posé directement sur la toile de lin (la pastille blanche du § 6.4 est annulée sur la V1). Les noms liés sont soulignés, en garance.
 
-- Contact (V1, page 11) : le H1 « Contact » est à **fil rouge** (aligné à gauche), pas à filets. La colonne gauche liste les coordonnées en tableau (E-mail, **Téléphone 06 48 65 58 16 – Marie-Salomé Perrichon**, Basées à Montpellier, Suivez-nous) puis le bouton contour fin « Lire et laisser un avis dans notre livre d’or ». La FAQ n’est **pas** sur 2 colonnes de questions : photo 4/5 + texte d’intro à gauche (36 %), les 10 questions en une colonne à droite (64 %). Libellés obligatoires avec un astérisque garance. Instagram et Facebook (icône + libellé) sont sur une seule ligne ; le titre de la FAQ garde l’interlettrage des titres (0.009em), pas celui des autres titres à filets.
+- Contact (V1, page 11) : le H1 « Contact » est à **fil rouge** (aligné à gauche), pas à filets. La colonne gauche liste les coordonnées en tableau (E-mail, **Téléphone 06 48 65 58 16 – Marie-Salomé Perrichon**, Basées à Montpellier, Suivez-nous) puis le bouton contour fin « Lire et laisser un avis dans notre livre d’or ». La FAQ n’est **pas** sur 2 colonnes de questions : photo 4/5 + texte d’intro à gauche (36 %), les 10 questions en une colonne à droite (64 %). Libellés obligatoires avec un astérisque garance. Instagram et Facebook (icône + libellé) sont sur une seule ligne ; le titre de la FAQ garde l’interlettrage des titres (-0.05em), pas celui des autres titres à filets.
 
 - Livre d’or (V1, page 126) : une seule colonne de 860px (padding 72px / 112px, écart 28px). Les H2 « Ils nous ont laissé un mot » et « Signer le livre d’or » sont à **fil rouge** alignés à gauche (pas à filets). La carte du formulaire a son propre titre « Laisser un avis ». Champs : Nom, Adresse e-mail (2 colonnes, une sous 561px), Titre de votre avis, Votre note, Votre avis, « Je confirme ne pas être un robot. ». Sur la V1, le CSS de l’extension WP Customer Reviews écrase une partie du style voulu dans `neotisse-core` (titres d’avis en 13,6px, date en italique, double séparateur entre avis) : la V2 reproduit ce rendu **à l’identique** (décision de Louis du 09/11/2026 : titre Cormorant 0.8em, date et auteur en italique, double séparateur filet + pointillés, étoiles sprite de l’extension). Écarts assumés : astérisques sur les champs obligatoires (comme Contact) et confirmation en ligne au lieu de l’alerte en anglais de l’extension.
 
@@ -200,7 +200,7 @@ Règles générales :
 | Texte courant, boutons, formulaires, étiquettes | **Quicksand** | 400, 500, 600, 700 |
 
 - Corps : Quicksand **1.0625rem**, interligne **1.65**, couleur `ink`.
-- Titres : **Eagle Lake 400** (depuis le 10/11/2026, voir § 0), interligne 1.08, letter-spacing 0.009em (0.01em réduit de 10 % le 10/11/2026), couleur `ink`.
+- Titres : **Eagle Lake 400** (depuis le 10/11/2026, voir § 0), interligne 1.08, letter-spacing **-0.05em** (choisi par Louis le 10/11/2026 ; avant 0.01em), couleur `ink`.
   - H1 : `clamp(2.8rem, 6vw, 4.6rem)`
   - H2 : `clamp(2rem, 3.6vw, 2.9rem)`
   - H3 : `clamp(1.5rem, 2.2vw, 1.9rem)`
@@ -208,7 +208,7 @@ Règles générales :
 
 ### 4.3 Signes graphiques distinctifs (à reproduire)
 
-- **Titre à filets** (`Ruled`) : titre centré entre deux lignes horizontales de 2px `ink` (flex, `gap: clamp(16px,3vw,40px)`, lignes en `flex:1`), letter-spacing 0.054em (0.06em réduit de 10 % le 10/11/2026). Sur fond rouge : lignes et texte **crème**. Utilisé pour les grands titres de section (« Ils nous ont fait confiance », « Nos ateliers… », « Ils nous ont laissé un mot », « Contact », « Découvrez l’univers Néotisse », « Tenez-vous au courant des prochains événements », H1 des pages internes).
+- **Titre à filets** (`Ruled`) : titre centré entre deux lignes horizontales de 2px `ink` (flex, `gap: clamp(16px,3vw,40px)`, lignes en `flex:1`), letter-spacing **-0.03em** (choisi par Louis le 10/11/2026 ; avant 0.06em). Sur fond rouge : lignes et texte **crème**. Utilisé pour les grands titres de section (« Ils nous ont fait confiance », « Nos ateliers… », « Ils nous ont laissé un mot », « Contact », « Découvrez l’univers Néotisse », « Tenez-vous au courant des prochains événements », H1 des pages internes).
 - **Fil rouge** (`Thread`) : trait `garance` de 64×4px sous un titre (centré si le titre est centré ; crème sur fond rouge/encre).
 - **Surtitre** (`Kicker`) : 0.78rem, 700, letter-spacing 0.14em, MAJUSCULES, `garance`, trait de 3px `garance` au-dessus.
 - **Sous-titre / citation** : Cormorant italique 600–700, `garance`.

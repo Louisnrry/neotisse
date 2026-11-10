@@ -3,7 +3,6 @@ import { CookieBanner } from "@/components/layout/CookieBanner";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { SmoothScroll } from "@/components/layout/SmoothScroll";
-import { TrackingTuner } from "@/components/dev/TrackingTuner";
 import { SanityLive } from "@/sanity/lib/live";
 import { getCookieBanner } from "@/sanity/queries/cookies";
 
@@ -27,8 +26,6 @@ export default async function SiteLayout({ children }: LayoutProps<"/">) {
       <SmoothScroll />
       {/* Met la page à jour dès qu’un contenu est publié dans le Studio. */}
       <SanityLive includeDrafts={false} />
-      {/* Outil de réglage de l’interlettrage des titres : en développement seulement, jamais en ligne. */}
-      {process.env.NODE_ENV === "development" && <TrackingTuner />}
     </>
   );
 }
