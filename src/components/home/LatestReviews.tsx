@@ -31,7 +31,7 @@ export async function LatestReviews() {
             {latest.map((r) => (
               <li key={r.id}>
                 <Card className="flex h-full flex-col p-6">
-                  {r.title && <h3 className="mb-1.5 text-[1.5rem] leading-[1.2]">{r.title}</h3>}
+                  {r.title && <h3 className="mb-1.5 font-serif text-[1.5rem] leading-[1.2] font-bold">{r.title}</h3>}
                   <Stars rating={r.rating} />
                   <p className="mt-1 text-small text-gris">
                     {formatDate(r.createdAt)} · par <span className="font-semibold text-ink">{r.name}</span>

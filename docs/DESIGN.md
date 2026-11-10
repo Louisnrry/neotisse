@@ -67,8 +67,8 @@ Règles :
 
 | Rôle | Police | Graisse |
 |---|---|---|
-| **Titres** (h1–h6, titres à filets, titres de cartes et d'événements, tuiles des ateliers, « Néotisse » du pied de page, titre du bandeau de cookies, mois du calendrier) | **Eagle Lake** (`font-display`, SIL Open Font License, auto-hébergée) | 400 seulement, pas d'italique (`font-synthesis: none` : jamais de faux gras) |
-| Navigation, grands chiffres de dates, sous-titres et citations en italique, questions de la FAQ | **Cormorant Garamond** (`font-serif`) | 700 ; 600 pour certains textes d'accroche ; italique 600–700 |
+| **Titres** (h1–h6, titres à filets, titres de cartes et d'événements — sauf les titres des avis, tuiles des ateliers, « Néotisse » du pied de page, titre du bandeau de cookies, mois du calendrier) | **Eagle Lake** (`font-display`, SIL Open Font License, auto-hébergée) | 400 seulement, pas d'italique (`font-synthesis: none` : jamais de faux gras) |
+| Navigation, **titres des avis** (accueil et livre d'or, gardés en Cormorant à la demande de Louis), grands chiffres de dates, sous-titres et citations en italique, questions de la FAQ | **Cormorant Garamond** (`font-serif`) | 700 ; 600 pour certains textes d'accroche ; italique 600–700 |
 | « Néotisse » de l'intro animée et de la navbar | **Eagle Lake** converti en tracés SVG | 400 |
 | Texte courant, boutons, formulaires, étiquettes | **Quicksand** (`font-sans`) | **300** pour le corps (comme la V1) ; 500, 600, 700 |
 
