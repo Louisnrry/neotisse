@@ -38,14 +38,8 @@ export async function generateMetadata(): Promise<Metadata> {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     // suppressHydrationWarning : le script de l’intro ajoute une classe à <html> avant l’hydratation.
-    // data-scroll-behavior="smooth" : défilement doux pour les ancres, mais arrivée instantanée
-    // en haut de page lors d’un changement de page (Next.js 16 ne le fait plus par défaut).
-    <html
-      lang="fr"
-      className={`${cormorant.variable} ${quicksand.variable}`}
-      data-scroll-behavior="smooth"
-      suppressHydrationWarning
-    >
+    // Le défilement doux est géré par Lenis (components/layout/SmoothScroll.tsx), pas en CSS.
+    <html lang="fr" className={`${cormorant.variable} ${quicksand.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: introDecideScript }} />
       </head>

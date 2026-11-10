@@ -100,7 +100,7 @@
 /* ---------- Base ---------- */
 @layer base {
   html {
-    scroll-behavior: smooth;
+    /* Pas de scroll-behavior: smooth : le défilement doux est géré par Lenis (SmoothScroll.tsx). */
     -webkit-text-size-adjust: 100%;
   }
 

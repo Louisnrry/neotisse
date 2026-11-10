@@ -308,7 +308,7 @@ Textes dans Sanity (repris de la V1). Reprend `templates/agenda.html`, `a-venir.
 - Lien d'évitement « Aller au contenu » en premier élément focusable.
 - `prefers-reduced-motion` : toutes les transitions et animations sont neutralisées dans `@layer base`.
 - `scroll-margin-top: 110px` sur les éléments à ancre (place pour l'en-tête).
-- Défilement : doux (`scroll-behavior: smooth`) pour les ancres d'une même page, mais **arrivée instantanée en haut de page** lors d'un changement de page. Next.js 16 ne coupe plus le défilement doux pendant la navigation : c'est l'attribut `data-scroll-behavior="smooth"` sur `<html>` (layout racine) qui le rétablit. Sans lui, la page remontait visiblement à chaque changement de page.
+- **Défilement doux avec Lenis** (`src/components/layout/SmoothScroll.tsx`, monté dans le layout du site, ajouté le 10/11/2026 à la demande de Louis) : inertie **légère** (`duration: 1`), à la molette et au pavé tactile uniquement (au doigt, défilement natif du téléphone : `syncTouch: false`). Les ancres d'une même page défilent en douceur en respectant `scroll-margin-top` (110px sous l'en-tête). Changement de page : arrivée **instantanée** en haut (Lenis est remis à 0 sans animation). Lenis est **en pause** pendant l'intro, le menu mobile et la modale du calendrier (classes `intro-play`, `overflow-hidden` ou `<dialog open>`), et les fenêtres qui défilent seules (`<dialog>`, `role="dialog"` : modale, menu, bandeau de cookies) gardent leur défilement natif. Reduced-motion : Lenis désactive le lissage. Il n'y a plus de `scroll-behavior: smooth` en CSS, qui entrerait en conflit avec Lenis.
 
 ---
 

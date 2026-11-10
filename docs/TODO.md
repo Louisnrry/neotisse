@@ -21,6 +21,7 @@
   - Dates en français selon les règles de la V1 (`src/lib/dates.ts`), testées
   - Comparé à la V1 à 1440px (positions et hauteurs identiques à quelques pixels) et à 375px (pas de débordement, même largeur de contenu)
   - Vérifié : intro (lecture puis ouverture, à chaque visite, y compris en revenant par le logo), bandeau en pause au focus, copies des logos hors clavier, tuiles (zoom + contour encre au clavier)
+- [x] **Défilement doux avec Lenis** (10/11) : inertie légère, natif au doigt ; vérifié : molette lissée (≈ 0,8 s), ancres douces à 110px sous l’en-tête, changement de page instantané en haut, pause pendant l’intro, le menu mobile et la modale du calendrier
 - [x] Bouton « Écrivez-nous » du pied de page de nouveau lisible (il était crème sur crème)
 - [x] URL avec barre finale, identiques à la V1 (`trailingSlash: true`)
 - [x] **Page Ateliers** (09/11) : en-tête avec index d'ancres, 5 ateliers en alternance (repères, textes complets), bloc rouge « Des ateliers de tissage adaptés à vos projets » ; textes et SEO repris du WordPress (`src/content/ateliers.ts`) ; comparée à la V1 à 1440 et 375px

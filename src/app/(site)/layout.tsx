@@ -2,6 +2,7 @@ import { Analytics } from "@/components/layout/Analytics";
 import { CookieBanner } from "@/components/layout/CookieBanner";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
+import { SmoothScroll } from "@/components/layout/SmoothScroll";
 import { SanityLive } from "@/sanity/lib/live";
 import { getCookieBanner } from "@/sanity/queries/cookies";
 
@@ -22,6 +23,7 @@ export default async function SiteLayout({ children }: LayoutProps<"/">) {
       <Footer />
       <CookieBanner texts={cookieTexts} />
       <Analytics />
+      <SmoothScroll />
       {/* Met la page à jour dès qu’un contenu est publié dans le Studio. */}
       <SanityLive includeDrafts={false} />
     </>
