@@ -16,6 +16,7 @@ const HOME_QUERY = `*[_id == "homePage"][0]{
     title, intro, more, cta${LINK},
     "tiles": tiles[]->{
       "label": title,
+      hook,
       "href": $ateliers + "#" + anchor,
       "tone": tileColor,
       "image": image${IMAGE}
@@ -25,7 +26,7 @@ const HOME_QUERY = `*[_id == "homePage"][0]{
   contact{ title, text, cta${LINK} }
 }`;
 
-export type HomeTile = { label: string; href: string; tone: Tone; image?: ContentImage };
+export type HomeTile = { label: string; hook: string; href: string; tone: Tone; image?: ContentImage };
 
 export type HomeContent = {
   seo: Seo;
@@ -53,7 +54,7 @@ type Remote = {
   hero?: ({ images?: (Partial<SanityImage> | null)[] | null } & Record<string, unknown>) | null;
   workshops?:
     | ({
-        tiles?: ({ label?: string; href?: string; tone?: Tone; image?: Partial<SanityImage> | null } | null)[] | null;
+        tiles?: ({ label?: string; hook?: string; href?: string; tone?: Tone; image?: Partial<SanityImage> | null } | null)[] | null;
       } & Record<string, unknown>)
     | null;
 } & Record<string, unknown>;
@@ -72,7 +73,7 @@ export async function getHomePage(): Promise<HomeContent> {
       ...remote.workshops,
       tiles: (remote.workshops.tiles ?? [])
         .filter((t) => t?.label && t.href)
-        .map((t) => ({ label: t!.label, href: t!.href, tone: t!.tone ?? "garance", image: imageOrUndefined(t!.image) })),
+        .map((t) => ({ label: t!.label, hook: t!.hook ?? "", href: t!.href, tone: t!.tone ?? "garance", image: imageOrUndefined(t!.image) })),
     },
   };
   return withDefaults(cleaned, EMPTY);
