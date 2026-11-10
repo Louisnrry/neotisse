@@ -128,7 +128,8 @@
     font-weight: 400;
     /* Pas de faux gras ni de faux italique : Eagle Lake n’a qu’une graisse et pas d’italique. */
     font-synthesis: none;
-    letter-spacing: 0.009em; /* 0.01em réduit de 10 % (10/11/2026) */
+    /* 0.01em réduit de 10 % (10/11/2026). Variable réglable en dev par le panneau components/dev/TrackingTuner.tsx */
+    letter-spacing: var(--title-tracking, 0.009em);
     /* Filet de sécurité sur petit écran : un mot trop long se coupe avec un trait d’union. */
     overflow-wrap: break-word;
     hyphens: auto;
@@ -204,7 +205,8 @@
   align-items: center;
   gap: clamp(16px, 3vw, 40px);
   text-align: center;
-  letter-spacing: 0.054em; /* 0.06em réduit de 10 % (10/11/2026) */
+  /* 0.06em réduit de 10 % (10/11/2026). Variable réglable en dev par le panneau components/dev/TrackingTuner.tsx */
+  letter-spacing: var(--ruled-tracking, 0.054em);
   &::before,
   &::after {
     content: "";

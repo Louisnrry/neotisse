@@ -46,7 +46,7 @@ export async function Faq() {
   return (
     <Section spacing="none" className="mt-[1.2rem] pt-24 pb-28" innerClassName="grid gap-10" labelledBy="faq-titre">
       {/* Interlettrage 0.01em (celui des titres), comme la V1 : ce titre n’a pas l’espacement large des autres titres à filets */}
-      <RuledTitle id="faq-titre" className="tracking-[0.009em]">
+      <RuledTitle id="faq-titre" className="tracking-[var(--title-tracking,0.009em)]">
         {title}
       </RuledTitle>
       <div className="grid gap-10 min-[782px]:grid-cols-[36fr_64fr] min-[782px]:gap-20">

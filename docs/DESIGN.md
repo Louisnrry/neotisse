@@ -94,6 +94,8 @@ Cormorant et Quicksand sont des **fichiers variables** (axe de graisse 300–700
 Titres : **Eagle Lake 400** (passage de Cormorant à Eagle Lake le 10/11/2026, demande de Louis), interligne 1.08, letter-spacing **0.009em** (0.01em réduit de 10 % le 10/11/2026, demande de Louis), `text-wrap: balance`, coupure des mots trop longs avec trait d'union (`hyphens: auto`). Tailles réduites d'environ 15 % par rapport à Cormorant, car Eagle Lake a des lettres plus hautes et plus larges ; sur mobile, le H1 descend à 1.85rem pour que les mots longs (« confidentialité », « partenaires ») tiennent avec leurs filets. Les titres à filets ont `min-w-0` pour pouvoir rétrécir dans une grille.
 Liens : `garance`, survol `garance-dark`.
 
+**Réglage de l'interlettrage en direct (développement seulement)** : l'interlettrage des titres passe par deux variables CSS, `--title-tracking` (défaut 0.009em) et `--ruled-tracking` (titres à filets, défaut 0.054em). En `npm run dev`, un panneau en bas à droite (`src/components/dev/TrackingTuner.tsx`) les règle avec deux curseurs (de -0.05em à 0.15em, pas de 0.001em), affiche l'écart en % avec les valeurs du site, garde le réglage dans le navigateur et copie les valeurs. Il n'est jamais rendu en production. Pour adopter un réglage : reporter les valeurs comme défauts dans `globals.css` (et dans le titre de la FAQ, `Faq.tsx`).
+
 **Écart V1 vs `CLAUDE.md`** : le corps de texte est en Quicksand **300** dans la V1 (CLAUDE.md disait 400). On suit la V1.
 
 ---

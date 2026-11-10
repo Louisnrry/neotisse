@@ -111,6 +111,7 @@
 - [ ] Politique de confidentialité complète : fonction de Marie-Salomé, siège, lieu et durée de conservation des sauvegardes (encore « [À COMPLÉTER] ») ; nommer le prestataire d’e-mails et confirmer Google Analytics une fois choisis ; mettre à jour la date en haut de page
 
 ## Questions ouvertes
+- Interlettrage des titres : à choisir avec le panneau de réglage (dev seulement, `TrackingTuner.tsx`), puis reporter les valeurs dans `globals.css`
 - Titres à filets sur mobile : un titre trop long pour sa ligne (« Politique de confidentialité » à 375px) perd ses filets (largeur 0), déjà le cas avant les animations
 - Boutons pleins : les boutons WordPress de la V1 (ex. « Programmer un atelier ») ont un interligne de 1.65 (52px de haut), le `<Button>` de la V2 1.3 (46px) : aligner sur la V1 partout ?
 - Calendrier : le CSS de la V1 limite la liste « À venir » à 880px mais WordPress l’affiche sur 1040px ; la V2 reproduit l’affichage réel
