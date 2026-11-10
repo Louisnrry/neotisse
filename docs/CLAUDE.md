@@ -124,6 +124,7 @@
 | CMS | **Sanity** (headless) : Studio embarqué sur `/studio`, requêtes GROQ, images via `@sanity/image-url` |
 | Formulaires | Route API (Next.js) qui écrit dans Sanity et/ou envoie un e-mail (ex. Resend). Anti-spam : champ piège (honeypot) + délai minimal, **pas de reCAPTCHA** (cookies Google). |
 | Hébergement | **Netlify** |
+| Animations | **Motion** (`motion/react`), **GSAP** (`gsap` + `@gsap/react`, ajouté le 10/11/2026) et **Lenis** (défilement doux). Répartition et règles : `docs/DESIGN.md` § 10 bis |
 | Polices | **Auto-hébergées** (`next/font/local` ou `@fontsource`), aucun appel à Google Fonts (RGPD). |
 
 Règles générales :

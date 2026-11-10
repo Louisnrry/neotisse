@@ -312,6 +312,24 @@ Textes dans Sanity (repris de la V1). Reprend `templates/agenda.html`, `a-venir.
 - `scroll-margin-top: 110px` sur les éléments à ancre (place pour l'en-tête).
 - **Défilement doux avec Lenis** (`src/components/layout/SmoothScroll.tsx`, monté dans le layout du site, ajouté le 10/11/2026 à la demande de Louis) : inertie **légère** (`duration: 1`), à la molette et au pavé tactile uniquement (au doigt, défilement natif du téléphone : `syncTouch: false`). Les ancres d'une même page défilent en douceur en respectant `scroll-margin-top` (110px sous l'en-tête). Changement de page : arrivée **instantanée** en haut (Lenis est remis à 0 sans animation). Lenis est **en pause** pendant l'intro, le menu mobile et la modale du calendrier (classes `intro-play`, `overflow-hidden` ou `<dialog open>`), et les fenêtres qui défilent seules (`<dialog>`, `role="dialog"` : modale, menu, bandeau de cookies) gardent leur défilement natif. Reduced-motion : Lenis désactive le lissage. Il n'y a plus de `scroll-behavior: smooth` en CSS, qui entrerait en conflit avec Lenis.
 
+## 10 bis. Bibliothèques d'animation
+
+Trois bibliothèques sont installées (GSAP ajouté le 10/11/2026, avant le chantier des animations) :
+
+| Bibliothèque | Paquet | Usage |
+|---|---|---|
+| **Motion** | `motion` (`motion/react`) | Animations liées à l'état d'un composant React : intro de l'accueil (tracés SVG, `pathLength`), apparitions et disparitions (`AnimatePresence`), survols et petits gestes d'interface. |
+| **GSAP** | `gsap` + `@gsap/react` | Animations pilotées par le défilement (**ScrollTrigger**) et longues séquences (timelines) : apparition des sections, titres à filets et fils rouges qui se tracent, parallaxe. Les plugins (ScrollTrigger, SplitText, DrawSVG…) sont gratuits et inclus dans `gsap` depuis la 3.13. |
+| **Lenis** | `lenis` | Défilement doux (voir § 10). |
+
+Règles :
+- Composants d'animation en **client** (`"use client"`), le contenu reste rendu côté serveur : l'animation ne doit jamais cacher un texte si le JavaScript ne charge pas.
+- GSAP : toujours dans **`useGSAP()`** (de `@gsap/react`, nettoyage automatique au démontage et au changement de page), avec un `scope` sur le conteneur ; plugins enregistrés une fois avec `gsap.registerPlugin(...)` côté client.
+- **ScrollTrigger et Lenis** : à la première utilisation de ScrollTrigger, brancher Lenis dessus dans `SmoothScroll.tsx` (`lenis.on("scroll", ScrollTrigger.update)`, et `ScrollTrigger.refresh()` après un changement de page), sinon les déclencheurs se décalent.
+- Ne pas animer le même élément avec Motion **et** GSAP.
+- `prefers-reduced-motion` : passer par `gsap.matchMedia()` (GSAP) ou `useReducedMotion()` (Motion) et afficher l'état final directement. Le reset CSS du § 10 ne suffit pas, car il ne neutralise pas les animations en JavaScript.
+- Animer de préférence `transform` et `opacity` (pas de `top`, `width`, `height`) pour rester fluide sur mobile.
+
 ---
 
 ## 11. Assets repris de la V1
