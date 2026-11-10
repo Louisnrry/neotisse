@@ -26,7 +26,7 @@
 - [x] **Nouvelle navbar** (10/11) d’après la maquette Figma « navbar à faire » : barre flottante crème arrondie, « Néotisse » en Eagle Lake au centre, « Contact » à droite ; comportement conservé ; vérifiée à 1440, 1200 et 375px (mot centré, pas de débordement), menu burger (focus, Échap), accueil transparent avec texte crème lisible sur la photo
 - [x] **Titres en Eagle Lake** (10/11) : police auto-hébergée, tailles adaptées ; vérifié à 375px sur les 9 pages (aucun débordement, après correction du titre du mois du calendrier) et à 1440px
 - [x] **GSAP installé** (10/11) : `gsap` et `@gsap/react`, en plus de Motion et Lenis ; répartition et règles dans `docs/DESIGN.md` § 10 bis
-- [x] **Page Ateliers** (10/11) : surtitres retirés, texte replié après le 1er paragraphe (« En savoir plus » / « Voir moins »), déplié directement depuis l'index en haut de page
+- [x] **Page Ateliers** (10/11) : surtitres retirés, texte replié après le 1er paragraphe (« En savoir plus » / « Voir moins »), déplié directement depuis l'index en haut de page ; index redessiné (liens garance séparés par des filets verticaux)
 - [x] **Boutons à coins arrondis 4px** (10/11) partout, sauf « Contact » de la navbar (16px)
 - [x] **Ateliers de l'accueil refaits** (10/11) d'après la maquette de Louis : section épinglée (un atelier à la fois, texte et carte en fondu qui remontent, fil vertical en 3 parties), empilés sous 900px, accroche des ateliers reprise de Sanity ; vérifié à 1440 et 375px et au clavier
 - [x] **Interlettrage des titres** (10/11) : -0.05em (titres) et -0.03em (titres à filets), choisis par Louis avec un panneau à curseurs provisoire, retiré ensuite

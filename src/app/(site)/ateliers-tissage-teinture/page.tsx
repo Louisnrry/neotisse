@@ -28,10 +28,14 @@ export default async function AteliersPage() {
           <TypeText className="mt-6 text-center text-[1.2rem]" value={intro} />
           <TypeText className="mt-6 text-center font-semibold text-gris" value={audience} />
           <nav aria-label="Nos formats d’ateliers" className="mt-8">
-            <ul className="flex flex-wrap justify-center gap-x-9 gap-y-2 border-y border-ink py-3.5">
+            {/* Liens garance séparés par des filets verticaux (garance foncé au survol) ; empilés sans filets sous 700px */}
+            <ul className="flex flex-col items-center gap-y-2 border-y border-ink py-3.5 min-[700px]:flex-row min-[700px]:flex-wrap min-[700px]:justify-center">
               {workshops.map((w) => (
-                <li key={w.anchor}>
-                  <a href={`#${w.anchor}`} className="font-semibold text-ink no-underline hover:text-garance">
+                <li key={w.anchor} className="min-[700px]:px-5 min-[700px]:py-1.5 min-[700px]:[&+li]:border-l min-[700px]:[&+li]:border-ink">
+                  <a
+                    href={`#${w.anchor}`}
+                    className="font-semibold text-garance no-underline transition-colors duration-200 hover:text-garance-dark"
+                  >
                     {w.title}
                   </a>
                 </li>
