@@ -127,7 +127,7 @@ Point de rupture spécifique : **`nav:` = 1200px** (75rem), passage au menu burg
 - **Surtitre** (`<Kicker>`) : 0.78rem, 700, letter-spacing 0.14em, majuscules, garance, trait de 3px au-dessus (padding-top 12px).
 - **Sous-titre** (`<Subtitle>`) : Cormorant italique 600, garance.
 - **Citation** (`<PullQuote>`) : Cormorant italique 700, garance, interligne 1.2.
-- **Angles droits partout** : le token de rayon est vidé (`--radius-*: initial`), donc les classes `rounded-*` n'existent pas.
+- **Angles droits partout** : le token de rayon est vidé (`--radius-*: initial`), donc les classes `rounded-*` n'existent pas. Exceptions (seules les valeurs arbitraires `rounded-[…]` existent) : **tous les boutons 4px** (depuis le 10/11/2026, demande de Louis : composant `Button`, bandeau cookies, « Plus d'avis », boutons de la modale du calendrier ; pas les flèches du calendrier ni le bouton fermer), bouton « Contact » de la navbar 16px, navbar 24px, cartes des ateliers de l'accueil 8px.
 - **Filet rouge en haut des cartes** (`<Card>`) : bordure `filet` + `border-top: 4px garance`.
 - **Texture de lin** (`bg-lin`) : `lin-brut.jpg` en 260px sur `#E9E2D6`, derrière les logos partenaires, avec un filet garance de 3px en bas.
 - **Cadre photo provisoire** (`<PhotoPlaceholder>`) : **aplat uni** (garance, garance-dark, ink ou lin) + petite icône. Sur la V1 la trame rayée est masquée par l'aplat, donc on ne la montre pas par défaut ; `trame` l'active (`bg-trame`). À remplacer par les images Sanity.
@@ -152,7 +152,7 @@ Point de rupture spécifique : **`nav:` = 1200px** (75rem), passage au menu burg
 | `compact` | `0.5em 1.1em` | 0.9rem (bouton de la navbar) |
 | `large` | `0.95em 2.4em` | 1.05rem (boutons d'envoi des formulaires) |
 
-Quicksand 600, angles droits, transitions 0.2s. `href` interne → `next/link`, `href` externe/`mailto:` → `<a>`, sans `href` → `<button>`.
+Quicksand 600, **coins arrondis 4px** (depuis le 10/11/2026 ; un `className` qui contient `rounded-` remplace ce rayon, ex. « Contact » de la navbar à 16px), transitions 0.2s. `href` interne → `next/link`, `href` externe/`mailto:` → `<a>`, sans `href` → `<button>`.
 
 ---
 
@@ -213,7 +213,7 @@ Textes dans Sanity (repris de la V1). Page comparée à la V1 à 1440px : positi
 |---|---|
 | En-tête de page | Padding 72px / 24px. H1 à filets « Nos ateliers », intro centrée 1.2rem (24px au-dessus), ligne « Pour les musées… » en 600 `gris` centrée, puis **index** (`<nav>`) 32px plus bas : liens Quicksand 600 encre (survol garance), écart 36px, entre deux filets encre de 1px, padding 14px. |
 | Ligne d'atelier (`WorkshopRow`) | Grille 40 % visuel / 60 % texte, écart 88px, padding vertical `clamp(48px,7vw,96px)`, filet `filet` en bas (sauf la dernière). Une ligne sur deux inversée (60/40, visuel à droite). Sous **782px** : une colonne, écart 50px, visuel toujours au-dessus. Visuel 4/5 (photo ou aplat garance / garance-dark / ink). |
-| Texte d'un atelier | Surtitre (`Kicker`), H2 8px dessous (ancre `id`), sous-titre Cormorant italique 600 garance 1.5rem, accroche 1.22rem 500 interligne 1.55, puis **repères** (`<dl>`, max 600px, filet encre en haut, lignes `filet` en bas, padding 10px, colonnes 150px / reste, une seule colonne sous 521px, libellé garance en 400) et paragraphes interligne 1.75 ; écart de 1.2rem entre blocs. Le gras des paragraphes est en **400** (gras relatif sur un corps en 300, comme la V1). |
+| Texte d'un atelier | **Pas de surtitre** (retiré le 10/11/2026, demande de Louis), H2 (ancre `id`), sous-titre Cormorant italique 600 garance 1.5rem, accroche 1.22rem 500 interligne 1.55, puis **repères** (`<dl>`, max 600px, filet encre en haut, lignes `filet` en bas, padding 10px, colonnes 150px / reste, une seule colonne sous 521px, libellé garance en 400) et paragraphes interligne 1.75 : **seul le 1er paragraphe est visible**, la suite est repliée derrière « En savoir plus » (`WorkshopMore.tsx`, texte garance 600 + chevron, ouverture en douceur 0,5 s, devient « Voir moins » ; replié = `inert`). Un clic sur l'atelier dans l'index en haut de page (ou une URL `#ancre`) déplie directement son texte. Depuis le 10/11/2026, demande de Louis ; écart de 1.2rem entre blocs. Le gras des paragraphes est en **400** (gras relatif sur un corps en 300, comme la V1). |
 | Bloc final | Fond garance, padding 96px, colonne de 760px, écart 28px : H2 à fil crème **aligné à gauche**, texte centré 1.2rem, bouton `on-red` centré (comme la V1). |
 
 ---

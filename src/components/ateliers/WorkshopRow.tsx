@@ -1,8 +1,8 @@
 import Image from "next/image";
 import { PhotoPlaceholder } from "@/components/ui/Media";
-import { Kicker } from "@/components/ui/Typography";
 import type { Workshop } from "@/sanity/types";
 import { cn } from "@/lib/cn";
+import { WorkshopMore } from "./WorkshopMore";
 import { RevealImage, TypeText } from "@/components/ui/Reveal";
 
 /**
@@ -10,7 +10,7 @@ import { RevealImage, TypeText } from "@/components/ui/Reveal";
  * côtés alternés d’une ligne à l’autre. Sous 782px, une colonne, visuel toujours au-dessus.
  */
 export function WorkshopRow({ workshop, reverse = false }: { workshop: Workshop; reverse?: boolean }) {
-  const { anchor, kicker, title, subtitle, hook, facts, paragraphs, image, placeholder } = workshop;
+  const { anchor, title, subtitle, hook, facts, paragraphs, image, placeholder } = workshop;
   return (
     <article
       aria-labelledby={anchor}
@@ -36,8 +36,8 @@ export function WorkshopRow({ workshop, reverse = false }: { workshop: Workshop;
       </RevealImage>
 
       <div>
-        <Kicker>{kicker}</Kicker>
-        <h2 id={anchor} className="mt-2">
+        {/* Pas de surtitre sur cette page (retiré le 10/11/2026, demande de Louis) */}
+        <h2 id={anchor}>
           {title}
         </h2>
         <TypeText className="mt-1.5 font-serif text-[1.5rem] font-semibold italic text-garance" value={subtitle} />
@@ -55,9 +55,15 @@ export function WorkshopRow({ workshop, reverse = false }: { workshop: Workshop;
           ))}
         </dl>
 
-        {paragraphs.map((p, i) => (
-          <TypeText key={i} className="mt-[1.2rem] leading-[1.75]" value={p} />
-        ))}
+        {/* Premier paragraphe visible, la suite derrière « En savoir plus » */}
+        {paragraphs[0] && <TypeText className="mt-[1.2rem] leading-[1.75]" value={paragraphs[0]} />}
+        {paragraphs.length > 1 && (
+          <WorkshopMore anchor={anchor}>
+            {paragraphs.slice(1).map((p, i) => (
+              <TypeText key={i} className="mt-[1.2rem] leading-[1.75]" value={p} />
+            ))}
+          </WorkshopMore>
+        )}
       </div>
     </article>
   );

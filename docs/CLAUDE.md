@@ -57,6 +57,7 @@
 - Mise en page des sections : contenu plafonné à **1240px** avec une gouttière `s50` (et non 1340px).
 - Cadres photo provisoires : **aplats unis** (la trame rayée est masquée par l’aplat sur la V1).
 - Accueil : « Découvrez l’univers Néotisse » n’a pas de photo décalée sur la V1, juste un cadre 4/5 à gauche ; « Et bien plus encore à découvrir » et son bouton sont centrés sur une même ligne ; la note moyenne s’affiche au-dessus des 4 avis.
+- Ateliers : **écarts voulus depuis le 10/11/2026** (demande de Louis) : plus de surtitre au-dessus des titres d’atelier ; seul le 1er paragraphe est affiché, la suite derrière « En savoir plus » / « Voir moins », et un clic sur l’atelier dans l’index en haut de page déplie tout son texte.
 - Ateliers : chaque atelier a, en plus de CLAUDE.md § 6.2, une accroche et 3 **repères** (Format, Pour qui…) ; mise en page en lignes alternées 40/60 (pas de cartes) ; le bloc rouge final a son titre aligné à gauche (gardé comme la V1, décision de Louis du 09/11/2026). Le gras dans les textes est en 400 (gras relatif sur un corps en 300).
 - Intro animée : **jouée à chaque visite de l’accueil**, comme la V1 (décision de Louis du 09/11/2026 ; ce fichier disait « une fois par session »). Y compris en revenant sur l’accueil par un lien interne.
 - Intro animée : **écart volontaire avec la V1** depuis le 10/11/2026 (décision de Louis) : « Néotisse » en Eagle Lake qui s’écrit à la plume avec Motion (voir § 5.2), au lieu du mot en Cormorant qui apparaît en fondu.
@@ -213,7 +214,7 @@ Règles générales :
 - **Fil rouge** (`Thread`) : trait `garance` de 64×4px sous un titre (centré si le titre est centré ; crème sur fond rouge/encre).
 - **Surtitre** (`Kicker`) : 0.78rem, 700, letter-spacing 0.14em, MAJUSCULES, `garance`, trait de 3px `garance` au-dessus.
 - **Sous-titre / citation** : Cormorant italique 600–700, `garance`.
-- **Angles droits partout** : `border-radius: 0` (boutons, cartes, champs, modale).
+- **Angles droits partout** : `border-radius: 0` (cartes, champs, modale), **sauf les boutons : 4px** depuis le 10/11/2026 (demande de Louis).
 - **Filet rouge en haut des cartes** : `border-top: 4px solid garance` (avis, formulaire du livre d’or).
 - **Fond de lin** derrière les logos partenaires (texture de toile écrue, image fournie), avec un filet `garance` de 3px en bas.
 - **Cadres photo provisoires** : aplats de couleur avec fine trame rayée en attendant les vraies photos (à remplacer par les images Sanity).
@@ -461,7 +462,7 @@ page (singletons : home, ateliers, calendrier, partenaires, livreDor, aPropos, c
 
 ## 12. Ce qu’il ne faut pas faire
 
-- Pas de `border-radius` (exceptions : la navbar flottante et son bouton « Contact », voir § 5.1 ; les cartes des ateliers de l’accueil, 8px, voir § 6.1), pas d’ombres portées décoratives sur les tuiles (retirées volontairement).
+- Pas de `border-radius` (exceptions : **tous les boutons, 4px** ; la navbar flottante et son bouton « Contact » 16px, voir § 5.1 ; les cartes des ateliers de l’accueil, 8px, voir § 6.1), pas d’ombres portées décoratives sur les tuiles (retirées volontairement).
 - Pas de Google Fonts distantes, pas de reCAPTCHA, pas de script tiers avant consentement.
 - Ne pas changer les URL existantes.
 - Ne pas exposer de token Sanity d’écriture côté client.
