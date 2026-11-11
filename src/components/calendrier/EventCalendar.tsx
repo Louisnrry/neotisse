@@ -48,6 +48,50 @@ const monthOf = (isoDate: string): Month => {
 };
 
 const end = (e: NeoEvent) => e.endDate ?? e.startDate;
+
+/** Morceau d’un événement dans une semaine : une barre continue du premier au dernier jour visible. */
+type Segment = {
+  event: NeoEvent;
+  /** Colonne de départ (lundi = 0) et nombre de jours couverts */
+  col: number;
+  span: number;
+  /** Ligne de la barre dans la semaine (0 = sous le numéro du jour) */
+  lane: number;
+  /** Le vrai début / la vraie fin tombent dans cette semaine (sinon la barre continue sur la semaine voisine) */
+  startsHere: boolean;
+  endsHere: boolean;
+};
+
+/** Découpe les événements d’une semaine en barres, réparties sur des lignes sans chevauchement. */
+function weekSegments(week: Date[], events: NeoEvent[]) {
+  const first = iso(week[0]);
+  const last = iso(week[6]);
+  const segments: Segment[] = events
+    .filter((e) => e.startDate <= last && end(e) >= first)
+    .map((e) => {
+      const from = e.startDate > first ? e.startDate : first;
+      const to = end(e) < last ? end(e) : last;
+      const col = week.findIndex((d) => iso(d) === from);
+      return {
+        event: e,
+        col,
+        span: week.findIndex((d) => iso(d) === to) - col + 1,
+        lane: 0,
+        startsHere: e.startDate >= first,
+        endsHere: end(e) <= last,
+      };
+    })
+    // Les barres les plus longues d’abord, à départ égal
+    .sort((a, b) => a.col - b.col || b.span - a.span);
+  const laneEnds: number[] = [];
+  for (const seg of segments) {
+    let lane = laneEnds.findIndex((endCol) => endCol < seg.col);
+    if (lane === -1) lane = laneEnds.length;
+    laneEnds[lane] = seg.col + seg.span - 1;
+    seg.lane = lane;
+  }
+  return { segments, lanes: laneEnds.length };
+}
 const typeLabel = (e: NeoEvent) => eventTypeLabels[e.type];
 const noop = () => () => {};
 
@@ -191,64 +235,95 @@ export function EventCalendar({
                 </div>
               ))}
             </div>
-            {weeks.map((week) => (
-              <div role="row" key={iso(week[0])} className="contents">
-                {week.map((d) => {
-                  const k = iso(d);
-                  const out = d.getUTCMonth() !== view.m;
-                  const isToday = k === today;
-                  const dayEvents = events.filter((e) => e.startDate <= k && end(e) >= k);
-                  return (
-                    <div
-                      key={k}
-                      role="gridcell"
-                      aria-current={isToday ? "date" : undefined}
-                      className={cn(
-                        "flex min-h-[73px] min-w-0 flex-col gap-[5px] border-r border-b border-filet p-1 min-[721px]:min-h-[141px] min-[721px]:p-2",
-                        out && "bg-hachures",
-                      )}
-                    >
-                      <span
+            {weeks.map((week) => {
+              const { segments, lanes } = weekSegments(week, events);
+              return (
+                <div
+                  role="row"
+                  key={iso(week[0])}
+                  className="contents"
+                  style={{ "--lanes": lanes } as React.CSSProperties}
+                >
+                  {week.map((d, col) => {
+                    const k = iso(d);
+                    const out = d.getUTCMonth() !== view.m;
+                    const isToday = k === today;
+                    return (
+                      <div
+                        key={k}
+                        role="gridcell"
+                        aria-current={isToday ? "date" : undefined}
                         className={cn(
-                          "grid size-6 place-items-center font-serif text-[1rem] leading-none font-bold min-[721px]:size-8 min-[721px]:text-[1.4rem]",
-                          out && "opacity-35",
-                          isToday && "bg-garance text-blanc",
+                          // La case grandit si la semaine a beaucoup de barres
+                          "relative flex min-h-[max(73px,calc(33px+var(--lanes)*13px+4px))] min-w-0 flex-col border-r border-b border-filet p-1 min-[721px]:min-h-[max(141px,calc(45px+var(--lanes)*29px+8px))] min-[721px]:p-2",
+                          out && "bg-hachures",
                         )}
                       >
-                        <span aria-hidden="true">{d.getUTCDate()}</span>
-                        <span className="sr-only">
-                          {JOURS_LONGS[weekday(d)]} {formatEventDates(k)}
-                          {isToday && ", aujourd’hui"}
-                        </span>
-                      </span>
-                      {dayEvents.map((e) => (
-                        <button
-                          key={e.id}
-                          type="button"
-                          aria-haspopup="dialog"
-                          title={e.title}
-                          aria-label={`${typeLabel(e)} : ${e.title}, ${formatEventDates(e.startDate, e.endDate)}`}
-                          onClick={(ev) => open(e, ev.currentTarget)}
+                        <span
                           className={cn(
-                            "block h-2 w-full cursor-pointer truncate p-0 text-left font-sans text-[length:0px] leading-[1.25] font-semibold text-blanc min-[721px]:h-auto min-[721px]:px-2 min-[721px]:py-[5px] min-[721px]:text-[0.8rem]",
-                            chipColors[e.type],
+                            "grid size-6 place-items-center font-serif text-[1rem] leading-none font-bold min-[721px]:size-8 min-[721px]:text-[1.4rem]",
+                            out && "opacity-35",
+                            isToday && "bg-garance text-blanc",
                           )}
                         >
-                          {/* Titre au premier jour et en début de semaine, comme la V1 */}
-                          {e.startDate === k || weekday(d) === 0 ? e.title : " "}
-                        </button>
-                      ))}
-                    </div>
-                  );
-                })}
-              </div>
-            ))}
+                          <span aria-hidden="true">{d.getUTCDate()}</span>
+                          <span className="sr-only">
+                            {JOURS_LONGS[weekday(d)]} {formatEventDates(k)}
+                            {isToday && ", aujourd’hui"}
+                          </span>
+                        </span>
+                        {segments
+                          .filter((seg) => seg.col === col)
+                          .map((seg) => (
+                            <EventBar key={seg.event.id} segment={seg} onOpen={open} />
+                          ))}
+                      </div>
+                    );
+                  })}
+                </div>
+              );
+            })}
           </div>
         </div>
       </Section>
 
       <EventDialog ref={dialog} event={current} onClose={onClose} contact={texts.contact} />
     </>
+  );
+}
+
+/**
+ * Barre d’un événement, posée dans la case de son premier jour de la semaine et étirée sur `span` cases
+ * (filets compris) : un événement de plusieurs jours se lit d’un seul tenant.
+ * Coins arrondis seulement au vrai début et à la vraie fin ; bord droit à la coupure d’une semaine.
+ */
+function EventBar({ segment, onOpen }: { segment: Segment; onOpen: (e: NeoEvent, from: HTMLElement) => void }) {
+  const { event: e, span, lane, startsHere, endsHere } = segment;
+  const dates = formatEventDates(e.startDate, e.endDate);
+  return (
+    <button
+      type="button"
+      aria-haspopup="dialog"
+      title={`${e.title} · ${dates}`}
+      aria-label={`${typeLabel(e)} : ${e.title}, ${dates}`}
+      onClick={(ev) => onOpen(e, ev.currentTarget)}
+      style={{ "--span": span, "--lane": lane } as React.CSSProperties}
+      className={cn(
+        // Position : sous le numéro du jour, une ligne par barre (8px + 5px sur mobile, 24px + 5px au-dessus de 720px)
+        "absolute z-10 flex h-2 cursor-pointer items-center gap-1 overflow-hidden p-0 text-left whitespace-nowrap font-sans text-[length:0px] leading-6 font-semibold text-blanc",
+        "top-[calc(33px+var(--lane)*13px)] min-[721px]:top-[calc(45px+var(--lane)*29px)] min-[721px]:h-6 min-[721px]:px-2 min-[721px]:text-[0.8rem]",
+        // Largeur : `span` cases et leurs filets de 1px, moins le retrait des extrémités réelles
+        "left-[var(--il)] w-[calc(var(--span)*(100%+1px)-1px-var(--il)-var(--ir))]",
+        startsHere ? "rounded-l-[4px] [--il:4px] min-[721px]:[--il:8px]" : "[--il:0px]",
+        endsHere ? "rounded-r-[4px] [--ir:4px] min-[721px]:[--ir:8px]" : "[--ir:0px]",
+        chipColors[e.type],
+      )}
+    >
+      {/* Flèches : l’événement continue sur la semaine précédente / suivante */}
+      {!startsHere && <span aria-hidden="true">←</span>}
+      <span className="min-w-0 flex-1 truncate">{e.title}</span>
+      {!endsHere && <span aria-hidden="true">→</span>}
+    </button>
   );
 }
 
