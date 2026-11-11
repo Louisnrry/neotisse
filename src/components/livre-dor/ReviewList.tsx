@@ -6,7 +6,7 @@ import type { Review } from "@/sanity/types";
 
 /**
  * Liste des avis du livre d’or : note moyenne, puis les avis en cartes (même carte que l’accueil,
- * choix de Louis du 11/11/2026, qui remplace la copie du rendu WP Customer Reviews de la V1), sur 2 colonnes.
+ * choix de Louis du 11/11/2026, qui remplace la copie du rendu WP Customer Reviews de la V1), un par ligne sur toute la largeur de la colonne (demande de Louis du 11/11/2026).
  * Affichés `step` par `step` avec le bouton « Plus d’avis » (comme `avis.js` de la V1) :
  * le focus passe sur le premier avis ajouté, sans faire défiler la page.
  */
@@ -43,7 +43,7 @@ export function ReviewList({
     <div>
       <ReviewSummary average={average} count={reviews.length} />
 
-      <ul className="mt-6 grid gap-5 sm:grid-cols-2">
+      <ul className="mt-6 grid gap-5">
         {reviews.slice(0, shown).map((r, i) => (
           <li
             key={r.id}
