@@ -22,6 +22,14 @@ const chipColors: Record<EventType, string> = {
   autre: "bg-gris",
 };
 
+/** Couleur au survol (ou au focus) : un ton plus foncé. */
+const chipHoverColors: Record<EventType, string> = {
+  atelier: "bg-garance-dark",
+  festival: "bg-ink-deep",
+  conference: "bg-ink",
+  autre: "bg-ink",
+};
+
 type Month = { y: number; m: number }; // m : 0 à 11
 
 /** Date ISO « AAAA-MM-JJ » d’un jour UTC. */
@@ -123,6 +131,8 @@ export function EventCalendar({
   const today = useSyncExternalStore(noop, () => todayInParis(), () => serverToday);
   const [view, setView] = useState<Month>(() => monthOf(initialMonth));
   const [current, setCurrent] = useState<NeoEvent | null>(null);
+  // Événement survolé : toutes ses barres réagissent ensemble (événement sur plusieurs semaines)
+  const [hovered, setHovered] = useState<string | null>(null);
   const dialog = useRef<HTMLDialogElement>(null);
   const trigger = useRef<HTMLElement | null>(null);
 
@@ -275,7 +285,13 @@ export function EventCalendar({
                         {segments
                           .filter((seg) => seg.col === col)
                           .map((seg) => (
-                            <EventBar key={seg.event.id} segment={seg} onOpen={open} />
+                            <EventBar
+                              key={seg.event.id}
+                              segment={seg}
+                              onOpen={open}
+                              active={hovered === seg.event.id}
+                              onHover={setHovered}
+                            />
                           ))}
                       </div>
                     );
@@ -296,8 +312,20 @@ export function EventCalendar({
  * Barre d’un événement, posée dans la case de son premier jour de la semaine et étirée sur `span` cases
  * (filets compris) : un événement de plusieurs jours se lit d’un seul tenant.
  * Coins arrondis seulement au vrai début et à la vraie fin ; bord droit à la coupure d’une semaine.
+ * Cliquable : icône « + » à droite ; au survol ou au focus, la barre fonce, se soulève et le titre se souligne
+ * (toutes les barres du même événement ensemble).
  */
-function EventBar({ segment, onOpen }: { segment: Segment; onOpen: (e: NeoEvent, from: HTMLElement) => void }) {
+function EventBar({
+  segment,
+  onOpen,
+  active,
+  onHover,
+}: {
+  segment: Segment;
+  onOpen: (e: NeoEvent, from: HTMLElement) => void;
+  active: boolean;
+  onHover: (id: string | null) => void;
+}) {
   const { event: e, span, lane, startsHere, endsHere } = segment;
   const dates = formatEventDates(e.startDate, e.endDate);
   return (
@@ -305,23 +333,42 @@ function EventBar({ segment, onOpen }: { segment: Segment; onOpen: (e: NeoEvent,
       type="button"
       aria-haspopup="dialog"
       title={`${e.title} · ${dates}`}
-      aria-label={`${typeLabel(e)} : ${e.title}, ${dates}`}
+      aria-label={`${typeLabel(e)} : ${e.title}, ${dates}. Voir le détail`}
       onClick={(ev) => onOpen(e, ev.currentTarget)}
+      onMouseEnter={() => onHover(e.id)}
+      onMouseLeave={() => onHover(null)}
+      onFocus={() => onHover(e.id)}
+      onBlur={() => onHover(null)}
       style={{ "--span": span, "--lane": lane } as React.CSSProperties}
       className={cn(
         // Position : sous le numéro du jour, une ligne par barre (8px + 5px sur mobile, 24px + 5px au-dessus de 720px)
         "absolute z-10 flex h-2 cursor-pointer items-center gap-1 overflow-hidden p-0 text-left whitespace-nowrap font-sans text-[length:0px] leading-6 font-semibold text-blanc",
-        "top-[calc(33px+var(--lane)*13px)] min-[721px]:top-[calc(45px+var(--lane)*29px)] min-[721px]:h-6 min-[721px]:px-2 min-[721px]:text-[0.8rem]",
+        "top-[calc(33px+var(--lane)*13px)] min-[721px]:top-[calc(45px+var(--lane)*29px)] min-[721px]:h-6 min-[721px]:pr-1.5 min-[721px]:pl-2 min-[721px]:text-[0.8rem]",
         // Largeur : `span` cases et leurs filets de 1px, moins le retrait des extrémités réelles
         "left-[var(--il)] w-[calc(var(--span)*(100%+1px)-1px-var(--il)-var(--ir))]",
         startsHere ? "rounded-l-[4px] [--il:4px] min-[721px]:[--il:8px]" : "[--il:0px]",
         endsHere ? "rounded-r-[4px] [--ir:4px] min-[721px]:[--ir:8px]" : "[--ir:0px]",
-        chipColors[e.type],
+        "transition-[background-color,translate,box-shadow] duration-200",
+        active
+          ? cn(chipHoverColors[e.type], "z-20 -translate-y-px shadow-[0_3px_8px_-2px_rgb(20_29_34/0.45)]")
+          : chipColors[e.type],
       )}
     >
       {/* Flèches : l’événement continue sur la semaine précédente / suivante */}
       {!startsHere && <span aria-hidden="true">←</span>}
-      <span className="min-w-0 flex-1 truncate">{e.title}</span>
+      <span className={cn("min-w-0 flex-1 truncate underline-offset-2", active && "underline")}>{e.title}</span>
+      {/* Icône « voir le détail » (masquée sur mobile, où la barre ne fait que 8px) */}
+      <svg
+        viewBox="0 0 16 16"
+        aria-hidden="true"
+        className={cn(
+          "hidden size-3.5 shrink-0 transition-transform duration-200 min-[721px]:block",
+          active && "rotate-90",
+        )}
+      >
+        <circle cx="8" cy="8" r="7" fill="none" stroke="currentColor" strokeWidth="1.4" />
+        <path d="M8 4.5v7M4.5 8h7" stroke="currentColor" strokeWidth="1.4" />
+      </svg>
       {!endsHere && <span aria-hidden="true">→</span>}
     </button>
   );
