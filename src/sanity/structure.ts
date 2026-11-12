@@ -15,10 +15,27 @@ import { StarIcon } from "@sanity/icons/Star"
 import { UserIcon } from "@sanity/icons/User"
 import { UsersIcon } from "@sanity/icons/Users"
 import type { ElementType } from "react"
-import type { StructureResolver } from "sanity/structure"
+import { map } from "rxjs"
+import type { DefaultDocumentNodeResolver, StructureResolver } from "sanity/structure"
 
 import { apiVersion } from "./env"
 import { singletonIds } from "./schemaTypes"
+import { ReviewPrivateView } from "./studio/ReviewPrivateView"
+
+/** Avis en attente (versions publiées : celles que crée le formulaire du site). */
+const PENDING_COUNT = `count(*[_type == "review" && status == "pending" && !(_id in path("drafts.**"))])`
+
+/** « Avis (2 à modérer) », ou « Avis » s’il n’y a rien à modérer. */
+const withCount = (title: string, count: number) => (count > 0 ? `${title} (${count} à modérer)` : title)
+
+/** Chaque avis a un onglet « Coordonnées privées » (e-mail et IP, jamais publics). */
+export const defaultDocumentNode: DefaultDocumentNodeResolver = (S, { schemaType }) =>
+  schemaType === "review"
+    ? S.document().views([
+        S.view.form().title("Avis"),
+        S.view.component(ReviewPrivateView).title("Coordonnées privées").icon(LockIcon),
+      ])
+    : S.document()
 
 type SingletonDefinition = {
   type: string
@@ -48,7 +65,13 @@ const pageItems: SingletonDefinition[] = [
   },
 ]
 
-export const structure: StructureResolver = (S) => {
+// Le menu est recalculé à chaque changement du nombre d’avis à modérer.
+export const structure: StructureResolver = (S, context) =>
+  context.documentStore
+    .listenQuery(PENDING_COUNT, {}, { tag: "avis-a-moderer" })
+    .pipe(map((count) => buildStructure(S, Number(count) || 0)))
+
+function buildStructure(S: Parameters<StructureResolver>[0], pending: number) {
   const singletonItem = ({ type, title, icon }: SingletonDefinition) =>
     S.listItem()
       .title(title)
@@ -78,14 +101,16 @@ export const structure: StructureResolver = (S) => {
       S.documentTypeListItem("faqItem").title("Questions fréquentes").icon(HelpCircleIcon),
       S.divider(),
       S.listItem()
-        .title("Avis")
+        .id("avis")
+        .title(withCount("Avis", pending))
         .icon(StarIcon)
         .child(
           S.list()
             .title("Avis")
             .items([
               S.listItem()
-                .title("À modérer")
+                .id("a-moderer")
+                .title(pending > 0 ? `À modérer (${pending})` : "À modérer")
                 .icon(ClockIcon)
                 .child(
                   S.documentList()
@@ -95,6 +120,7 @@ export const structure: StructureResolver = (S) => {
                     .defaultOrdering([{ field: "createdAt", direction: "desc" }]),
                 ),
               S.listItem()
+                .id("publies")
                 .title("Publiés")
                 .icon(CheckmarkCircleIcon)
                 .child(
@@ -105,6 +131,7 @@ export const structure: StructureResolver = (S) => {
                     .defaultOrdering([{ field: "createdAt", direction: "desc" }]),
                 ),
               S.listItem()
+                .id("refuses")
                 .title("Refusés")
                 .icon(CloseCircleIcon)
                 .child(
@@ -116,6 +143,7 @@ export const structure: StructureResolver = (S) => {
                 ),
               S.divider(),
               S.listItem()
+                .id("tous")
                 .title("Tous les avis")
                 .icon(StarIcon)
                 .child(S.documentTypeList("review").title("Tous les avis")),

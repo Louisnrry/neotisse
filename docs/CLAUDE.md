@@ -338,7 +338,7 @@ Règles générales :
 
 ### 7.3 Livre d’or
 - Soumission publique → document `review` créé avec `status: "pending"` (via route API avec token d’écriture Sanity côté serveur uniquement).
-- **Modération par l’association** dans le Studio (passer en `approved`). Seuls les avis `approved` s’affichent.
+- **Modération par l’association** dans le Studio, avec les boutons **« Approuver »** / **« Refuser »** de chaque avis. Seuls les avis `approved` s’affichent.
 - E-mail et IP **jamais affichés ni publics** (document `private.…` à part) ; IP stockée uniquement pour prévenir les abus (mentionnée dans la politique de confidentialité).
 - Accueil : 4 derniers avis approuvés ; page Livre d’or : tous, 5 par 5 avec le bouton « Plus d’avis ».
 
@@ -415,7 +415,12 @@ page (singletons : home, ateliers, calendrier, partenaires, livreDor, aPropos, c
 - Interface de travail traduite en français avec le plugin `@sanity/locale-fr-fr`.
 - Les pages et les réglages sont des **singletons** : un seul document par type, avec un identifiant fixe égal au nom du type (`siteSettings`, `homePage`…). Le menu « Créer » ne les propose pas et les actions « Supprimer » / « Dupliquer » sont masquées.
 - Les listes ordonnées (tuiles d’ateliers de l’accueil, ateliers, partenaires, équipe, questions) utilisent des **références Sanity** : l’ordre se règle en faisant glisser les éléments dans le Studio.
-- Modération des avis : Studio → **Avis → À modérer** (statut `pending`), puis passage en `approved` ou `rejected`.
+- Modération des avis (12/11/2026, `src/sanity/studio/`) : Studio → **Avis (n à modérer)** → **À modérer**. Le compteur du menu se met à jour en direct. Sur chaque avis :
+  - **« Approuver »** passe le statut en `approved` **et publie** en un clic ; **« Refuser »** (avec confirmation) passe en `rejected`, publie et **supprime le document privé** (e-mail, IP) ;
+  - badge de statut en bas de la fiche (état publié), icône de statut, étoiles et date dans les listes ;
+  - onglet **« Coordonnées privées »** : e-mail (lien `mailto:`), IP, date d’envoi ;
+  - l’action « Dupliquer » est retirée ; `reviewPrivate` n’apparaît ni dans le menu ni dans « Créer ».
+  - Supprimer un avis avec « Supprimer » laisse son document privé : préférer « Refuser ».
 - Les formulaires publics n’écrivent pas encore dans Sanity : il faudra une route API avec un token d’écriture **côté serveur uniquement**.
 - Le Studio embarqué est `noindex` via les métadonnées de `next-sanity/studio`.
 

@@ -25,7 +25,7 @@ Au premier lancement, copier `.env.example` vers `.env.local` et renseigner les 
 - Connexion avec le compte Google utilisé pour créer le projet Sanity.
 - Les pages et les réglages sont des documents uniques : les remplir puis cliquer sur **Publier**.
 - L’interface de travail est en français (plugin `@sanity/locale-fr-fr`).
-- Les avis se modèrent dans **Avis → À modérer** (passer le statut en `approved` puis publier).
+- Les avis se modèrent dans **Avis → À modérer** avec les boutons **« Approuver »** (publie l’avis) et **« Refuser »** (le masque et supprime son e-mail et son IP). L’onglet « Coordonnées privées » montre l’e-mail et l’IP, jamais publics.
 
 ## Commandes
 
