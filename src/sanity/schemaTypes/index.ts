@@ -4,6 +4,7 @@ import { event } from "./documents/event"
 import { faqItem } from "./documents/faqItem"
 import { partner } from "./documents/partner"
 import { review } from "./documents/review"
+import { reviewPrivate } from "./documents/reviewPrivate"
 import { teamMember } from "./documents/teamMember"
 import { workshop } from "./documents/workshop"
 
@@ -24,6 +25,7 @@ export const schemaTypes: SchemaTypeDefinition[] = [
   event,
   partner,
   review,
+  reviewPrivate,
   workshop,
   teamMember,
   faqItem,
@@ -65,6 +67,9 @@ export const singletonTypes = new Set([
 ])
 
 /** Identifiants fixes des documents uniques, utilisés par la navigation du Studio. */
+/** Types qu’on ne crée jamais à la main depuis le menu « Créer ». */
+export const hiddenFromCreateTypes = new Set(["reviewPrivate"])
+
 export const singletonIds: Record<string, string> = Object.fromEntries(
   [...singletonTypes].map((type) => [type, type]),
 )

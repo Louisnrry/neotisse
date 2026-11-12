@@ -79,7 +79,7 @@
   - Singletons protégés (pas de doublon, pas de suppression accidentelle)
   - `.env.example` ajouté ; `.env.local` ignoré par git
   - Vérifié : `npx sanity schemas validate` (0 erreur), TypeScript et `npm run build` OK, Studio accessible sur `/studio`
-- [x] Stockage de `review.email` / `review.ip` : gardés malgré le dataset public, avec information des visiteurs (décision de Louis du 09/11)
+- [x] E-mail et IP des avis **privés** (12/11) : documents `private.<id>` illisibles sans token, 7 avis migrés, textes légaux mis à jour (avant : lisibles via l’API publique)
 - [ ] Ajouter le domaine de production (et l’URL Netlify) dans les CORS Sanity : nécessaire à `<SanityLive />` (plus besoin de webhook de revalidation)
 - [x] **Contenus de la V1 importés dans Sanity** (09/11) avec `scripts/import-v1.ts` : 9 pages, réglages complétés, 5 ateliers (« Expérimentation » ajouté ; les 4 saisis à la main sont gardés tels quels), 2 événements, 7 partenaires avec logos, 10 questions, 2 membres d’équipe, 9 images
   - Vérifié : `sanity documents validate` (0 erreur), rendu des 9 pages identique avant/après l’import (seul changement : la page Contact affiche le téléphone de la V1)
@@ -96,7 +96,7 @@
 - [x] **Formulaire du livre d’or branché** (09/11) : route `POST /api/livre-dor/`, avis créé « À modérer » avec e-mail et IP ; politique de confidentialité, mentions légales et mention sous le formulaire mises à jour (données techniquement lisibles via l’API)
   - Vérifié sans token : validation, champ piège, délai, JSON invalide, message d’erreur dans le formulaire
 - [ ] **Créer le token d’écriture** (sanity.io/manage → API → Tokens, rôle Editor), le mettre dans `.env.local` (`SANITY_API_WRITE_TOKEN`) puis tester un vrai envoi et sa modération ; le mettre aussi dans les variables d’environnement Netlify
-- [ ] Limite de 5 avis par IP et par heure : compteur en mémoire, remis à zéro à chaque démarrage de fonction sur Netlify (protection partielle)
+- [x] Limite de 5 avis par IP et par heure comptée dans Sanity (12/11), valable sur Netlify ; vérifié : 6e envoi refusé (429)
 - [ ] Champs encore inutilisés de « Réglages du site » : `legal` (siège, RNA, SIRET), `contactRecipient`, `gaMeasurementId`, `logo` ; les « [À COMPLÉTER] » se corrigent directement dans le texte des pages légales
 - [ ] Passer les images de `public/images` dans Sanity
 - [ ] Faire relire le Studio par l’association (libellés, aide, parcours de la cliente)

@@ -39,7 +39,7 @@
 |---|---|
 | Hébergement | **Netlify** |
 | CMS Sanity | Projet **`t4k96qs7`** créé (dataset `production`), Studio **embarqué sur `/studio`** (décision du 09/11/2026 ; pas de dossier `studio-neotisse/`) |
-| Plan Sanity | **Free pour l’instant** : le dataset est public. Ne pas y stocker l’e-mail/IP des avis en production tant que le dataset n’est pas privé (Growth) ou que le stockage n’est pas revu. |
+| Plan Sanity | **Free pour l’instant** : le dataset est public. L’e-mail et l’IP des avis sont rangés dans des documents `private.…`, que Sanity ne rend jamais publics (voir « Contenus et Sanity », 12/11/2026). |
 | Domaine, e-mail (Resend), GA4 | Rien n’est acheté ni créé pour l’instant |
 | Stockage des messages de contact | Pas pour l’instant |
 | Livre d’or | Avis affichés **5 par 5** (« Plus d’avis ») |
@@ -98,8 +98,8 @@
 - Confidentialité : chaque section a un champ « Ancre » (ancres de la V1 : `#responsable`…) ; à défaut, l’ancre est tirée du titre.
 - **Bandeau cookies** : document « Bandeau cookies » (`cookieBanner`), lu par le layout du site et passé au composant client.
 - **Mentions sous les formulaires** : champ « Mention sous le formulaire » (texte enrichi) dans le formulaire des pages Contact et Livre d’or.
-- **Livre d’or** (09/11/2026) : le formulaire envoie à `POST /api/livre-dor/` (`src/app/api/livre-dor/route.ts`), qui valide (règles partagées `src/lib/guestbook.ts`), applique l’anti-spam (champ piège, délai 2 s, au plus 5 avis par IP et par heure, compteur en mémoire) et crée un document `review` en **« À modérer »** avec l’e-mail et l’IP. Écriture avec `SANITY_API_WRITE_TOKEN` (rôle Editor), **serveur uniquement** (`src/sanity/lib/writeClient.ts`). Sans token : réponse 503 et message d’erreur dans le formulaire.
-- **E-mail et IP des avis : décision de Louis du 09/11/2026** : on les garde, bien que le dataset soit public en plan Free (lisibles via l’API). Les visiteurs en sont informés sous le formulaire, dans la politique de confidentialité (rubriques « Le livre d’or », destinataires, sécurité) et dans les mentions légales (rubriques « Gestion des contenus » et « Données personnelles »).
+- **Livre d’or** (09/11/2026) : le formulaire envoie à `POST /api/livre-dor/` (`src/app/api/livre-dor/route.ts`), qui valide (règles partagées `src/lib/guestbook.ts`), applique l’anti-spam (champ piège, délai 2 s, au plus 5 avis par IP et par heure, **comptés dans Sanity** depuis le 12/11/2026 pour tenir sur Netlify) et crée, dans une même transaction, un document `review` en **« À modérer »** (sans e-mail ni IP) et son document privé `private.<id de l’avis>` (`reviewPrivate` : e-mail, IP, date). Écriture avec `SANITY_API_WRITE_TOKEN` (rôle Editor), **serveur uniquement** (`src/sanity/lib/writeClient.ts`). Sans token : réponse 503 et message d’erreur dans le formulaire.
+- **E-mail et IP des avis privés** (12/11/2026, demande de Louis) : ils ne sont plus dans l’avis mais dans un document `private.<id de l’avis>`. Sanity ne rend jamais publics les documents dont l’identifiant contient un point, même sur un dataset public : vérifié sans token (requêtes et accès direct refusés, `reason: permission`) et avec token (lisibles). Les 7 avis existants ont été migrés. Le Studio les affiche dans l’onglet « Coordonnées privées » de chaque avis. Textes mis à jour dans Sanity (mention sous le formulaire du livre d’or, mentions légales, politique de confidentialité, dates de mise à jour au 12/11/2026). Avant le 12/11, ces données étaient lisibles via l’API publique (décision du 09/11, abandonnée).
 
 ---
 
@@ -339,7 +339,7 @@ Règles générales :
 ### 7.3 Livre d’or
 - Soumission publique → document `review` créé avec `status: "pending"` (via route API avec token d’écriture Sanity côté serveur uniquement).
 - **Modération par l’association** dans le Studio (passer en `approved`). Seuls les avis `approved` s’affichent.
-- E-mail et IP **jamais affichés** ; IP stockée uniquement pour prévenir les abus (mentionnée dans la politique de confidentialité).
+- E-mail et IP **jamais affichés ni publics** (document `private.…` à part) ; IP stockée uniquement pour prévenir les abus (mentionnée dans la politique de confidentialité).
 - Accueil : 4 derniers avis approuvés ; page Livre d’or : tous, 5 par 5 avec le bouton « Plus d’avis ».
 
 ### 7.4 Formulaire de contact
@@ -385,8 +385,11 @@ partner
   name, logo (image + alt), description (text), url, order (number)
 
 review
-  name (requis), email (requis, privé), title, rating (1–5), text,
-  status ("pending" | "approved" | "rejected"), createdAt, ip (privé)
+  name (requis), title, rating (1–5), text,
+  status ("pending" | "approved" | "rejected"), createdAt
+
+reviewPrivate (identifiant `private.<id de l’avis>`, jamais public)
+  reviewId, email, ip, createdAt
 
 workshop (5 documents, ordonnés)
   title, anchor, kicker, subtitle, body, image, tileColor
@@ -404,7 +407,7 @@ page (singletons : home, ateliers, calendrier, partenaires, livreDor, aPropos, c
 
 - Tous les champs image exigent un **texte alternatif**.
 - Studio en français, aperçu des pages si possible.
-- Documents privés (`review.email`, `review.ip`) jamais exposés côté client : requêtes publiques filtrées sur les champs publics.
+- E-mail et IP des avis dans des documents `private.…` (illisibles sans token) ; les requêtes publiques ne lisent que les champs publics de `review`.
 
 **Implémentation (09/11/2026)** :
 

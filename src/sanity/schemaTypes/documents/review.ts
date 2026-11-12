@@ -1,17 +1,35 @@
+import { CheckmarkCircleIcon } from "@sanity/icons/CheckmarkCircle"
+import { ClockIcon } from "@sanity/icons/Clock"
+import { CloseCircleIcon } from "@sanity/icons/CloseCircle"
 import { StarIcon } from "@sanity/icons/Star"
 import { defineField, defineType } from "sanity"
 
-const statusOptions = [
-  { title: "En attente de modération", value: "pending" },
-  { title: "Approuvé (publié)", value: "approved" },
+export const reviewStatusOptions = [
+  { title: "À modérer", value: "pending" },
+  { title: "Publié", value: "approved" },
   { title: "Refusé", value: "rejected" },
 ] as const
+
+export type ReviewStatus = (typeof reviewStatusOptions)[number]["value"]
 
 const ratingOptions = [1, 2, 3, 4, 5].map((value) => ({
   title: `${value} étoile${value > 1 ? "s" : ""}`,
   value,
 }))
 
+const statusIcons = { pending: ClockIcon, approved: CheckmarkCircleIcon, rejected: CloseCircleIcon }
+
+/** « ★★★★☆ » */
+const stars = (rating?: number) => (rating ? "★".repeat(rating) + "☆".repeat(5 - rating) : "")
+
+/** « 12/11/2026 » */
+const shortDate = (iso?: string) =>
+  iso ? new Date(iso).toLocaleDateString("fr-FR", { timeZone: "Europe/Paris" }) : ""
+
+/**
+ * Avis du livre d’or. Ne contient que ce qui peut être publié : l’adresse e-mail et l’IP
+ * sont dans un document privé à part (voir `reviewPrivate`).
+ */
 export const review = defineType({
   name: "review",
   title: "Avis",
@@ -19,18 +37,19 @@ export const review = defineType({
   icon: StarIcon,
   fields: [
     defineField({
+      name: "status",
+      title: "Statut",
+      type: "string",
+      description: "Utilisez plutôt les boutons « Approuver » et « Refuser » en bas de la fiche : ils publient en un clic.",
+      options: { list: [...reviewStatusOptions], layout: "radio", direction: "horizontal" },
+      initialValue: "pending",
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
       name: "name",
       title: "Nom",
       type: "string",
       validation: (rule) => rule.required(),
-    }),
-    defineField({
-      name: "email",
-      title: "Adresse e-mail",
-      type: "string",
-      description:
-        "Privé : jamais affiché sur le site. Sur le plan Free (dataset public), elle reste lisible via l’API : à traiter avant la mise en ligne.",
-      validation: (rule) => rule.required().email(),
     }),
     defineField({
       name: "title",
@@ -41,7 +60,7 @@ export const review = defineType({
       name: "rating",
       title: "Note",
       type: "number",
-      options: { list: ratingOptions, layout: "radio" },
+      options: { list: ratingOptions, layout: "radio", direction: "horizontal" },
       validation: (rule) => rule.required().min(1).max(5).integer(),
     }),
     defineField({
@@ -52,28 +71,11 @@ export const review = defineType({
       validation: (rule) => rule.required().max(2000),
     }),
     defineField({
-      name: "status",
-      title: "Statut",
-      type: "string",
-      options: { list: [...statusOptions], layout: "radio" },
-      initialValue: "pending",
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
       name: "createdAt",
       title: "Date de l’avis",
       type: "datetime",
       initialValue: () => new Date().toISOString(),
       validation: (rule) => rule.required(),
-    }),
-    defineField({
-      name: "ip",
-      title: "Adresse IP (privée)",
-      type: "string",
-      description:
-        "Collectée côté serveur pour prévenir les abus. Jamais affichée sur le site. Sur le plan Free, le dataset est public : à traiter avant la mise en ligne.",
-      readOnly: true,
-      hidden: ({ value }) => value === undefined,
     }),
   ],
   orderings: [
@@ -90,12 +92,13 @@ export const review = defineType({
       text: "text",
       rating: "rating",
       status: "status",
+      createdAt: "createdAt",
     },
-    prepare({ name, title, text, rating, status }) {
-      const statusLabel = statusOptions.find((option) => option.value === status)?.title
+    prepare({ name, title, text, rating, status, createdAt }) {
       return {
         title: title || text || "Avis sans titre",
-        subtitle: [name, `${rating}/5`, statusLabel].filter(Boolean).join(" · "),
+        subtitle: [stars(rating), name, shortDate(createdAt)].filter(Boolean).join(" · "),
+        media: statusIcons[status as ReviewStatus] ?? StarIcon,
       }
     },
   },
