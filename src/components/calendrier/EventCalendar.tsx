@@ -113,10 +113,13 @@ function monthsWithEvents(events: NeoEvent[]) {
   return set;
 }
 
-/** Première et dernière année du sélecteur de mois. */
+/**
+ * Première et dernière année du sélecteur de mois : depuis le premier événement (ou l’année en cours),
+ * jusqu’à 10 ans après l’année en cours (ou plus loin si un événement y est déjà prévu).
+ */
 function yearRange(events: NeoEvent[], currentYear: number) {
   let min = currentYear;
-  let max = currentYear;
+  let max = currentYear + 10;
   for (const e of events) {
     min = Math.min(min, monthOf(e.startDate).y);
     max = Math.max(max, monthOf(end(e)).y);
@@ -186,7 +189,7 @@ export function EventCalendar({
   const todayMonth = monthOf(today);
   const isCurrentMonth = view.y === todayMonth.y && view.m === todayMonth.m;
   const eventMonths = monthsWithEvents(events);
-  // Années proposées : de la première à la dernière année qui a un événement, année en cours comprise
+  // Années proposées : du premier événement à 10 ans après l’année en cours (demande de Louis du 13/11/2026)
   const years = yearRange(events, todayMonth.y);
 
   return (
@@ -417,7 +420,7 @@ function EventBar({
 
 /**
  * Titre « mois année » cliquable : ouvre un panneau pour aller directement à un mois (demande de Louis du 13/11/2026).
- * Année avec ‹ › (bornée aux années qui ont des événements), grille des 12 mois ; un point marque les mois
+ * Panneau de la largeur du titre ; année avec ‹ › (du premier événement à 10 ans après l’année en cours), grille des 12 mois ; un point marque les mois
  * qui ont des événements. Se ferme au choix d’un mois, avec Échap ou par un clic à côté ; le focus revient au titre.
  */
 function MonthPicker({
@@ -508,7 +511,7 @@ function MonthPicker({
           id={panelId}
           role="group"
           aria-label="Choisir un mois"
-          className="absolute top-full left-1/2 z-30 mt-2 w-[300px] -translate-x-1/2 border border-t-4 border-filet border-t-garance bg-blanc p-4 shadow-[0_24px_48px_-20px_rgb(20_29_34/0.45)]"
+          className="absolute top-full left-1/2 z-30 mt-2 w-full min-w-[280px] -translate-x-1/2 border border-t-4 border-filet border-t-garance bg-blanc p-4 shadow-[0_24px_48px_-20px_rgb(20_29_34/0.45)]"
         >
           <div className="mb-3 flex items-center justify-between">
             <YearButton label="Année précédente" disabled={year <= years.min} onClick={() => setYear(year - 1)} d="M15 5l-7 7 7 7" />
