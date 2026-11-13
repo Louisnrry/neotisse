@@ -14,11 +14,11 @@ function Row({ label, children }: { label: string; children: ReactNode }) {
   );
 }
 
-/** Coordonnées (comme la V1) : liste à libellés en petites capitales grises, filet encre en haut, filets fins entre les lignes. */
+/** Coordonnées (comme la V1) : liste à libellés en petites capitales grises, sans filet en haut (retiré le 13/11/2026, demande de Louis), filets fins sous chaque ligne. */
 export async function ContactDetails() {
   const [{ phone, city }, siteSettings] = await Promise.all([getContactPage(), getSiteSettings()]);
   return (
-    <dl className="border-t border-ink">
+    <dl>
       <Row label="E-mail">
         <a href={`mailto:${siteSettings.contactEmail}`} className={link}>
           {siteSettings.contactEmail}
