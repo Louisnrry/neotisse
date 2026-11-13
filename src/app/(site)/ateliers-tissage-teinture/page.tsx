@@ -57,8 +57,8 @@ export default async function AteliersPage() {
       {/* Bloc final fond rouge */}
       <section aria-labelledby="ateliers-cta" className="bg-garance px-s50 py-24 text-creme">
         <div className="mx-auto grid max-w-[760px] gap-7">
-          {/* Titre aligné à gauche et texte centré, comme la V1 */}
-          <ThreadHeading id="ateliers-cta" tone="creme">
+          {/* Titre et texte centrés (demande de Louis du 13/11/2026 ; la V1 alignait le titre à gauche) */}
+          <ThreadHeading id="ateliers-cta" tone="creme" center>
             {cta.title}
           </ThreadHeading>
           <TypeText className="text-center text-[1.2rem]" value={cta.text} />
