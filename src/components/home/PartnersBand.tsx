@@ -47,12 +47,12 @@ function LogoTile({ partner, copy = false }: { partner: Partner; copy?: boolean 
     <li
       data-copy={copy || undefined}
       aria-hidden={copy || undefined}
-      className="bg-lin h-[140px] w-[196px] flex-none transition-shadow duration-200 has-[a:hover]:shadow-[inset_0_0_0_2px_var(--color-ink)]"
+      className="bg-lin h-[140px] w-[196px] flex-none rounded-[4px] transition-shadow duration-200 has-[a:hover]:shadow-[inset_0_0_0_2px_var(--color-ink)]"
     >
       <Link
         href={routes.partenaires}
         tabIndex={copy ? -1 : undefined}
-        className="grid h-full w-full place-items-center p-3.5"
+        className="grid h-full w-full place-items-center rounded-[4px] p-3.5"
       >
         <Image
           src={partner.logo.src}
