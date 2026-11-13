@@ -37,7 +37,7 @@ export function WorkshopRow({ workshop, reverse = false }: { workshop: Workshop;
 
       <div>
         {/* Pas de surtitre sur cette page (retiré le 10/11/2026, demande de Louis) */}
-        <h2 id={anchor}>
+        <h2 id={anchor} className="pb-0">
           {title}
         </h2>
         <TypeText className="mt-1.5 font-serif text-[1.5rem] font-semibold italic text-garance" value={subtitle} />

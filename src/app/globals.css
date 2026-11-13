@@ -144,6 +144,12 @@
   h3 {
     font-size: var(--text-h3);
   }
+  /* Plus d’air entre un titre et le texte qui le suit, sur toutes les pages (demande de Louis du 13/11/2026) :
+     s’ajoute à l’écart déjà prévu par chaque section. En padding (pas en marge) pour ne jamais fusionner avec la marge
+     du texte suivant ; les filets et le fil rouge restent calés sur le texte. Un `pb-*` sur le titre l’annule. */
+  main :where(h1, h2, h3):not(:last-child) {
+    padding-bottom: 0.75rem;
+  }
 
   strong,
   b {

@@ -23,7 +23,7 @@ export async function Hero() {
       </div>
       <div aria-hidden="true" className="neo-hero__veil pointer-events-none absolute inset-0" />
       <div className="neo-hero__content absolute inset-x-0 bottom-0 z-[2] px-s50 pb-[clamp(48px,9vh,96px)] text-creme [text-shadow:0_2px_24px_rgb(16_22_27/0.45)]">
-        <h1 id="hero-title" className="mb-3 text-hero leading-[0.95]">
+        <h1 id="hero-title" className="mb-3 pb-0 text-hero leading-[0.95]">
           {title}
         </h1>
         <p className="text-[clamp(1.15rem,1.8vw,1.5rem)] leading-[1.45]">{tagline}</p>

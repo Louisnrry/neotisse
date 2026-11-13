@@ -124,6 +124,7 @@ Point de rupture spécifique : **`nav:` = 1200px** (75rem), passage au menu burg
 
 - **Titre à filets** (`<RuledTitle>`, utilitaire `ruled`) : texte centré entre deux lignes de 2px de la couleur du texte, `gap: clamp(16px, 3vw, 40px)`, letter-spacing **-0.03em** (choisi par Louis le 10/11/2026 ; avant 0.06em). `tone="creme"` sur fond rouge ou encre. Mettre `as="p"` quand c'est un surtitre de section suivi d'un H2.
 - **Fil rouge** (`<ThreadHeading>`, utilitaire `thread`) : trait 64×4px garance sous le titre, à 0.45em. `center` pour le centrer, `tone="creme"` pour un fil crème.
+- **Espace sous les titres** (demande de Louis du 13/11/2026) : dans `<main>`, tout H1/H2/H3 qui n'est pas le dernier élément de son bloc reçoit **12px de padding en bas** (`globals.css`, `@layer base`), en plus de l'écart prévu par la section. En padding pour ne pas fusionner avec la marge du texte suivant (les filets et le fil rouge restent calés sur le texte). Un `pb-*` sur le titre l'annule : titre du héros de l'accueil et H2 des ateliers (sous-titre italique collé).
 - **Surtitre** (`<Kicker>`) : 0.78rem, 700, letter-spacing 0.14em, majuscules, garance, trait de 3px au-dessus (padding-top 12px).
 - **Sous-titre** (`<Subtitle>`) : Cormorant italique 600, garance.
 - **Citation** (`<PullQuote>`) : Cormorant italique 700, garance, interligne 1.2.
