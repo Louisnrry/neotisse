@@ -7,10 +7,6 @@ import { Button } from "@/components/ui/Button";
 import { Wordmark } from "@/components/ui/Wordmark";
 import { cn } from "@/lib/cn";
 import { mainNav, routes } from "@/lib/routes";
-import { WordmarkTuner, type WordmarkTune } from "./WordmarkTuner";
-
-/** Panneau de réglage du mot central : développement uniquement (à retirer une fois les valeurs choisies). */
-const SHOW_TUNER = process.env.NODE_ENV !== "production";
 
 /**
  * En-tête du site.
@@ -28,7 +24,6 @@ export function Header() {
   const [arrival, setArrival] = useState(isHome);
   const [hidden, setHidden] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [tune, setTune] = useState<WordmarkTune>({ height: 40, offsetY: 0, guides: true });
 
   const menuRef = useRef<HTMLDivElement>(null);
   const burgerRef = useRef<HTMLButtonElement>(null);
@@ -135,7 +130,7 @@ export function Header() {
     >
       <div
         className={cn(
-          "relative mx-auto grid max-w-wide grid-cols-[1fr_auto_1fr] items-center gap-6 rounded-[24px] border px-3 py-2.5 nav:w-fit",
+          "mx-auto grid max-w-wide grid-cols-[1fr_auto_1fr] items-center gap-6 rounded-[24px] border px-3 py-2.5 nav:w-fit",
           "transition-[background-color,border-color,box-shadow] duration-[350ms] nav:gap-14 nav:px-6 nav:py-3",
           transparent
             ? "border-transparent bg-transparent"
@@ -165,23 +160,9 @@ export function Header() {
             transparent ? "text-creme hover:text-creme" : "text-ink hover:text-ink",
           )}
         >
-          {SHOW_TUNER ? (
-            <span className="block" style={{ transform: `translateY(${tune.offsetY}px)` }}>
-              <Wordmark
-                className="transition-transform duration-250 group-hover:scale-105 group-focus-visible:scale-105 motion-reduce:transition-none"
-                style={{ height: tune.height, outline: tune.guides ? "1px solid #0ea5e9" : undefined }}
-              />
-            </span>
-          ) : (
-            <Wordmark className="h-8 transition-transform duration-250 group-hover:scale-105 group-focus-visible:scale-105 motion-reduce:transition-none nav:h-10" />
-          )}
+          {/* Remonté de 10 % de sa hauteur (-5px à 50px) : centrage optique, la boîte du mot inclut l’accent et le haut du « N ». */}
+          <Wordmark className="h-8 -translate-y-[10%] transition-transform duration-250 group-hover:scale-105 group-focus-visible:scale-105 motion-reduce:transition-none nav:h-[50px]" />
         </Link>
-
-        {SHOW_TUNER && tune.guides && (
-          <span aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-1/2 h-px -translate-y-1/2"
-            style={{ background: "#d946ef" }}
-          />
-        )}
 
         {/* Liens de droite + Contact (grand écran) */}
         <nav aria-label="Navigation principale, fin" className="hidden items-center gap-9 justify-self-start nav:flex">
@@ -217,8 +198,6 @@ export function Header() {
           </svg>
         </button>
       </div>
-
-      {SHOW_TUNER && <WordmarkTuner value={tune} onChange={setTune} />}
 
       {/* Menu mobile plein écran, fond encre */}
       {menuOpen && (
