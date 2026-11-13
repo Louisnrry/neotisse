@@ -23,7 +23,7 @@ export async function LatestReviews() {
           <ul className="mt-6 grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
             {latest.map((r) => (
               <li key={r.id}>
-                <ReviewCard review={r} />
+                <ReviewCard review={r} className="rounded-[4px]" />
               </li>
             ))}
           </ul>
