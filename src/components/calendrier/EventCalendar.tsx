@@ -182,7 +182,7 @@ export function EventCalendar({
                       setView(monthOf(e.startDate));
                       open(e, ev.currentTarget);
                     }}
-                    className="group grid w-full cursor-pointer grid-cols-[72px_minmax(0,1fr)] items-center gap-6 border-[1.5px] border-transparent bg-pierre px-6 py-[18px] text-left transition-[border-color,transform] duration-200 hover:translate-x-1 hover:border-garance min-[641px]:grid-cols-[104px_minmax(0,1fr)_auto]"
+                    className="group grid w-full cursor-pointer grid-cols-[72px_minmax(0,1fr)] items-center gap-6 border-[1.5px] border-transparent rounded-[4px] bg-pierre px-6 py-[18px] text-left transition-[border-color,transform] duration-200 hover:translate-x-1 hover:border-garance min-[641px]:grid-cols-[104px_minmax(0,1fr)_auto]"
                   >
                     <span className="flex flex-col items-center border-r border-filet pr-6">
                       <span className="font-serif text-[2.8rem] leading-none font-bold text-garance">
