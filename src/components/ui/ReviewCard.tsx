@@ -35,7 +35,7 @@ export function ReviewCard({ review: r, className }: { review: Review; className
 export function ReviewSummary({ average, count, className }: { average: number; count: number; className?: string }) {
   const label = (Math.round(average * 10) / 10).toString().replace(".", ",");
   return (
-    <p className={cn("flex flex-wrap items-center gap-2.5 border-b border-ink pt-3.5 pb-[18px] font-semibold", className)}>
+    <p className={cn("flex flex-wrap items-center gap-2.5 pt-3.5 pb-[18px] font-semibold", className)}>
       <span>Note moyenne :</span>
       <Stars rating={average} />
       <span>
