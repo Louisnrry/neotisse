@@ -5,14 +5,14 @@ import type { Review } from "@/sanity/types";
 
 /**
  * Carte d’avis (accueil et livre d’or, piste « B » choisie par Louis le 11/11/2026, sans pastille d’initiales) :
- * fond pierre, filet garance de 4px en haut ; en-tête avec le nom (600) et la date (gris) à gauche, les étoiles
+ * fond pierre, coins arrondis 4px, filet garance de 4px en haut ; en-tête avec le nom (600) et la date (gris) à gauche, les étoiles
  * à droite ; titre de l’avis en police de titre ; texte de l’avis.
  */
 export function ReviewCard({ review: r, className }: { review: Review; className?: string }) {
   return (
     <article
       aria-label={r.title ? `${r.title}, par ${r.name}` : `Avis de ${r.name}`}
-      className={cn("flex h-full flex-col border-t-4 border-garance bg-pierre p-6", className)}
+      className={cn("flex h-full flex-col rounded-[4px] border-t-4 border-garance bg-pierre p-6", className)}
     >
       <header className="flex items-start justify-between gap-4">
         <p className="min-w-0 leading-[1.35] [overflow-wrap:anywhere]">
