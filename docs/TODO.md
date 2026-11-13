@@ -30,6 +30,7 @@
 - [x] **Boutons à coins arrondis 4px** (10/11) partout, sauf « Contact » de la navbar (16px)
 - [x] **Ateliers de l'accueil refaits** (10/11) d'après la maquette de Louis : section épinglée (un atelier à la fois, texte et carte en fondu qui remontent, fil vertical en 3 parties), empilés sous 900px, accroche des ateliers reprise de Sanity ; vérifié à 1440 et 375px et au clavier
 - [x] **Interlettrage des titres** (10/11) : -0.05em (titres) et -0.03em (titres à filets), choisis par Louis avec un panneau à curseurs provisoire, retiré ensuite
+- [ ] **Taille et alignement vertical de « Néotisse » dans la navbar** (13/11) : panneau à curseurs provisoire (dev uniquement, `WordmarkTuner.tsx`) ; reporter les valeurs choisies par Louis dans `Header.tsx` puis retirer le panneau
 - [x] **Animations d'apparition** (10/11) avec Motion : titres (mots en fondu + filets et fil rouge qui s'étendent), images (fondu et montée), paragraphes courts écrits lettre par lettre ; une fois par élément, reduced-motion et sans-JS gérés ; vérifié à 1440 et 375px (aucun débordement sur les 9 pages)
 - [ ] Si une animation GSAP ScrollTrigger est ajoutée : brancher Lenis dessus (voir `docs/DESIGN.md` § 10 bis)
 - [x] Bouton « Écrivez-nous » du pied de page de nouveau lisible (il était crème sur crème)

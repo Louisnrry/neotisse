@@ -8,11 +8,12 @@ const vb = introViewBox;
  * Décoratif : le nom accessible est porté par le lien qui l’entoure.
  * Donner la hauteur via `className` (ex. `h-10`), la largeur suit le ratio du mot.
  */
-export function Wordmark({ className }: { className?: string }) {
+export function Wordmark({ className, style }: { className?: string; style?: React.CSSProperties }) {
   return (
     <svg
       viewBox={`${vb.x} ${vb.y} ${vb.width} ${vb.height}`}
       className={cn("block w-auto", className)}
+      style={style}
       fill="currentColor"
       aria-hidden="true"
       focusable="false"
