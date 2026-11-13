@@ -489,9 +489,9 @@ function MonthPicker({
         aria-expanded={open}
         aria-controls={panelId}
         onClick={() => (open ? close(false) : show())}
-        className="flex min-w-[9ch] cursor-pointer items-center justify-center gap-2 rounded-[4px] px-2 py-1 font-display text-[clamp(1.3rem,0.75rem+2.4vw,2.2rem)] leading-[1.1] font-normal capitalize transition-colors duration-200 hover:bg-pierre aria-expanded:bg-pierre"
+        className="flex w-[10.8em] shrink-0 cursor-pointer items-center justify-center gap-2 rounded-[4px] px-2 py-1 font-display text-[clamp(1.3rem,0.75rem+2.4vw,2.2rem)] leading-[1.1] font-normal capitalize transition-colors duration-200 hover:bg-pierre aria-expanded:bg-pierre"
       >
-        {/* Annoncé à chaque changement de mois */}
+        {/* Largeur fixe (« Septembre 2028 » + marge) : les flèches ne bougent pas d’un mois à l’autre. Annoncé à chaque changement de mois. */}
         <span aria-live="polite">{label}</span>
         <span className="sr-only">, choisir un autre mois</span>
         <svg
