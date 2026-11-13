@@ -227,9 +227,9 @@ Textes dans Sanity (repris de la V1). Comparée à la V1 à 1024 et 375px : posi
 | En-tête | `AboutIntro.tsx` | Colonne de 860px, padding 72px / 40px, écart 20px : H1 à filets, sous-titre Cormorant italique 600 garance `text-subtitle-lg`, texte centré `text-lead`. |
 | Notre démarche | `Demarche.tsx` | Padding 48px / 96px. Grille 42 % / 58 %, écart 88px (30px une fois empilée sous 768px), alignée en haut : photo 4/5 (`hero-atelier.jpg`), H2 à fil rouge, texte, phrase en exergue `text-pull`, texte terminé par la conviction en gras. |
 | Nos engagements | `Engagements.tsx` | Padding 96px. H2 à fil rouge à gauche, intro centrée `text-lead`, 3 cartes (padding 36/32px, écart interne 12px, 24px entre cartes) : garance + texte crème ; contour 2px garance ; encre + accroche `garance-soft`. Décalages de 48 et 96px **à partir de 900px** seulement. |
-| Médiation par le geste | `Mediation.tsx` | Padding 48px / 96px. Visuel 21/9 (aplat garance-dark provisoire), puis encart blanc de 640px aligné à droite, padding 44px, qui chevauche le visuel de 96px (40px sous 700px), ombre `0 30px 60px -34px rgba(30,43,51,.3)` comme la V1. |
+| Médiation par le geste | `Mediation.tsx` | Padding 48px / 96px. Visuel 21/9 (aplat garance-dark provisoire), puis encart blanc de 640px aligné à droite, padding 44px (mêmes marges à gauche et à droite), titre **sans équilibrage des lignes** pour occuper toute la largeur (demande de Louis du 13/11/2026), qui chevauche le visuel de 96px (40px sous 700px), ombre `0 30px 60px -34px rgba(30,43,51,.3)` comme la V1. |
 | Notre équipe | `Team.tsx` | Fond pierre, colonne de 1040px, padding 96px / 112px. Titre à filets collé aux membres (comme la V1), un membre par ligne (photo 4/5 à 26 %, texte à 74 %, écart 48px ; 64px entre membres). Rôle en Cormorant italique garance `text-tagline`. Lien LinkedIn sous un filet `filet`, en 600. |
-| Travaillons ensemble | `WorkTogether.tsx` | Fond garance, colonne de 760px, padding 96px, écart 28px : H2 à fil rouge crème à gauche, texte centré `text-lead`, bouton `on-red` centré. |
+| Travaillons ensemble | `WorkTogether.tsx` | Fond garance, colonne de 760px, padding 96px, écart 28px : H2 à fil rouge crème **centré** (fil centré aussi, demande de Louis du 13/11/2026 ; à gauche sur la V1), texte centré `text-lead`, bouton `on-red` centré. |
 
 ---
 

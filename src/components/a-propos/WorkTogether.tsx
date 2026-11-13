@@ -10,7 +10,7 @@ export async function WorkTogether() {
   return (
     <Section tone="garance" width="full" spacing="none" className="py-24" labelledBy="ensemble-titre">
       <div className="mx-auto grid max-w-[760px] gap-7">
-        <ThreadHeading id="ensemble-titre" tone="creme">
+        <ThreadHeading id="ensemble-titre" tone="creme" center>
           {title}
         </ThreadHeading>
         <TypeText className="text-center text-lead" value={text} />
