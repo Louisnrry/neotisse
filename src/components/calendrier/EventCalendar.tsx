@@ -533,7 +533,8 @@ function MonthPicker({
                   }}
                   className={cn(
                     "relative h-11 cursor-pointer rounded-[4px] text-[0.95rem] font-semibold transition-colors duration-200",
-                    selected ? "bg-garance text-blanc" : "text-ink hover:bg-pierre",
+                    // Mois avec événements : en garance, en plus du point (demande de Louis du 13/11/2026)
+                    selected ? "bg-garance text-blanc" : cn("hover:bg-pierre", hasEvents ? "text-garance" : "text-ink"),
                   )}
                 >
                   {name}
