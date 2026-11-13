@@ -56,6 +56,14 @@ export const contactPage = defineType({
       options: { collapsible: true, collapsed: true },
       fields: [
         defineField({ name: "title", title: "Titre", type: "string", initialValue: "Écrivez-nous" }),
+        defineField({ name: "lastNamePlaceholder", title: "Placeholder « Nom »", type: "string", initialValue: "Dupont" }),
+        defineField({ name: "firstNamePlaceholder", title: "Placeholder « Prénom »", type: "string", initialValue: "Marie" }),
+        defineField({
+          name: "emailPlaceholder",
+          title: "Placeholder « Adresse e-mail »",
+          type: "string",
+          initialValue: "marie.dupont@exemple.fr",
+        }),
         defineField({
           name: "subjectPlaceholder",
           title: "Placeholder « Objet »",

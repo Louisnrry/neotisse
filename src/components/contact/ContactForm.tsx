@@ -86,10 +86,10 @@ export function ContactForm({ form }: { form: ContactFormTexts }) {
   return (
     <form noValidate onSubmit={onSubmit} className="grid gap-5" aria-label={form.title}>
       <div className="grid gap-5 min-[521px]:grid-cols-2">
-        <TextField {...field("nom")} label={<Required>Nom</Required>} autoComplete="family-name" required />
-        <TextField {...field("prenom")} label={<Required>Prénom</Required>} autoComplete="given-name" required />
+        <TextField {...field("nom")} label={<Required>Nom</Required>} placeholder={form.lastNamePlaceholder} autoComplete="family-name" required />
+        <TextField {...field("prenom")} label={<Required>Prénom</Required>} placeholder={form.firstNamePlaceholder} autoComplete="given-name" required />
       </div>
-      <TextField {...field("email")} label={<Required>Adresse e-mail</Required>} type="email" autoComplete="email" spellCheck={false} required />
+      <TextField {...field("email")} label={<Required>Adresse e-mail</Required>} type="email" placeholder={form.emailPlaceholder} autoComplete="email" spellCheck={false} required />
       <TextField {...field("objet")} label={<Required>Objet</Required>} placeholder={form.subjectPlaceholder} required />
       <TextArea {...field("projet")} label={<Required>Votre projet</Required>} placeholder={form.projectPlaceholder} required />
 

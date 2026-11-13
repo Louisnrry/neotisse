@@ -12,7 +12,7 @@ const CONTACT_QUERY = `{
   "page": *[_id == "contactPage"][0]{
     ${SEO}, title, intro, phone{ label, href, person }, city,
     guestbookLink{ label, href },
-    form{ title, subjectPlaceholder, projectPlaceholder, submit, sending, legal },
+    form{ title, lastNamePlaceholder, firstNamePlaceholder, emailPlaceholder, subjectPlaceholder, projectPlaceholder, submit, sending, legal },
     faq{ title, intro, "image": image${IMAGE} }
   },
   "items": ${orderedListQuery("faqItem", "contactPage", "faq.items", FAQ_FIELDS)}
@@ -39,6 +39,9 @@ function answerParts(blocks: PortableBlock[] | null | undefined): RichPart[] {
 
 export type ContactFormTexts = {
   title: string;
+  lastNamePlaceholder: string;
+  firstNamePlaceholder: string;
+  emailPlaceholder: string;
   subjectPlaceholder: string;
   projectPlaceholder: string;
   submit: string;
@@ -66,7 +69,7 @@ const EMPTY = {
   phone: { label: "", href: "", person: "" },
   city: "",
   guestbookLink: EMPTY_LINK,
-  form: { title: "", subjectPlaceholder: "", projectPlaceholder: "", submit: "Envoyer", sending: "Envoi en cours…" },
+  form: { title: "", lastNamePlaceholder: "", firstNamePlaceholder: "", emailPlaceholder: "", subjectPlaceholder: "", projectPlaceholder: "", submit: "Envoyer", sending: "Envoi en cours…" },
   faq: { title: "", intro: "" },
 };
 

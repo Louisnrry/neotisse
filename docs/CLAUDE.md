@@ -343,7 +343,7 @@ Règles générales :
 - Accueil : 4 derniers avis approuvés ; page Livre d’or : tous, 3 par 3 avec le bouton « Plus d’avis », et « Voir moins » une fois la liste dépliée.
 
 ### 7.4 Formulaire de contact
-- Champs (tous obligatoires) : **Nom**, **Prénom** (2 colonnes), **Adresse e-mail**, **Objet** (placeholder « Organiser un atelier, conférence, partenariat… »), **Votre projet** (textarea, placeholder « Parlez-nous de votre projet : lieu, public, dates envisagées… »).
+- Champs (tous obligatoires) : **Nom** (placeholder « Dupont »), **Prénom** (placeholder « Marie ») (2 colonnes), **Adresse e-mail** (placeholder « marie.dupont@exemple.fr » ; ces trois placeholders ajoutés le 13/11/2026 à la demande de Louis, modifiables dans le Studio, Contact → Formulaire), **Objet** (placeholder « Organiser un atelier, conférence, partenariat… »), **Votre projet** (textarea, placeholder « Parlez-nous de votre projet : lieu, public, dates envisagées… »).
 - Bouton « Envoyer ». Confirmation inline : « **Merci, votre message est bien parti !** Nous revenons vers vous très vite. »
 - Envoi d’un e-mail à l’adresse configurée dans Sanity (`siteSettings.contactRecipient`), objet `[Néotisse] {objet}`, `Reply-To` = e-mail du visiteur.
 - Validation côté client et serveur, messages d’erreur accessibles (`aria-invalid`, `aria-describedby`), erreurs en `garance-dark`.
