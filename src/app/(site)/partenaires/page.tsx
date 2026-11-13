@@ -43,7 +43,7 @@ export default async function PartenairesPage() {
       {/* Devenir partenaire : fond pierre, comme la V1 */}
       <Section tone="pierre" width="full" spacing="none" className="mt-[1.2rem] py-24" labelledBy="devenir-partenaire">
         <div className="mx-auto grid max-w-[760px] gap-7">
-          <ThreadHeading id="devenir-partenaire">{cta.title}</ThreadHeading>
+          <ThreadHeading id="devenir-partenaire" center>{cta.title}</ThreadHeading>
           <TypeText className="text-center text-lead" value={cta.text} />
           <div className="flex justify-center">
             <Button href={cta.button.href}>{cta.button.label}</Button>

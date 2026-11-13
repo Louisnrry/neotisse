@@ -242,7 +242,7 @@ Textes dans Sanity (repris de la V1). Comparée à la V1 à 1024px (positions id
 | En-tête | Colonne de 860px, padding 72px / 24px, écart 20px : H1 à filets, intro centrée `text-lead`. |
 | Grille | 1.2rem sous l'en-tête, padding 32px / 112px, contenu 1240px. Colonnes `repeat(auto-fill, minmax(16rem, 1fr))`, écart 28px (4 colonnes à 1440px, 3 à 1024px, 1 sur mobile). |
 | Carte (`PartnerCard`) | Fond blanc, bordure 1px `filet` → `garance` au survol (et au focus du lien). Zone logo 170px sur toile de lin (`bg-lin`), filet garance 3px en bas, logo centré 104px de haut max, 80 % de large max, **sans pastille blanche** (comme la V1). Nom en H3 1.5rem interligne 1.15, padding 20px 22px ; lien vers le site (nouvel onglet, souligné, garance) s'il existe. Description interligne 1.6, padding 8px 22px 24px. Sans description, le H3 prend 24px en bas. |
-| Devenir partenaire | Fond **pierre**, colonne de 760px, padding 96px, écart 28px : H2 à fil rouge à gauche, texte centré `text-lead`, bouton plein centré. |
+| Devenir partenaire | Fond **pierre**, colonne de 760px, padding 96px, écart 28px : H2 à fil rouge **centré** (écart avec la V1, demande de Louis du 13/11/2026), texte centré `text-lead`, bouton plein centré. |
 
 ## 9 sexies. Contact (`/contact-organiser-un-atelier/`)
 
