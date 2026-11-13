@@ -216,8 +216,13 @@ export function EventCalendar({
         </div>
       </Section>
 
-      {/* Calendrier mensuel */}
-      <Section spacing="none" className="mt-[1.2rem] py-10" labelledBy="agenda-titre" innerClassName="grid gap-8">
+      {/* Calendrier mensuel : masqué sur mobile (sous 721px), la liste « À venir » suffit (demande de Louis du 13/11/2026) */}
+      <Section
+        spacing="none"
+        className="mt-[1.2rem] hidden py-10 min-[721px]:block"
+        labelledBy="agenda-titre"
+        innerClassName="grid gap-8"
+      >
         <RuledTitle id="agenda-titre">{texts.agendaTitle}</RuledTitle>
         <div className="border border-t-4 border-filet border-t-garance p-[clamp(16px,3vw,32px)]">
           <div className="mb-[18px] flex items-center justify-center gap-3">
