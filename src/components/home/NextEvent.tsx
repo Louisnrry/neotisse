@@ -30,8 +30,8 @@ export async function NextEvent() {
       {event ? (
         <div className="mt-12 grid items-center gap-12 md:grid-cols-[58fr_42fr] md:gap-[88px]">
           <div className="grid gap-5">
-            {/* Date en surtitre (comme <Kicker>, en crème et plus grand pour rester bien visible) */}
-            <p className="justify-self-start border-t-[3px] border-creme pt-3 text-[clamp(0.95rem,1.2vw,1.1rem)] font-bold tracking-[0.14em] uppercase">
+            {/* Date en surtitre (en crème et plus grand pour rester bien visible, sans filet au-dessus) */}
+            <p className="justify-self-start text-[clamp(0.95rem,1.2vw,1.1rem)] font-bold tracking-[0.14em] uppercase">
               {formatEventDates(event.startDate, event.endDate)}
             </p>
             <h2 id="prochain-evenement" className="text-creme">
