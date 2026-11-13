@@ -33,8 +33,9 @@ export async function ContactDetails() {
       </Row>
       <Row label="Basées à">{city}</Row>
       <Row label="Suivez-nous">
-        {/* Comme la V1 : icônes 24px et libellés sur une seule ligne, un peu sous le libellé « Suivez-nous » */}
-        <ul className="mt-[1.2rem] flex flex-wrap gap-[1.2rem] text-[0.975rem] leading-6">
+        {/* Icônes 24px et libellés sur une seule ligne. Sur mobile, un peu sous le libellé « Suivez-nous » (comme la V1) ;
+            à partir de 521px, alignés sur le libellé, comme les autres lignes (demande de Louis du 13/11/2026). */}
+        <ul className="mt-[1.2rem] flex min-[521px]:mt-0 min-[521px]:py-0.5 flex-wrap gap-[1.2rem] text-[0.975rem] leading-6">
           <li className="flex">
             <a href={siteSettings.social.instagram} className={`flex items-center gap-2 pr-2 ${link}`}>
               <InstagramIcon />
