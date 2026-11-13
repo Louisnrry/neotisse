@@ -18,8 +18,8 @@ import type { HomeTile } from "@/sanity/queries/home";
  * « Nos ateliers de médiation textile » (accueil), d’après la maquette « Refonte de site » de Louis.
  *
  * - **À partir de 900px** : la section est **épinglée** à l’écran. Chaque atelier occupe 70 % de hauteur
- *   d’écran de défilement : son texte et sa carte apparaissent en fondu en remontant légèrement, la carte
- *   suivante se pose sur la précédente. Le **fil vertical en 3 parties**, à gauche, se remplit avec le défilement.
+ *   d’écran de défilement : son texte apparaît en fondu en remontant légèrement, et sa carte arrive par le bas
+ *   en poussant la précédente vers le haut. Le **fil vertical en 3 parties**, à gauche, se remplit avec le défilement.
  * - **Sous 900px** : les ateliers sont empilés (carte puis texte), chacun apparaît en fondu en remontant.
  *
  * Clavier : tabuler vers le lien d’un atelier caché fait défiler la page jusqu’à lui.
@@ -96,22 +96,22 @@ function Pinned({ tiles }: { tiles: HomeTile[] }) {
             })}
           </div>
 
-          {/* Cartes : empilées, la suivante se pose sur la précédente en remontant */}
+          {/* Cartes : la suivante arrive par le bas et pousse la précédente vers le haut (cadre qui masque le reste) */}
           {/* Hauteur : 74 % de l’écran, entre 420 et 760px, pour laisser la place à la navbar */}
-          <div className="relative h-[clamp(420px,74svh,760px)] w-full">
+          <div className="relative h-[clamp(420px,74svh,760px)] w-full overflow-hidden rounded-[8px]">
             {tiles.map((tile, i) => {
               const state = i === active ? "in" : i < active ? "past" : "future";
               return (
                 <motion.div
                   key={tile.href}
                   className="absolute inset-0"
-                  style={{ zIndex: i + 1 }}
                   initial={false}
                   animate={state}
                   variants={{
-                    future: { opacity: 0, y: 56 },
-                    in: { opacity: 1, y: 0, scale: 1 },
-                    past: { opacity: 1, y: 0, scale: 0.97 },
+                    // Même durée et même courbe pour les deux cartes : elles glissent ensemble.
+                    future: { y: "100%" },
+                    in: { y: "0%" },
+                    past: { y: "-100%" },
                   }}
                   transition={{ duration, ease: EASE }}
                 >
