@@ -32,7 +32,7 @@ export async function Team() {
 function Member({ member }: { member: TeamMember }) {
   return (
     <article className="grid gap-[30px] md:grid-cols-[minmax(0,26fr)_minmax(0,74fr)] md:gap-12">
-      <RevealImage>
+      <RevealImage className="overflow-hidden rounded-[4px]">
       {member.photo ? (
         <Image
           src={member.photo.src}

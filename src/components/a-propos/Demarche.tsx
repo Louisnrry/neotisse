@@ -11,7 +11,7 @@ export async function Demarche() {
   return (
     <Section spacing="none" className="mt-[1.2rem] pt-12 pb-24" labelledBy="demarche-titre">
       <div className="grid items-start gap-[30px] md:grid-cols-[42fr_58fr] md:gap-[88px]">
-        <RevealImage>
+        <RevealImage className="overflow-hidden rounded-[4px]">
           {image ? (
             <div className="relative aspect-[4/5] w-full overflow-hidden">
               <Image

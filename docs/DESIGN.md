@@ -223,6 +223,8 @@ Textes dans Sanity (repris de la V1). Page comparée à la V1 à 1440px : positi
 
 Textes dans Sanity (repris de la V1). Comparée à la V1 à 1024 et 375px : positions identiques. Les sections blanches sont séparées de 1.2rem comme sur la V1.
 
+**Exception aux angles droits (13/11/2026, demande de Louis, page À propos seulement)** : photos et cadres provisoires (enveloppe `RevealImage` en `overflow-hidden rounded-[4px]`), cartes engagements et encart médiation ont un **rayon de 4px**. Le token de rayon reste vidé : on utilise la valeur arbitraire `rounded-[4px]`. Le reste du site garde des angles droits.
+
 | Section | Composant | Détails |
 |---|---|---|
 | En-tête | `AboutIntro.tsx` | Colonne de 860px, padding 72px / 40px, écart 20px : H1 à filets, texte centré `text-lead`. **Pas de sous-titre** (retiré à la demande de Louis le 13/11/2026). |

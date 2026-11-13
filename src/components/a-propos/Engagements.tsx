@@ -24,7 +24,7 @@ export async function Engagements() {
       </div>
       <ul className="mt-8 grid items-start gap-[30px] md:grid-cols-3 md:gap-6">
         {items.map((item) => (
-          <li key={item.title} className={cn("grid gap-3 px-8 py-9", cardTones[item.tone])}>
+          <li key={item.title} className={cn("grid gap-3 rounded-[4px] px-8 py-9", cardTones[item.tone])}>
             <h3>{item.title}</h3>
             <TypeText value={item.text} />
           </li>
