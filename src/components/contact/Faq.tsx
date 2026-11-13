@@ -65,7 +65,7 @@ export async function Faq() {
         </div>
         <div>
           {items.map((item) => (
-            <details key={item.question} className="neo-faq-item group border-b border-filet first:border-t first:border-t-ink">
+            <details key={item.question} className="neo-faq-item group border-b border-filet">
               <summary className="relative cursor-pointer list-none py-5 pr-11 font-serif text-[1.35rem] leading-[1.25] font-bold text-ink transition-colors duration-200 group-open:text-garance hover:text-garance [&::-webkit-details-marker]:hidden">
                 {item.question}
                 {/* « + » en deux traits garance, qui devient « − » à l’ouverture */}
