@@ -98,7 +98,7 @@ function Pinned({ tiles }: { tiles: HomeTile[] }) {
 
           {/* Cartes : la suivante arrive par le bas et pousse la précédente vers le haut (cadre qui masque le reste) */}
           {/* Hauteur : 74 % de l’écran, entre 420 et 760px, pour laisser la place à la navbar */}
-          <div className="relative h-[clamp(420px,74svh,760px)] w-full overflow-hidden rounded-[8px]">
+          <div className="relative h-[clamp(420px,74svh,760px)] w-full overflow-hidden rounded-[4px]">
             {tiles.map((tile, i) => {
               const state = i === active ? "in" : i < active ? "past" : "future";
               return (
@@ -212,7 +212,7 @@ function TileText({
 /** Carte : photo de l’atelier, ou aplat de sa couleur. Cliquable (le lien du texte reste celui du clavier). */
 function TileCard({ tile }: { tile: HomeTile }) {
   return (
-    <Link href={tile.href} tabIndex={-1} aria-hidden="true" className="group absolute inset-0 block overflow-hidden rounded-[8px]">
+    <Link href={tile.href} tabIndex={-1} aria-hidden="true" className="group absolute inset-0 block overflow-hidden rounded-[4px]">
       {tile.image ? (
         <Image
           src={tile.image.src}
