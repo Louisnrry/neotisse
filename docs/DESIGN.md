@@ -130,7 +130,7 @@ Point de rupture spécifique : **`nav:` = 1200px** (75rem), passage au menu burg
 - **Angles droits partout** : le token de rayon est vidé (`--radius-*: initial`), donc les classes `rounded-*` n'existent pas. Exceptions (seules les valeurs arbitraires `rounded-[…]` existent) : **tous les boutons 4px** (depuis le 10/11/2026, demande de Louis : composant `Button`, bandeau cookies, « Plus d'avis », boutons de la modale du calendrier ; pas les flèches du calendrier ni le bouton fermer), bouton « Contact » de la navbar 16px, navbar 24px, cartes des ateliers de l'accueil 8px, cartes partenaires 4px.
 - **Filet rouge en haut des cartes** (`<Card>`) : bordure `filet` + `border-top: 4px garance`.
 - **Texture de lin** (`bg-lin`) : `lin-brut.jpg` en 260px sur `#E9E2D6`, derrière les logos partenaires, avec un filet garance de 3px en bas.
-- **Cadre photo provisoire** (`<PhotoPlaceholder>`) : **aplat uni** (garance, garance-dark, ink ou lin) + petite icône. Sur la V1 la trame rayée est masquée par l'aplat, donc on ne la montre pas par défaut ; `trame` l'active (`bg-trame`). À remplacer par les images Sanity.
+- **Cadre photo provisoire** (`<PhotoPlaceholder>`) : **aplat uni** (garance, garance-dark, ink ou lin) + petite icône, **coins arrondis 4px** (demande de Louis du 13/11/2026). Sur la V1 la trame rayée est masquée par l'aplat, donc on ne la montre pas par défaut ; `trame` l'active (`bg-trame`). À remplacer par les images Sanity.
 - **Hachures** (`bg-hachures`) : jours hors mois du calendrier.
 
 ---

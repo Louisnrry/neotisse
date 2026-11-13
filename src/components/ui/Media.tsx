@@ -27,7 +27,7 @@ export function PhotoPlaceholder({
   className?: string;
 }) {
   return (
-    <div role="img" aria-label={label} className={cn("grid place-items-center", trame && "bg-trame", placeholderTones[tone], className)}>
+    <div role="img" aria-label={label} className={cn("grid place-items-center rounded-[4px]", trame && "bg-trame", placeholderTones[tone], className)}>
       <svg viewBox="0 0 24 24" className="h-10 w-10" aria-hidden="true">
         <path d="M4 5h16v14H4z" fill="none" stroke="currentColor" strokeWidth="1.4" />
         <path d="M4 16l5-5 4 4 3-3 4 4" fill="none" stroke="currentColor" strokeWidth="1.4" />
