@@ -247,7 +247,7 @@ Règles générales :
 - **Bandeau partenaires** (accueil, fond rouge) : logos qui **défilent en boucle** (45s, linéaire), masque en dégradé sur les bords, **pause au survol/focus** ; avec `reduced-motion` : logos statiques centrés.
 - **Ateliers de l'accueil** (refaits le 10/11/2026, voir § 6.1) : section épinglée où les ateliers défilent un par un (texte et carte en fondu qui remontent), fil vertical en 3 parties qui suit le défilement ; empilés sous 900px.
 - **Cartes « À venir »** (calendrier) : bordure `garance` + translateX(4px) au survol ; « En savoir plus → » dont la flèche avance de 4px.
-- **Logos / cartes partenaires** : bordure `filet` → `garance` au survol.
+- **Logos / cartes partenaires** : bordure `filet` → `garance` au survol. Cartes de la page Partenaires : angles de 4px, carte entière cliquable (vers le site du partenaire) et léger grossissement ×1.03 au survol (demande de Louis du 13/11/2026).
 - **Apparition au défilement** (10/11/2026, voir § 0 et `docs/DESIGN.md` § 10 ter) : titres (mots + filets / fil rouge qui s'étendent), images (fondu et montée), paragraphes courts écrits lettre par lettre.
 - Toutes les animations respectent `prefers-reduced-motion`.
 
@@ -471,7 +471,7 @@ page (singletons : home, ateliers, calendrier, partenaires, livreDor, aPropos, c
 
 ## 12. Ce qu’il ne faut pas faire
 
-- Pas de `border-radius` (exceptions : **tous les boutons, 4px** ; la navbar flottante et son bouton « Contact » 16px, voir § 5.1 ; les cartes des ateliers de l’accueil, 8px, voir § 6.1), pas d’ombres portées décoratives sur les tuiles (retirées volontairement).
+- Pas de `border-radius` (exceptions : **tous les boutons, 4px** ; la navbar flottante et son bouton « Contact » 16px, voir § 5.1 ; les cartes des ateliers de l’accueil, 8px, voir § 6.1 ; les cartes partenaires, 4px), pas d’ombres portées décoratives sur les tuiles (retirées volontairement).
 - Pas de Google Fonts distantes, pas de reCAPTCHA, pas de script tiers avant consentement.
 - Ne pas changer les URL existantes.
 - Ne pas exposer de token Sanity d’écriture côté client.
