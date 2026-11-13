@@ -39,7 +39,7 @@ export default async function LivreDorPage() {
         <section aria-labelledby="avis-titre" className="mt-5 grid gap-7">
           <ThreadHeading id="avis-titre">{list.title}</ThreadHeading>
           {reviews.length > 0 ? (
-            <ReviewList reviews={reviews} average={average} step={list.step} moreLabel={list.more} />
+            <ReviewList reviews={reviews} average={average} step={list.step} moreLabel={list.more} lessLabel={list.less} />
           ) : (
             <p className="text-gris">{list.empty}</p>
           )}

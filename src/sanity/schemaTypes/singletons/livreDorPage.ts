@@ -35,10 +35,11 @@ export const livreDorPage = defineType({
           name: "step",
           title: "Avis affichés à la fois",
           type: "number",
-          initialValue: 5,
+          initialValue: 3,
           validation: (rule) => rule.min(1).max(20).integer(),
         }),
         defineField({ name: "more", title: "Libellé du bouton", type: "string", initialValue: "Plus d’avis" }),
+        defineField({ name: "less", title: "Libellé du bouton pour replier", type: "string", initialValue: "Voir moins" }),
         defineField({
           name: "empty",
           title: "Message sans avis",

@@ -6,7 +6,7 @@ import { SEO, type Seo } from "./fragments";
 
 const LIVRE_DOR_QUERY = `*[_id == "livreDorPage"][0]{
   ${SEO}, title, intro,
-  reviews{ title, step, more, empty },
+  reviews{ title, step, more, less, empty },
   form{ title, cardTitle, submit, sending, robot, legal }
 }`;
 
@@ -16,7 +16,7 @@ export type LivreDorContent = {
   seo: Seo;
   title: string;
   intro: string;
-  reviews: { title: string; step: number; more: string; empty: string };
+  reviews: { title: string; step: number; more: string; less: string; empty: string };
   form: GuestbookFormTexts;
   /** Mention sous le formulaire (données personnelles). */
   legal: Paragraph[];
@@ -26,7 +26,7 @@ const EMPTY: Omit<LivreDorContent, "legal"> = {
   seo: null,
   title: "",
   intro: "",
-  reviews: { title: "", step: 5, more: "", empty: "" },
+  reviews: { title: "", step: 3, more: "", less: "Voir moins", empty: "" },
   form: { title: "", cardTitle: "", submit: "Envoyer", sending: "Envoi en cours…", robot: "" },
 };
 

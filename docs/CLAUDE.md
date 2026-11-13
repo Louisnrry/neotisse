@@ -42,7 +42,7 @@
 | Plan Sanity | **Free pour l’instant** : le dataset est public. L’e-mail et l’IP des avis sont rangés dans des documents `private.…`, que Sanity ne rend jamais publics (voir « Contenus et Sanity », 12/11/2026). |
 | Domaine, e-mail (Resend), GA4 | Rien n’est acheté ni créé pour l’instant |
 | Stockage des messages de contact | Pas pour l’instant |
-| Livre d’or | Avis affichés **5 par 5** (« Plus d’avis ») |
+| Livre d’or | Avis affichés **3 par 3** (« Plus d’avis », puis « Voir moins » pour replier ; demande de Louis du 13/11/2026, au lieu de 5 par 5) |
 | Styles | **Tailwind v4** : tokens en CSS dans `src/app/globals.css` (`@theme`), pas de `tailwind.config.ts` |
 | Gestionnaire de paquets | npm |
 | Structure | Projet Next.js à la racine du dépôt, code dans `src/`, pages du site dans le groupe de routes `src/app/(site)/` (pour garder `/studio` à part plus tard) |
@@ -340,7 +340,7 @@ Règles générales :
 - Soumission publique → document `review` créé avec `status: "pending"` (via route API avec token d’écriture Sanity côté serveur uniquement).
 - **Modération par l’association** dans le Studio, avec les boutons **« Approuver »** / **« Refuser »** de chaque avis. Seuls les avis `approved` s’affichent.
 - E-mail et IP **jamais affichés ni publics** (document `private.…` à part) ; IP stockée uniquement pour prévenir les abus (mentionnée dans la politique de confidentialité).
-- Accueil : 4 derniers avis approuvés ; page Livre d’or : tous, 5 par 5 avec le bouton « Plus d’avis ».
+- Accueil : 4 derniers avis approuvés ; page Livre d’or : tous, 3 par 3 avec le bouton « Plus d’avis », et « Voir moins » une fois la liste dépliée.
 
 ### 7.4 Formulaire de contact
 - Champs (tous obligatoires) : **Nom**, **Prénom** (2 colonnes), **Adresse e-mail**, **Objet** (placeholder « Organiser un atelier, conférence, partenariat… »), **Votre projet** (textarea, placeholder « Parlez-nous de votre projet : lieu, public, dates envisagées… »).

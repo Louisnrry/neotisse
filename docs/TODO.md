@@ -49,7 +49,7 @@
   - Textes, téléphone et SEO repris du WordPress (page 11) dans `src/content/contact.ts`
   - Comparée à la V1 à 1024px (positions identiques à quelques pixels près) et à 375px (pas de débordement)
 
-- [x] **Page Livre d’or** (09/11) : note moyenne, avis 5 par 5 avec « Plus d’avis », formulaire « Signer le livre d’or » (note en étoiles accessible, validation côté client, champ piège, délai de 2s), mention RGPD
+- [x] **Page Livre d’or** (09/11) : note moyenne, avis 3 par 3 avec « Plus d’avis » et « Voir moins », formulaire « Signer le livre d’or » (note en étoiles accessible, validation côté client, champ piège, délai de 2s), mention RGPD
   - Textes et SEO repris du WordPress (page 126) dans `src/content/livre-dor.ts`
   - Comparée à la V1 à 1440px et à 375px (pas de débordement)
 
