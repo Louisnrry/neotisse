@@ -1,9 +1,9 @@
-import { UserIcon } from "@sanity/icons/User"
-import { defineArrayMember, defineField, defineType } from "sanity"
-import { imageWithAltField } from "../shared/image"
-import { linkField } from "../shared/link"
-import { seoField } from "../shared/seo"
-import { engagementToneOptions } from "../shared/tones"
+import { UserIcon } from "@sanity/icons/User";
+import { defineArrayMember, defineField, defineType } from "sanity";
+import { imageWithAltField } from "../shared/image";
+import { linkField } from "../shared/link";
+import { seoField } from "../shared/seo";
+import { engagementToneOptions } from "../shared/tones";
 
 export const aProposPage = defineType({
   name: "aProposPage",
@@ -19,7 +19,8 @@ export const aProposPage = defineType({
       options: { collapsible: true, collapsed: false },
       fields: [
         defineField({ name: "title", title: "Titre", type: "string", initialValue: "À propos de Néotisse" }),
-        defineField({ name: "subtitle", title: "Sous-titre", type: "string" }),
+        // Masqué (13/11/2026) : Louis a retiré ce texte de la page. Champ gardé pour ne pas perdre la valeur déjà saisie.
+        defineField({ name: "subtitle", title: "Sous-titre", type: "string", hidden: true }),
         defineField({ name: "text", title: "Texte", type: "text", rows: 5 }),
       ],
     }),
@@ -31,9 +32,10 @@ export const aProposPage = defineType({
       fields: [
         defineField({ name: "title", title: "Titre", type: "string", validation: (rule) => rule.required() }),
         imageWithAltField("image", "Photo"),
-        defineField({ name: "before", title: "Texte avant la citation", type: "text", rows: 5 }),
-        defineField({ name: "pull", title: "Phrase en exergue", type: "text", rows: 2 }),
-        defineField({ name: "after", title: "Texte après la citation", type: "text", rows: 5 }),
+        defineField({ name: "before", title: "Premier paragraphe", type: "text", rows: 5 }),
+        // Masqué (13/11/2026) : Louis a retiré ce texte de la page. Champ gardé pour ne pas perdre la valeur déjà saisie.
+        defineField({ name: "pull", title: "Phrase en exergue", type: "text", rows: 2, hidden: true }),
+        defineField({ name: "after", title: "Second paragraphe (avant la conviction)", type: "text", rows: 5 }),
         defineField({ name: "conviction", title: "Conviction (en gras)", type: "text", rows: 3 }),
       ],
     }),
@@ -63,10 +65,17 @@ export const aProposPage = defineType({
                   validation: (rule) => rule.required(),
                 }),
                 defineField({ name: "title", title: "Titre", type: "string", validation: (rule) => rule.required() }),
-                defineField({ name: "tagline", title: "Accroche", type: "string" }),
-                defineField({ name: "text", title: "Texte", type: "text", rows: 5, validation: (rule) => rule.required() }),
+                // Masqué (13/11/2026) : Louis a retiré ce texte de la page. Champ gardé pour ne pas perdre la valeur déjà saisie.
+                defineField({ name: "tagline", title: "Accroche", type: "string", hidden: true }),
+                defineField({
+                  name: "text",
+                  title: "Texte",
+                  type: "text",
+                  rows: 5,
+                  validation: (rule) => rule.required(),
+                }),
               ],
-              preview: { select: { title: "title", subtitle: "tagline" } },
+              preview: { select: { title: "title" } },
             }),
           ],
           validation: (rule) => rule.min(1).max(3),
@@ -117,7 +126,7 @@ export const aProposPage = defineType({
   preview: {
     select: { title: "intro.title" },
     prepare({ title }) {
-      return { title: title || "À propos", subtitle: "Page À propos" }
+      return { title: title || "À propos", subtitle: "Page À propos" };
     },
   },
-})
+});

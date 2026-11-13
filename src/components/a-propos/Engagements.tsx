@@ -5,12 +5,12 @@ import { getAProposPage } from "@/sanity/queries/aPropos";
 import { cn } from "@/lib/cn";
 import { TypeText } from "@/components/ui/Reveal";
 
-const cardTones: Record<EngagementTone, { card: string; tagline: string }> = {
-  garance: { card: "bg-garance text-creme", tagline: "text-creme" },
+const cardTones: Record<EngagementTone, string> = {
+  garance: "bg-garance text-creme",
   // Décalée de 48px à partir de 900px
-  outline: { card: "border-2 border-garance text-ink min-[900px]:mt-12", tagline: "text-garance" },
+  outline: "border-2 border-garance text-ink min-[900px]:mt-12",
   // Décalée de 96px à partir de 900px
-  ink: { card: "bg-ink text-creme min-[900px]:mt-24", tagline: "text-garance-soft" },
+  ink: "bg-ink text-creme min-[900px]:mt-24",
 };
 
 /** « Nos engagements » : trois cartes décalées verticalement (garance, contour garance, encre). */
@@ -24,16 +24,8 @@ export async function Engagements() {
       </div>
       <ul className="mt-8 grid items-start gap-[30px] md:grid-cols-3 md:gap-6">
         {items.map((item) => (
-          <li key={item.title} className={cn("grid gap-3 px-8 py-9", cardTones[item.tone].card)}>
+          <li key={item.title} className={cn("grid gap-3 px-8 py-9", cardTones[item.tone])}>
             <h3>{item.title}</h3>
-            <p
-              className={cn(
-                "font-serif text-tagline font-semibold italic leading-[1.25]",
-                cardTones[item.tone].tagline,
-              )}
-            >
-              {item.tagline}
-            </p>
             <TypeText value={item.text} />
           </li>
         ))}

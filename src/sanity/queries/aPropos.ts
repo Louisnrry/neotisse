@@ -10,9 +10,9 @@ const MEMBER_FIELDS = `{ name, role, bio, photoTone, "photo": photo${IMAGE}, lin
 const A_PROPOS_QUERY = `{
   "page": *[_id == "aProposPage"][0]{
     ${SEO},
-    intro{ title, subtitle, text },
-    demarche{ title, "image": image${IMAGE}, before, pull, after, conviction },
-    engagements{ title, intro, "items": items[]{ tone, title, tagline, text } },
+    intro{ title, text },
+    demarche{ title, "image": image${IMAGE}, before, after, conviction },
+    engagements{ title, intro, "items": items[]{ tone, title, text } },
     mediation{ title, text, "image": image${IMAGE} },
     team{ title },
     cta{ title, text, button{ label, href } }
@@ -20,12 +20,12 @@ const A_PROPOS_QUERY = `{
   "members": ${orderedListQuery("teamMember", "aProposPage", "team.members", MEMBER_FIELDS)}
 }`;
 
-export type Engagement = { tone: EngagementTone; title: string; tagline: string; text: string };
+export type Engagement = { tone: EngagementTone; title: string; text: string };
 
 export type AProposContent = {
   seo: Seo;
-  intro: { title: string; subtitle: string; text: string };
-  demarche: { title: string; image?: ContentImage; before: string; pull: string; after: string; conviction: string };
+  intro: { title: string; text: string };
+  demarche: { title: string; image?: ContentImage; before: string; after: string; conviction: string };
   engagements: { title: string; intro: string; items: Engagement[] };
   mediation: { title: string; text: string; image?: ContentImage };
   team: { title: string; members: TeamMember[] };
@@ -38,8 +38,8 @@ const EMPTY: Omit<AProposContent, "team" | "demarche" | "mediation"> & {
   mediation: Omit<AProposContent["mediation"], "image">;
 } = {
   seo: null,
-  intro: { title: "", subtitle: "", text: "" },
-  demarche: { title: "", before: "", pull: "", after: "", conviction: "" },
+  intro: { title: "", text: "" },
+  demarche: { title: "", before: "", after: "", conviction: "" },
   engagements: { title: "", intro: "", items: [] },
   mediation: { title: "", text: "" },
   team: { title: "" },
@@ -61,7 +61,12 @@ type RemoteSection = ({ image?: Partial<SanityImage> | null } & Record<string, u
 /** Page À propos et équipe. */
 export async function getAProposPage(): Promise<AProposContent> {
   const remote = await fetchSanity<{
-    page: ({ demarche?: RemoteSection; mediation?: RemoteSection; engagements?: Record<string, unknown> | null } & Record<string, unknown>) | null;
+    page:
+      | ({ demarche?: RemoteSection; mediation?: RemoteSection; engagements?: Record<string, unknown> | null } & Record<
+          string,
+          unknown
+        >)
+      | null;
     members: { refs: string[] | null; docs: (RemoteMember | null)[] | null } | null;
   }>(A_PROPOS_QUERY);
   const r = remote?.page;
@@ -69,19 +74,23 @@ export async function getAProposPage(): Promise<AProposContent> {
 
   const items = ((r?.engagements?.items as (Partial<Engagement> | null)[] | null) ?? [])
     .filter((it) => it?.title)
-    .map((it) => withDefaults(it, { tone: "garance" as EngagementTone, title: "", tagline: "", text: "" }));
+    .map((it) => withDefaults(it, { tone: "garance" as EngagementTone, title: "", text: "" }));
 
   const members: TeamMember[] = orderByPageList(remote?.members ?? null)
     .filter((m): m is RemoteMember & { name: string } => Boolean(m?.name))
-    .map(({ bio, photo, photoTone, link, ...m }) =>
-      stripNulls({
-        name: m.name,
-        role: m.role ?? "",
-        bio: (bio ?? []).filter((b) => b._type === "block").map(blockText).filter(Boolean),
-        photoTone: photoTone === "ink" ? "ink" : "garance",
-        photo: imageOrUndefined(photo),
-        link: link?.href && link.label ? { intro: link.intro ?? "", label: link.label, href: link.href } : undefined,
-      }) as TeamMember,
+    .map(
+      ({ bio, photo, photoTone, link, ...m }) =>
+        stripNulls({
+          name: m.name,
+          role: m.role ?? "",
+          bio: (bio ?? [])
+            .filter((b) => b._type === "block")
+            .map(blockText)
+            .filter(Boolean),
+          photoTone: photoTone === "ink" ? "ink" : "garance",
+          photo: imageOrUndefined(photo),
+          link: link?.href && link.label ? { intro: link.intro ?? "", label: link.label, href: link.href } : undefined,
+        }) as TeamMember,
     );
 
   return {
