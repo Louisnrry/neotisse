@@ -51,13 +51,14 @@ export async function Faq() {
       </RuledTitle>
       <div className="grid gap-10 min-[782px]:grid-cols-[36fr_64fr] min-[782px]:gap-20">
         <div>
+          {/* Angles arrondis de 4px : exception aux angles droits du site (demande de Louis du 13/11/2026) */}
           <RevealImage>
           {image ? (
-            <div className="relative aspect-[4/5] w-full overflow-hidden">
+            <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[4px]">
               <Image src={image.src} alt={image.alt} fill sizes="(min-width: 782px) 30vw, 100vw" className="object-cover" />
             </div>
           ) : (
-            <PhotoPlaceholder tone="garance" className="aspect-[4/5] w-full" />
+            <PhotoPlaceholder tone="garance" className="aspect-[4/5] w-full overflow-hidden rounded-[4px]" />
           )}
           </RevealImage>
           <TypeText className="mt-[1.2rem]" value={intro} />
