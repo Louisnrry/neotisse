@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useRef, useState, useSyncExternalStore } from "react";
+import { useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
 import { flushSync } from "react-dom";
 import { RichText } from "@/components/ui/RichText";
 import { Section } from "@/components/ui/Layout";
@@ -100,6 +100,31 @@ function weekSegments(week: Date[], events: NeoEvent[]) {
   }
   return { segments, lanes: laneEnds.length };
 }
+/** Mois couverts par au moins un événement, sous la forme « AAAA-M » (m de 0 à 11). */
+function monthsWithEvents(events: NeoEvent[]) {
+  const set = new Set<string>();
+  for (const e of events) {
+    const from = monthOf(e.startDate);
+    const to = monthOf(end(e));
+    for (let y = from.y, m = from.m; y < to.y || (y === to.y && m <= to.m); m === 11 ? (y++, (m = 0)) : m++) {
+      set.add(`${y}-${m}`);
+    }
+  }
+  return set;
+}
+
+/** Première et dernière année du sélecteur de mois. */
+function yearRange(events: NeoEvent[], currentYear: number) {
+  let min = currentYear;
+  let max = currentYear;
+  for (const e of events) {
+    min = Math.min(min, monthOf(e.startDate).y);
+    max = Math.max(max, monthOf(end(e)).y);
+  }
+  return { min, max };
+}
+
+const MOIS_COURTS = ["janv.", "févr.", "mars", "avr.", "mai", "juin", "juil.", "août", "sept.", "oct.", "nov.", "déc."];
 const typeLabel = (e: NeoEvent) => eventTypeLabels[e.type];
 const noop = () => () => {};
 
@@ -158,6 +183,11 @@ export function EventCalendar({
   const days = monthDays(view);
   const weeks = Array.from({ length: days.length / 7 }, (_, i) => days.slice(i * 7, i * 7 + 7));
   const monthLabel = formatMonthYear(`${view.y}-${String(view.m + 1).padStart(2, "0")}-01`);
+  const todayMonth = monthOf(today);
+  const isCurrentMonth = view.y === todayMonth.y && view.m === todayMonth.m;
+  const eventMonths = monthsWithEvents(events);
+  // Années proposées : de la première à la dernière année qui a un événement, année en cours comprise
+  const years = yearRange(events, todayMonth.y);
 
   return (
     <>
@@ -225,15 +255,21 @@ export function EventCalendar({
       >
         <RuledTitle id="agenda-titre">{texts.agendaTitle}</RuledTitle>
         <div className="border border-t-4 border-filet border-t-garance p-[clamp(16px,3vw,32px)]">
-          <div className="mb-[18px] flex items-center justify-center gap-3">
-            <NavButton label="Mois précédent" onClick={() => shift(-1)} d="M15 5l-7 7 7 7" />
-            <p
-              aria-live="polite"
-              className="min-w-[9ch] text-center font-display text-[clamp(1.3rem,0.75rem+2.4vw,2.2rem)] leading-[1.1] font-normal capitalize"
+          {/* « ‹ mois année › » centré ; « Aujourd’hui » à droite (demande de Louis du 13/11/2026) */}
+          <div className="mb-[18px] grid grid-cols-[1fr_auto_1fr] items-center gap-3">
+            <div className="col-start-2 flex items-center gap-3">
+              <NavButton label="Mois précédent" onClick={() => shift(-1)} d="M15 5l-7 7 7 7" />
+              <MonthPicker view={view} label={monthLabel} years={years} eventMonths={eventMonths} onPick={setView} />
+              <NavButton label="Mois suivant" onClick={() => shift(1)} d="M9 5l7 7-7 7" />
+            </div>
+            <button
+              type="button"
+              onClick={() => setView(monthOf(today))}
+              disabled={isCurrentMonth}
+              className="justify-self-end rounded-[4px] border-2 border-ink px-4 py-2 text-[0.9rem] font-semibold text-ink transition-colors duration-200 enabled:cursor-pointer enabled:hover:bg-ink enabled:hover:text-blanc disabled:opacity-35"
             >
-              {monthLabel}
-            </p>
-            <NavButton label="Mois suivant" onClick={() => shift(1)} d="M9 5l7 7-7 7" />
+              Aujourd’hui
+            </button>
           </div>
 
           <div role="grid" aria-label={`Calendrier, ${monthLabel}`} className="grid grid-cols-7 border-t border-l border-filet">
@@ -375,6 +411,166 @@ function EventBar({
         <path d="M8 4.5v7M4.5 8h7" stroke="currentColor" strokeWidth="1.4" />
       </svg>
       {!endsHere && <span aria-hidden="true">→</span>}
+    </button>
+  );
+}
+
+/**
+ * Titre « mois année » cliquable : ouvre un panneau pour aller directement à un mois (demande de Louis du 13/11/2026).
+ * Année avec ‹ › (bornée aux années qui ont des événements), grille des 12 mois ; un point marque les mois
+ * qui ont des événements. Se ferme au choix d’un mois, avec Échap ou par un clic à côté ; le focus revient au titre.
+ */
+function MonthPicker({
+  view,
+  label,
+  years,
+  eventMonths,
+  onPick,
+}: {
+  view: Month;
+  label: string;
+  years: { min: number; max: number };
+  eventMonths: Set<string>;
+  onPick: (month: Month) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const [year, setYear] = useState(view.y);
+  const root = useRef<HTMLDivElement>(null);
+  const toggle = useRef<HTMLButtonElement>(null);
+  const panel = useRef<HTMLDivElement>(null);
+  const panelId = useId();
+
+  function show() {
+    setYear(Math.min(Math.max(view.y, years.min), years.max));
+    setOpen(true);
+  }
+
+  function close(refocus: boolean) {
+    setOpen(false);
+    if (refocus) toggle.current?.focus();
+  }
+
+  // À l’ouverture, le focus va sur le mois affiché (ou le premier mois de l’année)
+  useEffect(() => {
+    if (!open) return;
+    const target =
+      panel.current?.querySelector<HTMLButtonElement>("[aria-pressed=true]") ??
+      panel.current?.querySelector<HTMLButtonElement>("[data-month]");
+    target?.focus();
+  }, [open]);
+
+  // Clic à côté du panneau : fermeture
+  useEffect(() => {
+    if (!open) return;
+    const onDown = (ev: PointerEvent) => {
+      if (!root.current?.contains(ev.target as Node)) setOpen(false);
+    };
+    document.addEventListener("pointerdown", onDown);
+    return () => document.removeEventListener("pointerdown", onDown);
+  }, [open]);
+
+  return (
+    <div
+      ref={root}
+      className="relative"
+      onKeyDown={(ev) => {
+        if (ev.key === "Escape" && open) {
+          ev.stopPropagation();
+          close(true);
+        }
+      }}
+    >
+      <button
+        ref={toggle}
+        type="button"
+        aria-expanded={open}
+        aria-controls={panelId}
+        onClick={() => (open ? close(false) : show())}
+        className="flex min-w-[9ch] cursor-pointer items-center justify-center gap-2 rounded-[4px] px-2 py-1 font-display text-[clamp(1.3rem,0.75rem+2.4vw,2.2rem)] leading-[1.1] font-normal capitalize transition-colors duration-200 hover:bg-pierre aria-expanded:bg-pierre"
+      >
+        {/* Annoncé à chaque changement de mois */}
+        <span aria-live="polite">{label}</span>
+        <span className="sr-only">, choisir un autre mois</span>
+        <svg
+          viewBox="0 0 24 24"
+          width="18"
+          height="18"
+          aria-hidden="true"
+          className={cn("shrink-0 text-garance transition-transform duration-200", open && "rotate-180")}
+        >
+          <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" strokeWidth="2.2" />
+        </svg>
+      </button>
+
+      {open && (
+        <div
+          ref={panel}
+          id={panelId}
+          role="group"
+          aria-label="Choisir un mois"
+          className="absolute top-full left-1/2 z-30 mt-2 w-[300px] -translate-x-1/2 border border-t-4 border-filet border-t-garance bg-blanc p-4 shadow-[0_24px_48px_-20px_rgb(20_29_34/0.45)]"
+        >
+          <div className="mb-3 flex items-center justify-between">
+            <YearButton label="Année précédente" disabled={year <= years.min} onClick={() => setYear(year - 1)} d="M15 5l-7 7 7 7" />
+            <p aria-live="polite" className="font-display text-[1.5rem] leading-none tabular-nums">
+              {year}
+            </p>
+            <YearButton label="Année suivante" disabled={year >= years.max} onClick={() => setYear(year + 1)} d="M9 5l7 7-7 7" />
+          </div>
+          <div className="grid grid-cols-3 gap-1.5">
+            {MOIS_COURTS.map((name, m) => {
+              const selected = year === view.y && m === view.m;
+              const hasEvents = eventMonths.has(`${year}-${m}`);
+              return (
+                <button
+                  key={name}
+                  type="button"
+                  data-month
+                  aria-pressed={selected}
+                  onClick={() => {
+                    onPick({ y: year, m });
+                    close(true);
+                  }}
+                  className={cn(
+                    "relative h-11 cursor-pointer rounded-[4px] text-[0.95rem] font-semibold transition-colors duration-200",
+                    selected ? "bg-garance text-blanc" : "text-ink hover:bg-pierre",
+                  )}
+                >
+                  {name}
+                  {hasEvents && (
+                    <>
+                      <span
+                        aria-hidden="true"
+                        className={cn(
+                          "absolute bottom-1.5 left-1/2 size-[5px] -translate-x-1/2 rounded-full",
+                          selected ? "bg-blanc" : "bg-garance",
+                        )}
+                      />
+                      <span className="sr-only">, avec des événements</span>
+                    </>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function YearButton({ label, disabled, onClick, d }: { label: string; disabled: boolean; onClick: () => void; d: string }) {
+  return (
+    <button
+      type="button"
+      aria-label={label}
+      disabled={disabled}
+      onClick={onClick}
+      className="grid size-9 place-items-center rounded-[4px] text-ink transition-colors duration-200 enabled:cursor-pointer enabled:hover:bg-pierre disabled:opacity-25"
+    >
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+        <path d={d} fill="none" stroke="currentColor" strokeWidth="2" />
+      </svg>
     </button>
   );
 }
