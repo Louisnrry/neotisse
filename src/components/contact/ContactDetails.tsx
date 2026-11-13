@@ -7,7 +7,7 @@ const link = "text-ink no-underline hover:text-garance hover:underline";
 
 function Row({ label, children }: { label: string; children: ReactNode }) {
   return (
-    <div className="grid gap-1 border-b border-filet py-[18px] min-[521px]:grid-cols-[130px_minmax(0,1fr)] min-[521px]:gap-5">
+    <div className="grid gap-1 border-b border-filet py-[18px] short:py-2.5 shorter:py-1.5 min-[521px]:grid-cols-[130px_minmax(0,1fr)] min-[521px]:gap-5">
       <dt className="pt-[3px] text-kicker font-bold uppercase tracking-[0.14em] text-gris">{label}</dt>
       <dd>{children}</dd>
     </div>

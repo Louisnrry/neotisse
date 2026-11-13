@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+/* Écran d’ordinateur peu haut (moins de 900px) : la page Contact se resserre pour que ses boutons
+   soient visibles dès l’arrivée, sans défiler (demande de Louis du 13/11/2026). */
+@custom-variant short (@media (min-width: 782px) and (max-height: 899px));
+/* Second palier, encore plus serré, sous 720px de haut (portable 1366×768 avec la barre du navigateur). */
+@custom-variant shorter (@media (min-width: 782px) and (max-height: 719px));
+
 /*
  * Néotisse : tokens de design.
  * Source de vérité : le site WordPress V1 (styles globaux + extension neotisse-core).

@@ -41,14 +41,14 @@ function describedBy(id: string, error?: string, hint?: ReactNode) {
 }
 
 type TextFieldProps = Omit<ComponentProps<"input">, "id" | "className"> &
-  Omit<FieldShellProps, "children">;
+  Omit<FieldShellProps, "children"> & { inputClassName?: string };
 
-export function TextField({ id, label, error, hint, className, ...input }: TextFieldProps) {
+export function TextField({ id, label, error, hint, className, inputClassName, ...input }: TextFieldProps) {
   return (
     <FieldShell id={id} label={label} error={error} hint={hint} className={className}>
       <input
         id={id}
-        className={control}
+        className={cn(control, inputClassName)}
         aria-invalid={error ? true : undefined}
         aria-describedby={describedBy(id, error, hint)}
         {...input}
@@ -58,15 +58,15 @@ export function TextField({ id, label, error, hint, className, ...input }: TextF
 }
 
 type TextAreaProps = Omit<ComponentProps<"textarea">, "id" | "className"> &
-  Omit<FieldShellProps, "children">;
+  Omit<FieldShellProps, "children"> & { inputClassName?: string };
 
-export function TextArea({ id, label, error, hint, className, rows = 6, ...textarea }: TextAreaProps) {
+export function TextArea({ id, label, error, hint, className, inputClassName, rows = 6, ...textarea }: TextAreaProps) {
   return (
     <FieldShell id={id} label={label} error={error} hint={hint} className={className}>
       <textarea
         id={id}
         rows={rows}
-        className={cn(control, "h-40 min-h-[150px] resize-y")}
+        className={cn(control, "h-40 min-h-[150px] resize-y", inputClassName)}
         aria-invalid={error ? true : undefined}
         aria-describedby={describedBy(id, error, hint)}
         {...textarea}

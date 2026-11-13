@@ -39,6 +39,9 @@ function validate(v: Values): Errors {
  */
 const formId = "contact-form";
 
+/** Champs un peu moins hauts sur un écran d’ordinateur peu haut (variante `short`, voir globals.css). */
+const shortInput = "short:py-2.5 shorter:py-2";
+
 export function ContactForm({
   form,
   heading,
@@ -104,14 +107,14 @@ export function ContactForm({
     <>
       <div>
         {heading}
-        <form id={formId} noValidate onSubmit={onSubmit} className="grid gap-5" aria-label={form.title}>
-          <div className="grid gap-5 min-[521px]:grid-cols-2">
-            <TextField {...field("nom")} label={<Required>Nom</Required>} placeholder={form.lastNamePlaceholder} autoComplete="family-name" required />
-            <TextField {...field("prenom")} label={<Required>Prénom</Required>} placeholder={form.firstNamePlaceholder} autoComplete="given-name" required />
+        <form id={formId} noValidate onSubmit={onSubmit} className="grid gap-5 short:gap-3.5 shorter:gap-3" aria-label={form.title}>
+          <div className="grid gap-5 short:gap-3.5 shorter:gap-3 min-[521px]:grid-cols-2">
+            <TextField {...field("nom")} inputClassName={shortInput} label={<Required>Nom</Required>} placeholder={form.lastNamePlaceholder} autoComplete="family-name" required />
+            <TextField {...field("prenom")} inputClassName={shortInput} label={<Required>Prénom</Required>} placeholder={form.firstNamePlaceholder} autoComplete="given-name" required />
           </div>
-          <TextField {...field("email")} label={<Required>Adresse e-mail</Required>} type="email" placeholder={form.emailPlaceholder} autoComplete="email" spellCheck={false} required />
-          <TextField {...field("objet")} label={<Required>Objet</Required>} placeholder={form.subjectPlaceholder} required />
-          <TextArea {...field("projet")} label={<Required>Votre projet</Required>} placeholder={form.projectPlaceholder} required />
+          <TextField {...field("email")} inputClassName={shortInput} label={<Required>Adresse e-mail</Required>} type="email" placeholder={form.emailPlaceholder} autoComplete="email" spellCheck={false} required />
+          <TextField {...field("objet")} inputClassName={shortInput} label={<Required>Objet</Required>} placeholder={form.subjectPlaceholder} required />
+          <TextArea {...field("projet")} inputClassName={`${shortInput} short:h-24 short:min-h-24 shorter:h-20 shorter:min-h-20`} label={<Required>Votre projet</Required>} placeholder={form.projectPlaceholder} required />
 
           {/* Champ piège pour les robots, invisible et hors tabulation */}
           <div className="absolute -left-[9999px]" aria-hidden="true">
