@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
 import { Button } from "@/components/ui/Button";
 import { FormMessage, TextArea, TextField } from "@/components/ui/Field";
 import type { ContactFormTexts } from "@/sanity/queries/contact";
@@ -37,7 +37,19 @@ function validate(v: Values): Errors {
  * TODO(phase 3) : envoyer vers une route API (e-mail via Resend, Reply-To = visiteur, validation serveur).
  * En attendant, un envoi valide affiche directement la confirmation.
  */
-export function ContactForm({ form }: { form: ContactFormTexts }) {
+const formId = "contact-form";
+
+export function ContactForm({
+  form,
+  heading,
+  actionsClassName,
+}: {
+  form: ContactFormTexts;
+  /** Titre « Écrivez-nous », rendu au-dessus des champs (et du message de confirmation). */
+  heading?: ReactNode;
+  /** Classes du bloc qui contient le bouton « Envoyer » (rangée partagée avec le bouton du livre d’or). */
+  actionsClassName?: string;
+}) {
   const startedAt = useRef(0);
   useEffect(() => {
     startedAt.current = Date.now();
@@ -70,9 +82,12 @@ export function ContactForm({ form }: { form: ContactFormTexts }) {
 
   if (status === "ok") {
     return (
-      <FormMessage tone="ok">
-        <strong className="font-bold">Merci, votre message est bien parti !</strong> Nous revenons vers vous très vite.
-      </FormMessage>
+      <div>
+        {heading}
+        <FormMessage tone="ok">
+          <strong className="font-bold">Merci, votre message est bien parti !</strong> Nous revenons vers vous très vite.
+        </FormMessage>
+      </div>
     );
   }
 
@@ -83,28 +98,41 @@ export function ContactForm({ form }: { form: ContactFormTexts }) {
     onChange: () => errors[name] && setErrors((e) => ({ ...e, [name]: undefined })),
   });
 
+  // Deux blocs frères (champs, puis bouton) pour que la page aligne le bouton « Envoyer » sur celui du livre d’or :
+  // le bouton est hors du <form> mais lui reste rattaché par l’attribut `form` (Entrée envoie toujours le formulaire).
   return (
-    <form noValidate onSubmit={onSubmit} className="grid gap-5" aria-label={form.title}>
-      <div className="grid gap-5 min-[521px]:grid-cols-2">
-        <TextField {...field("nom")} label={<Required>Nom</Required>} placeholder={form.lastNamePlaceholder} autoComplete="family-name" required />
-        <TextField {...field("prenom")} label={<Required>Prénom</Required>} placeholder={form.firstNamePlaceholder} autoComplete="given-name" required />
-      </div>
-      <TextField {...field("email")} label={<Required>Adresse e-mail</Required>} type="email" placeholder={form.emailPlaceholder} autoComplete="email" spellCheck={false} required />
-      <TextField {...field("objet")} label={<Required>Objet</Required>} placeholder={form.subjectPlaceholder} required />
-      <TextArea {...field("projet")} label={<Required>Votre projet</Required>} placeholder={form.projectPlaceholder} required />
+    <>
+      <div>
+        {heading}
+        <form id={formId} noValidate onSubmit={onSubmit} className="grid gap-5" aria-label={form.title}>
+          <div className="grid gap-5 min-[521px]:grid-cols-2">
+            <TextField {...field("nom")} label={<Required>Nom</Required>} placeholder={form.lastNamePlaceholder} autoComplete="family-name" required />
+            <TextField {...field("prenom")} label={<Required>Prénom</Required>} placeholder={form.firstNamePlaceholder} autoComplete="given-name" required />
+          </div>
+          <TextField {...field("email")} label={<Required>Adresse e-mail</Required>} type="email" placeholder={form.emailPlaceholder} autoComplete="email" spellCheck={false} required />
+          <TextField {...field("objet")} label={<Required>Objet</Required>} placeholder={form.subjectPlaceholder} required />
+          <TextArea {...field("projet")} label={<Required>Votre projet</Required>} placeholder={form.projectPlaceholder} required />
 
-      {/* Champ piège pour les robots, invisible et hors tabulation */}
-      <div className="absolute -left-[9999px]" aria-hidden="true">
-        <label htmlFor="contact-site">Site web</label>
-        <input id="contact-site" name="site" type="text" tabIndex={-1} autoComplete="off" />
+          {/* Champ piège pour les robots, invisible et hors tabulation */}
+          <div className="absolute -left-[9999px]" aria-hidden="true">
+            <label htmlFor="contact-site">Site web</label>
+            <input id="contact-site" name="site" type="text" tabIndex={-1} autoComplete="off" />
+          </div>
+        </form>
       </div>
 
       {/* 34px entre le message et le bouton, comme la V1 */}
-      <div className="mt-[14px]">
-        <Button type="submit" size="large" aria-busy={status === "sending" || undefined} disabled={status === "sending"}>
+      <div className={actionsClassName}>
+        <Button
+          type="submit"
+          form={formId}
+          size="large"
+          aria-busy={status === "sending" || undefined}
+          disabled={status === "sending"}
+        >
           {status === "sending" ? form.sending : form.submit}
         </Button>
       </div>
-    </form>
+    </>
   );
 }
