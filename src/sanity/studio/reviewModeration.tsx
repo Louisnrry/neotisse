@@ -3,11 +3,16 @@
  * - boutons « Approuver » et « Refuser » qui changent le statut **et publient** en un clic ;
  * - badge de statut en bas de la fiche.
  *
+ * - « Supprimer » remplacé : l’avis et ses coordonnées privées partent ensemble.
+ *
  * Refuser supprime aussi les coordonnées privées de l’avis (e-mail et IP) : on ne garde pas
- * de données personnelles pour un avis qui ne sera pas publié.
+ * de données personnelles pour un avis qui ne sera pas publié. Refuser et Supprimer passent
+ * par une seule transaction Sanity (tout ou rien), avec un message si elle échoue.
  */
 import { CheckmarkCircleIcon } from "@sanity/icons/CheckmarkCircle"
 import { CloseCircleIcon } from "@sanity/icons/CloseCircle"
+import { TrashIcon } from "@sanity/icons/Trash"
+import { useToast } from "@sanity/ui"
 import { useState } from "react"
 import {
   useClient,
@@ -56,15 +61,46 @@ export const ApproveReviewAction: DocumentActionComponent = (props) => {
   }
 }
 
-export const RejectReviewAction: DocumentActionComponent = (props) => {
-  const { busy, run, alreadyThere } = useSetStatus(props, "rejected")
+type Transaction = ReturnType<ReturnType<typeof useClient>["transaction"]>
+
+/** Exécute une transaction Sanity et affiche un message d’erreur si elle échoue. */
+function useTransactionRunner() {
   const client = useClient({ apiVersion })
+  const toast = useToast()
+  const [working, setWorking] = useState(false)
+  const runTransaction = async (build: (tx: Transaction) => Transaction, errorTitle: string) => {
+    setWorking(true)
+    try {
+      await build(client.transaction()).commit()
+      return true
+    } catch (error) {
+      console.error(`[avis] ${errorTitle}`, error)
+      toast.push({
+        status: "error",
+        title: errorTitle,
+        description: "Rien n’a été modifié. Réessayez dans quelques instants.",
+      })
+      return false
+    } finally {
+      setWorking(false)
+    }
+  }
+  return { working, runTransaction }
+}
+
+/**
+ * Refuser : en une seule transaction, l’avis passe en « Refusé » (version publiée), son brouillon
+ * éventuel est abandonné et ses coordonnées privées sont supprimées. Tout ou rien.
+ */
+export const RejectReviewAction: DocumentActionComponent = (props) => {
+  const { working, runTransaction } = useTransactionRunner()
   const [confirming, setConfirming] = useState(false)
+  const alreadyThere = statusOf(props) === "rejected" && !props.draft
   return {
-    label: busy ? "Enregistrement…" : alreadyThere ? "Refusé" : "Refuser",
+    label: working ? "Enregistrement…" : alreadyThere ? "Refusé" : "Refuser",
     icon: CloseCircleIcon,
     tone: "critical",
-    disabled: busy || alreadyThere,
+    disabled: working || alreadyThere,
     title: "Ne pas afficher cet avis et supprimer ses coordonnées privées.",
     onHandle: () => setConfirming(true),
     dialog: confirming && {
@@ -75,11 +111,51 @@ export const RejectReviewAction: DocumentActionComponent = (props) => {
       onCancel: () => setConfirming(false),
       onConfirm: () => {
         setConfirming(false)
-        run()
-        client.delete(reviewPrivateId(props.id)).catch((error) => {
-          console.error("[avis] suppression des coordonnées privées en échec", error)
-        })
-        props.onComplete()
+        void runTransaction((tx) => {
+          if (props.published) {
+            tx.patch(props.id, (p) => p.set({ status: "rejected" }))
+          } else if (props.draft) {
+            // Avis jamais publié (saisi à la main) : on publie sa version « Refusé ».
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { _rev, _createdAt, _updatedAt, ...draft } = props.draft
+            tx.createOrReplace({ ...draft, _id: props.id, status: "rejected" })
+          }
+          if (props.draft) tx.delete(props.draft._id)
+          return tx.delete(reviewPrivateId(props.id))
+        }, "Le refus de l’avis a échoué").then(() => props.onComplete())
+      },
+    },
+  }
+}
+
+/**
+ * Supprimer : remplace le bouton d’origine pour les avis. En une seule transaction,
+ * supprime l’avis (version publiée et brouillon) et ses coordonnées privées : jamais
+ * d’adresse e-mail ou IP orpheline.
+ */
+export const DeleteReviewAction: DocumentActionComponent = (props) => {
+  const { working, runTransaction } = useTransactionRunner()
+  const [confirming, setConfirming] = useState(false)
+  return {
+    label: working ? "Suppression…" : "Supprimer",
+    icon: TrashIcon,
+    tone: "critical",
+    disabled: working || (!props.published && !props.draft),
+    title: "Supprimer définitivement cet avis et ses coordonnées privées.",
+    onHandle: () => setConfirming(true),
+    dialog: confirming && {
+      type: "confirm",
+      tone: "critical",
+      message:
+        "L’avis et ses coordonnées privées (adresse e-mail et adresse IP) seront supprimés définitivement. Cette action est irréversible.",
+      onCancel: () => setConfirming(false),
+      onConfirm: () => {
+        setConfirming(false)
+        void runTransaction((tx) => {
+          if (props.published) tx.delete(props.published._id)
+          if (props.draft) tx.delete(props.draft._id)
+          return tx.delete(reviewPrivateId(props.id))
+        }, "La suppression de l’avis a échoué").then(() => props.onComplete())
       },
     },
   }

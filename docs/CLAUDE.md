@@ -416,11 +416,11 @@ page (singletons : home, ateliers, calendrier, partenaires, livreDor, aPropos, c
 - Les pages et les réglages sont des **singletons** : un seul document par type, avec un identifiant fixe égal au nom du type (`siteSettings`, `homePage`…). Le menu « Créer » ne les propose pas et les actions « Supprimer » / « Dupliquer » sont masquées.
 - Les listes ordonnées (tuiles d’ateliers de l’accueil, ateliers, partenaires, équipe, questions) utilisent des **références Sanity** : l’ordre se règle en faisant glisser les éléments dans le Studio.
 - Modération des avis (12/11/2026, `src/sanity/studio/`) : Studio → **Avis (n à modérer)** → **À modérer**. Le compteur du menu se met à jour en direct. Sur chaque avis :
-  - **« Approuver »** passe le statut en `approved` **et publie** en un clic ; **« Refuser »** (avec confirmation) passe en `rejected`, publie et **supprime le document privé** (e-mail, IP) ;
+  - **« Approuver »** passe le statut en `approved` **et publie** en un clic ; **« Refuser »** (avec confirmation) passe en `rejected` et **supprime le document privé** (e-mail, IP) dans **une seule transaction** (tout ou rien, message d’erreur sinon ; un brouillon en cours est abandonné) ;
+  - **« Supprimer »** est remplacé (13/11/2026) : avec confirmation, il supprime en une seule transaction l’avis (publié et brouillon) **et** son document privé : plus jamais d’e-mail ou d’IP orphelin ;
   - badge de statut en bas de la fiche (état publié), icône de statut, étoiles et date dans les listes ;
   - onglet **« Coordonnées privées »** : e-mail (lien `mailto:`), IP, date d’envoi ;
   - l’action « Dupliquer » est retirée ; `reviewPrivate` n’apparaît ni dans le menu ni dans « Créer ».
-  - Supprimer un avis avec « Supprimer » laisse son document privé : préférer « Refuser ».
 - Les formulaires publics n’écrivent pas encore dans Sanity : il faudra une route API avec un token d’écriture **côté serveur uniquement**.
 - Le Studio embarqué est `noindex` via les métadonnées de `next-sanity/studio`.
 

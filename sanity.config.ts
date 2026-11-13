@@ -15,6 +15,7 @@ import { hiddenFromCreateTypes, schema, singletonTypes } from './src/sanity/sche
 import { defaultDocumentNode, structure } from './src/sanity/structure'
 import {
   ApproveReviewAction,
+  DeleteReviewAction,
   RejectReviewAction,
   ReviewStatusBadge,
 } from './src/sanity/studio/reviewModeration'
@@ -41,12 +42,14 @@ export default defineConfig({
       if (singletonTypes.has(schemaType)) {
         return prev.filter(({ action }) => action !== 'delete' && action !== 'duplicate')
       }
-      // Avis : « Approuver » et « Refuser » publient en un clic. On n’en duplique pas.
+      // Avis : « Approuver » et « Refuser » publient en un clic. On n’en duplique pas, et
+      // « Supprimer » est remplacé pour effacer aussi l’e-mail et l’IP de l’avis.
       if (schemaType === 'review') {
         return [
           ApproveReviewAction,
           RejectReviewAction,
-          ...prev.filter(({ action }) => action !== 'duplicate'),
+          ...prev.filter(({ action }) => action !== 'duplicate' && action !== 'delete'),
+          DeleteReviewAction,
         ]
       }
       return prev
