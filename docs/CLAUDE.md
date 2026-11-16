@@ -507,3 +507,5 @@ NEXT_PUBLIC_SITE_URL=https://neotisse.fr
 ```
 
 `.env.local` contient les valeurs locales et n’est jamais commité. `.env.example` documente les variables attendues (commité).
+
+`NEXT_PUBLIC_SANITY_PROJECT_ID` et `NEXT_PUBLIC_SANITY_DATASET` ont une valeur par défaut (`t4k96qs7`, `production`) dans `src/sanity/env.ts` : le build Netlify passe sans elles. À renseigner sur Netlify : `SANITY_API_WRITE_TOKEN` (livre d’or, sinon 503), `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_GA_MEASUREMENT_ID`.
