@@ -353,7 +353,7 @@ Règles générales :
 - Anti-spam : honeypot + temps minimal (2s) + limite de débit par IP.
 
 ### 7.5 Cookies & statistiques
-- **Bandeau de consentement sur mesure** aux couleurs du site (pas d’outil tiers lourd) :
+- **Bandeau de consentement maison** aux couleurs du site (pas d’outil tiers lourd) :
   - Encart **en bas à gauche**, 440px max, fond `creme`, **filet `garance` de 4px en haut**, angles droits, légère ombre.
   - Titre « Cookies & confidentialité » (Eagle Lake, ~1.55rem).
   - Texte : « Nous utilisons des cookies de mesure d’audience pour comprendre comment le site est utilisé. Vous pouvez accepter, refuser ou personnaliser vos choix à tout moment. »
@@ -484,7 +484,7 @@ page (singletons : home, ateliers, calendrier, partenaires, livreDor, aPropos, c
 
 ## 13. Référence V1
 
-- WordPress 7.1 (thème Twenty Twenty-Five personnalisé + extension sur mesure « Néotisse, fonctions du site »), en local sur `http://neotisse.local`, mise en ligne prévue sur OVH. Accès en lecture via le MCP Novamira (voir § 0).
+- WordPress 7.1 (thème Twenty Twenty-Five personnalisé + extension dédiée « Néotisse, fonctions du site »), en local sur `http://neotisse.local`, mise en ligne prévue sur OVH. Accès en lecture via le MCP Novamira (voir § 0).
 - Extensions actives : Complianz (cookies), Rank Math (SEO), WP Customer Reviews (livre d’or), WPForms Lite, WP 2FA, UpdraftPlus, Simply Static. Types de contenu : `evenement`, `partenaire`, `neo_message`, `wpcr3_review`.
 - La V1 est la **référence visuelle et fonctionnelle** : en cas de doute sur un comportement, reproduire la V1.
 - Maquette Figma d’origine : https://www.figma.com/design/MLL8ytRLSshn523UZ4Kig3/Projet-N%C3%A9otisse?node-id=193-2
@@ -509,3 +509,56 @@ NEXT_PUBLIC_SITE_URL=https://neotisse.fr
 `.env.local` contient les valeurs locales et n’est jamais commité. `.env.example` documente les variables attendues (commité).
 
 `NEXT_PUBLIC_SANITY_PROJECT_ID` et `NEXT_PUBLIC_SANITY_DATASET` ont une valeur par défaut (`t4k96qs7`, `production`) dans `src/sanity/env.ts` : le build Netlify passe sans elles. À renseigner sur Netlify : `SANITY_API_WRITE_TOKEN` (livre d’or, sinon 503), `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_GA_MEASUREMENT_ID`.
+
+---
+
+## 15. Livrables de l’appel d’offres (soutenance du 27/11/2026)
+
+Projet d’école : bLaNk (Louis Nourry, seul) répond à l’appel d’offres de Néotisse avec **deux versions du même site**, WordPress (V1) et vibe codée (V2, ce dépôt).
+
+### Vocabulaire (demande de Louis du 23/11/2026)
+- Dire **« vibe codé »** (au féminin **« vibe codée »** quand le mot qualifie « version ») ou « vibe coding ». **Ne plus écrire « sur mesure »** pour désigner la V2, ni dans les livrables, ni dans les slides, ni dans Notion.
+- L’extension WordPress `neotisse-core` est une « extension dédiée » (elle appartient à la V1, pas à la version vibe codée).
+
+### Où sont les livrables
+
+| # | Livrable | Où |
+|---|---|---|
+| 1 | Dossier de réponse à l’appel d’offres (10 p.) | `docs/livrables/Livrable 1 - Dossier de reponse a l'appel d'offres.pdf` |
+| 2 | Cahier des charges finalisé (11 p.) | `docs/livrables/Livrable 2 - Cahier des charges finalise.pdf` |
+| 3 | Gestion de projet | Notion, page « Projet Néotisse · Gestion de projet » (base de tâches, vues Tableau, Kanban, Calendrier, Rétroplanning, Jalons ; difficultés et ajustements) |
+| 4 | Les deux sites | WordPress en local (`http://neotisse.local`) et ce dépôt |
+| 5 | Analyse comparative et recommandation (8 p.) | `docs/livrables/Livrable 5 - Analyse comparative et recommandation.pdf` |
+| 6 | Tableau de bord de suivi des performances | **À faire** |
+| 7 | Support de soutenance (10 slides) | Canva : https://www.canva.com/design/DAHbuvi5BUU/mE_9E-42Wx9WWgnHGr5ojA/edit |
+
+### Fabriquer les PDF
+- Format demandé : **PDF uniquement, dans la DA de bLaNk** (noir et blanc, Playfair Display + Inter, lettres dans des blocs noirs, petit logo). A4, une page = une `section.page` de taille fixe, en-tête et pied de page « NN / TOTAL ».
+- Sources dans `docs/livrables/sources/` : `dossier/` (livrable 1, porte `style.css` commun), `cdc/` (livrable 2), `cmp/` (livrable 5), chacun avec un `build.py` qui écrit un HTML, et `logo/blank.png`.
+- Générer puis imprimer avec Chrome sans interface :
+  ```bash
+  cd docs/livrables/sources/cmp && python3 build.py
+  "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new --disable-gpu --no-pdf-header-footer --virtual-time-budget=10000 --print-to-pdf=cmp.pdf "file://$PWD/cmp.html"
+  ```
+  Puis copier le PDF dans `docs/livrables/` sous son nom de livrable. Vérifier visuellement chaque page (rien ne doit déborder sur le pied de page).
+- Les HTML et PDF générés dans `sources/` ne se gardent pas.
+
+### Chiffres et choix communs à tous les livrables
+- **Coûts annuels** (création et maintenance à 0 € : projet d’école) :
+
+  | Poste | WordPress | Vibe codé |
+  |---|---|---|
+  | Licences (extensions / outils IA) | 40 €/mois | 20 €/mois |
+  | Hébergement | 8 €/mois | 8 €/mois |
+  | Nom de domaine .fr | 9 €/an | 9 €/an |
+  | **Total par an** | **585 €** | **345 €** |
+
+- **Analyse comparative** : 8 critères de la consigne, notes sur 5, coefficients selon les priorités de la cliente (autonomie ×4, image moderne ×3, coûts ×2, entretien et sécurité ×1). Résultat : **vibe codé 4,7/5, WordPress 3,3/5** (moyennes pondérées). Pas de mesure PageSpeed. Les deux versions ont pris le même temps (environ une semaine chacune, le WordPress servant de référence au vibe codé).
+- **Recommandation** : la version vibe codée, pour la simplicité de l’espace de gestion et la modernité.
+- **Dépendance** : pour faire évoluer la version vibe codée, Néotisse dépend **d’un prestataire développeur**, pas de bLaNk.
+- **Hébergeur** : le site ne restera pas sur Netlify ; l’hébergeur définitif sera choisi à la mise en ligne.
+- **Personas** des PDF : Laurent (partenaire, 47 ans) et Sophie (grand public, 39 ans), repris du cahier des charges.
+
+### Incohérences connues (à corriger si on y retouche)
+- Les livrables 1 et 2 citent encore **Netlify** comme hébergeur, et le livrable 1 dit que Néotisse dépend de l’agence.
+- Le livrable 1 (page 8) et la slide 7 de Canva notent encore les critères en points sur 3 ; la slide 7 affiche aussi « ≈ 5 €/mois » et « 0 €/mois », pas les coûts ci-dessus.

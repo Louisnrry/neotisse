@@ -14,7 +14,7 @@ Aperçu de tous les éléments : page **`/styleguide`** (non indexée).
 |---|---|
 | Tokens (couleurs, polices, tailles, espacements, largeurs) | `src/app/globals.css` (bloc `@theme`, Tailwind v4) |
 | Styles de base (body, titres, liens, focus, reduced-motion) | `src/app/globals.css` (`@layer base`) |
-| Utilitaires sur mesure : `ruled`, `thread`, `thread-center`, `bg-trame`, `bg-hachures`, `bg-lin` | `src/app/globals.css` (`@utility`) |
+| Utilitaires maison : `ruled`, `thread`, `thread-center`, `bg-trame`, `bg-hachures`, `bg-lin` | `src/app/globals.css` (`@utility`) |
 | Polices auto-hébergées | `src/app/fonts/*.woff2` chargées par `next/font/local` dans `src/app/layout.tsx` |
 | Bouton | `src/components/ui/Button.tsx` |
 | Titres à filets, fil rouge, surtitre, sous-titre, citation, petite capitale | `src/components/ui/Typography.tsx` |

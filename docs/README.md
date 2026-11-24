@@ -5,6 +5,7 @@ Site vitrine de l’association Néotisse (médiation autour des savoir-faire te
 - Contexte, règles et décisions : [`docs/CLAUDE.md`](CLAUDE.md)
 - Design : [`docs/DESIGN.md`](DESIGN.md) · aperçu sur `/styleguide`
 - Avancement : [`docs/TODO.md`](TODO.md)
+- Livrables de l’appel d’offres (PDF et sources) : [`docs/livrables/`](livrables/), détails dans `docs/CLAUDE.md` § 15
 
 ## Démarrer
 
