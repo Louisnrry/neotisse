@@ -1,0 +1,127 @@
+@page{size:A4;margin:0}
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--k:#111;--g:#6b6b6b;--l:#d9d9d9;--p:#f4f4f4}
+html,body{background:#fff;color:var(--k);font-family:Inter,sans-serif;font-weight:300;font-size:9.6pt;line-height:1.5;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+b{font-weight:600}
+.page{width:210mm;height:297mm;padding:20mm 18mm 18mm;position:relative;overflow:hidden;page-break-after:always;display:flex;flex-direction:column;gap:4.2mm}
+.run{position:absolute;top:9mm;left:18mm;right:18mm;display:flex;justify-content:space-between;font-size:7pt;letter-spacing:.12em;text-transform:uppercase;color:var(--g)}
+.foot{position:absolute;bottom:9mm;left:18mm;right:18mm;display:flex;justify-content:space-between;align-items:center;font-size:7.5pt;color:var(--g);border-top:.6pt solid var(--k);padding-top:2.5mm}
+.foot img{height:5mm}
+h1,h2,h3,.cover-title,.reco-t,blockquote,.big,.goal-n{font-family:"Playfair Display",serif;font-weight:400}
+.h1{display:flex;align-items:center;gap:4mm;margin-bottom:1mm}
+.h1 .num{background:var(--k);color:#fff;font-family:"Playfair Display",serif;font-size:11pt;width:10mm;height:10mm;display:flex;align-items:center;justify-content:center}
+h1{font-size:22pt;line-height:1.1}
+h2{font-size:14pt;margin-top:2mm;padding-bottom:1.5mm;border-bottom:.6pt solid var(--k)}
+h3{font-size:14pt;margin:.5mm 0}
+.label{font-size:7pt;font-weight:600;letter-spacing:.14em;text-transform:uppercase;margin-bottom:1.2mm}
+.label.inv{color:#fff}
+.lead{font-family:"Playfair Display",serif;font-size:12.5pt;line-height:1.4}
+.small{font-size:8.6pt}.muted{color:var(--g)}
+p+p{margin-top:2mm}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:8mm}
+.cols.three{grid-template-columns:repeat(3,1fr);gap:6mm}
+ul.ticks{list-style:none;margin-bottom:3mm}
+ul.ticks li{padding-left:5mm;position:relative;margin-bottom:1.3mm}
+ul.ticks li:before{content:"";position:absolute;left:0;top:.55em;width:2.2mm;height:2.2mm;background:var(--k)}
+/* blocs façon logo */
+.blocks{display:inline-flex}
+.blocks span{display:inline-flex;align-items:center;justify-content:center;font-family:"Playfair Display",serif}
+.blocks .on{background:var(--k);color:#fff}
+.blocks.xl span{width:19mm;height:25mm;font-size:46pt}
+.blocks .sp{width:6mm}
+/* couverture */
+.cover{padding:18mm;justify-content:space-between}
+.cover-top{display:flex;align-items:baseline;justify-content:space-between;border-bottom:.6pt solid var(--k);padding-bottom:3mm}
+.kicker{font-size:8pt;font-weight:600;letter-spacing:.16em;text-transform:uppercase}
+.kicker.light{color:var(--g);font-weight:400}
+.cover-mid{display:flex;flex-direction:column;gap:9mm}
+.cover-title{font-size:25pt;line-height:1.2;font-style:italic}
+.cover-sub{font-size:11pt;color:var(--g)}
+.cover-bot{display:grid;grid-template-columns:1fr 1fr auto;gap:8mm;align-items:start;border-top:.6pt solid var(--k);padding-top:4mm}
+.cover-bot img{height:12mm}
+/* sommaire */
+.toc{border:.6pt solid var(--k);padding:5mm 6mm;margin-bottom:3mm}
+.toc ol{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:1.5mm 8mm}
+.toc li{font-family:"Playfair Display",serif;font-size:11pt}
+.toc li span{font-family:Inter;font-size:8pt;font-weight:600;margin-right:3mm}
+/* besoin */
+.facts>div{border-top:2pt solid var(--k);padding-top:2mm}
+.big{font-size:22pt;line-height:1.1;margin-bottom:1mm}
+.goal{display:grid;grid-template-columns:62mm 1fr;margin-top:2mm}
+.goal>div:first-child{background:var(--k);color:#fff;padding:6mm}
+.goal-n{font-size:40pt;line-height:1}
+.goal-n span{font-size:28pt}
+.goal-list{border:.6pt solid var(--k);border-left:0;padding:6mm;display:flex;flex-direction:column;justify-content:center}
+.card{border:.6pt solid var(--k);padding:5mm}
+.meta{color:var(--g);font-size:8.4pt;margin-bottom:2mm}
+.card>p.label:not(:first-child){margin-top:3mm}
+.fear{background:var(--p);padding:2.5mm 3mm;font-size:8.6pt}
+table{border-collapse:collapse;width:100%}
+.grid th{text-align:left;font-size:7pt;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:2mm 2.5mm;border-bottom:1.2pt solid var(--k)}
+.grid th.dark{background:var(--k);color:#fff}
+.grid td{padding:2.2mm 2.5mm;border-bottom:.5pt solid var(--l);vertical-align:top}
+.grid td:first-child{font-family:"Playfair Display",serif;font-size:10pt;width:34%}
+.c{text-align:center}
+.dots{letter-spacing:.12em;font-size:10pt}
+.dots i{font-style:normal;color:var(--l)}
+.compare td:first-child{width:27%}.compare td:last-child{font-size:8.4pt;color:var(--g)}
+.costs td:first-child{width:50%}
+.total td{border-top:1.2pt solid var(--k);font-weight:600;border-bottom:0}
+.total td:first-child{font-weight:400}
+/* proposition */
+blockquote{font-size:16pt;font-style:italic;line-height:1.35;border-left:3pt solid var(--k);padding:1mm 0 1mm 6mm}
+.values>div{border-top:2pt solid var(--k);padding-top:2mm}
+.steps{list-style:none;counter-reset:s}
+.steps li{display:grid;grid-template-columns:8mm 38mm 1fr;gap:3mm;padding:2mm 0;border-bottom:.5pt solid var(--l);counter-increment:s}
+.steps li:before{content:"0" counter(s);font-weight:600;font-size:8pt}
+.steps b{font-family:"Playfair Display",serif;font-weight:400;font-size:11pt}
+.tree{display:flex;flex-direction:column;align-items:center;gap:3mm}
+.tree .root{background:var(--k);color:#fff;font-family:"Playfair Display",serif;font-size:12pt;padding:2mm 10mm}
+.branches{display:grid;grid-template-columns:repeat(6,1fr);gap:2mm;width:100%;border-top:.6pt solid var(--k);padding-top:3mm}
+.branches div{border:.6pt solid var(--k);padding:2.5mm 1mm;text-align:center;display:flex;flex-direction:column}
+.branches b{font-family:"Playfair Display",serif;font-weight:400;font-size:10pt}
+.branches span{font-size:7.4pt;color:var(--g)}
+.branches .inv{background:var(--k);color:#fff}.branches .inv span{color:#ccc}
+/* solutions */
+.sol{display:flex;flex-direction:column;gap:4mm}
+.sol-head{display:flex;align-items:center;gap:4mm;border:.6pt solid var(--k);padding:3mm 4mm}
+.sol-head span{font-family:"Playfair Display",serif;font-size:20pt;line-height:1}
+.sol-head h2{border:0;margin:0;padding:0}
+.sol-head.inv{background:var(--k);color:#fff}
+.mini td{padding:1.4mm 0;border-bottom:.5pt solid var(--l);font-size:8.6pt;vertical-align:top}
+.mini td:first-child{font-weight:600;width:38%;padding-right:3mm}
+.split{display:grid;grid-template-columns:1fr 1fr}
+.split>div{padding:4mm 5mm;border:.6pt solid var(--k)}
+.split>div:first-child{background:var(--k);color:#fff}
+.feats>div,.crit>div{border-top:2pt solid var(--k);padding-top:2mm;display:flex;flex-direction:column}
+.feats b,.crit b{font-family:"Playfair Display",serif;font-weight:400;font-size:11pt}
+.feats span,.crit span{font-size:8.6pt;color:var(--g)}
+.feats,.crit{row-gap:4mm}
+/* recommandation */
+.reco{background:var(--k);color:#fff;padding:8mm}
+.reco-t{font-size:30pt;font-style:italic;line-height:1.15;margin:1mm 0 3mm}
+.reasons{list-style:none}
+.reasons li{display:grid;grid-template-columns:10mm 1fr;gap:3mm;padding:2.6mm 0;border-bottom:.5pt solid var(--l)}
+.reasons li>span{background:var(--k);color:#fff;font-family:"Playfair Display",serif;font-size:12pt;width:8mm;height:8mm;display:flex;align-items:center;justify-content:center}
+.reasons b{font-family:"Playfair Display",serif;font-weight:400;font-size:12pt}
+.reasons p{margin-top:.8mm}
+/* engagements */
+.two-eng{row-gap:5mm}
+.two-eng>div{border-left:2pt solid var(--k);padding-left:4mm}
+.next{list-style:none;display:grid;grid-template-columns:repeat(4,1fr);gap:4mm}
+.next li{display:flex;flex-direction:column;border-top:2pt solid var(--k);padding-top:2mm;font-size:8.6pt;color:var(--g)}
+.next span{font-weight:600;font-size:8pt;color:var(--k)}
+.next b{font-family:"Playfair Display",serif;font-weight:400;font-size:12pt;color:var(--k)}
+.sign{margin-top:auto;font-family:"Playfair Display",serif;font-style:italic;font-size:14pt;margin-bottom:6mm}
+.sign span{display:block;font-family:Inter;font-style:normal;font-size:8.6pt;color:var(--g);margin-top:1mm}
+
+.page>.label{margin-bottom:-2.4mm}
+.cols.four{grid-template-columns:repeat(4,1fr);gap:5mm}
+.highlights>div{border-top:2pt solid var(--k);padding-top:2mm;display:flex;flex-direction:column}
+.highlights b{font-family:"Playfair Display",serif;font-weight:400;font-size:11pt}
+.highlights span{font-size:8.6pt;color:var(--g)}
+.band{background:var(--k);color:#fff;padding:7mm 8mm;margin-top:2mm}
+.band p{font-family:"Playfair Display",serif;font-style:italic;font-size:17pt;line-height:1.3}
+.grid th:empty{border-bottom:1.2pt solid var(--k)}
+.daily td:first-child{width:26%}
+.grid th.c.dark{white-space:nowrap}

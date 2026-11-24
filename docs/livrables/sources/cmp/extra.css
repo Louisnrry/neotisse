@@ -1,0 +1,26 @@
+
+.prio td:first-child{width:38%}
+.rk{display:inline-flex;width:6mm;height:6mm;background:var(--k);color:#fff;align-items:center;justify-content:center;font-size:9pt;margin-right:3mm}
+.score{display:grid;grid-template-columns:1fr 1fr}
+.score>div{border:.6pt solid var(--k);padding:6mm}
+.score .inv{background:var(--k);color:#fff}
+.big-n{font-family:"Playfair Display",serif;font-size:44pt;line-height:1}
+.big-n span{font-size:16pt;margin-left:1mm}
+.cb{border:.6pt solid var(--k);display:flex;flex-direction:column}
+.cb-head{display:grid;grid-template-columns:12mm 1fr auto;gap:3mm;align-items:center;padding:3mm 4mm;border-bottom:.6pt solid var(--k)}
+.cn{background:var(--k);color:#fff;font-family:"Playfair Display",serif;font-size:11pt;width:10mm;height:10mm;display:flex;align-items:center;justify-content:center}
+.cb-head h3{font-size:13pt;margin:0}
+.q{font-style:italic;color:var(--g);font-size:8.6pt}
+.coef{font-size:7pt;font-weight:600;letter-spacing:.12em;text-transform:uppercase;border:.6pt solid var(--k);padding:1mm 2mm}
+.cb-body{display:grid;grid-template-columns:1fr 1fr}
+.cb-body>div{padding:3mm 4mm;font-size:8.8pt}
+.cb-body>div+div{border-left:.6pt solid var(--k)}
+.who{font-weight:600;display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5mm}
+.who span{font-weight:400;font-size:8.6pt}
+.who .dots{font-size:9pt;margin-right:1.5mm}
+.verdict{background:var(--k);color:#fff;padding:2mm 4mm;font-family:"Playfair Display",serif;font-style:italic;font-size:10pt}
+.synth td{font-size:9pt}
+.synth td:first-child{width:32%}
+.synth .dots{font-size:8pt;margin-right:1.5mm}
+.avg td{font-weight:600;border-bottom:0}
+.avg td:first-child{font-weight:400}

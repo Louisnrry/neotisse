@@ -1,0 +1,24 @@
+
+.box{border:.6pt solid var(--k);padding:4mm 5mm}
+.compact td{padding:1.5mm 2.5mm}
+.compact td:first-child{font-size:9.4pt}
+.tree .root small{font-family:Inter;font-size:7pt;opacity:.7;margin-left:2mm}
+.branches span{word-break:break-all;font-size:6.6pt}
+.pages td:first-child{width:18%}
+.pages td{font-size:8.8pt}
+.pages i{color:var(--g)}
+.admin td,.tech td,.recette td,.ecarts td{font-size:8.6pt}
+.admin td:first-child{width:32%;font-size:9.4pt}
+.tech td:first-child{width:20%;font-size:9.4pt}
+.tech td{padding:1.6mm 2.5mm}
+.recette td:first-child{width:22%;font-size:9.4pt}
+.recette td:last-child{color:var(--g);width:28%}
+.ecarts td:first-child{width:30%;font-size:9.4pt}
+.ecarts td:last-child{color:var(--g)}
+.seo td:first-child{width:30%}
+.swatches{display:grid;grid-template-columns:repeat(6,1fr);gap:3mm}
+.sw{display:flex;flex-direction:column;font-size:8pt}
+.sw span{height:14mm;border:.5pt solid var(--l);margin-bottom:1.5mm}
+.sw b{font-weight:600}
+.sw i{font-style:normal;color:var(--g)}
+.costs td:first-child{width:46%}
