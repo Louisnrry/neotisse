@@ -529,12 +529,12 @@ Projet d’école : bLaNk (Louis Nourry, seul) répond à l’appel d’offres d
 | 3 | Gestion de projet | Notion, page « Projet Néotisse · Gestion de projet » (base de tâches, vues Tableau, Kanban, Calendrier, Rétroplanning, Jalons ; difficultés et ajustements) |
 | 4 | Les deux sites | WordPress en local (`http://neotisse.local`) et ce dépôt |
 | 5 | Analyse comparative et recommandation (8 p.) | `docs/livrables/Livrable 5 - Analyse comparative et recommandation.pdf` |
-| 6 | Tableau de bord de suivi des performances | **À faire** |
+| 6 | Tableau de bord de suivi des performances, version WordPress (10 p.) | `docs/livrables/Livrable 6 - Tableau de bord (WordPress).pdf` ; **partie vibe codée à faire**, avec une approche différente |
 | 7 | Support de soutenance (10 slides) | Canva : https://www.canva.com/design/DAHbuvi5BUU/mE_9E-42Wx9WWgnHGr5ojA/edit |
 
 ### Fabriquer les PDF
 - Format demandé : **PDF uniquement, dans la DA de bLaNk** (noir et blanc, Playfair Display + Inter, lettres dans des blocs noirs, petit logo). A4, une page = une `section.page` de taille fixe, en-tête et pied de page « NN / TOTAL ».
-- Sources dans `docs/livrables/sources/` : `dossier/` (livrable 1, porte `style.css` commun), `cdc/` (livrable 2), `cmp/` (livrable 5), chacun avec un `build.py` qui écrit un HTML, et `logo/blank.png`.
+- Sources dans `docs/livrables/sources/` : `dossier/` (livrable 1, porte `style.css` commun), `cdc/` (livrable 2), `cmp/` (livrable 5), `kpi/` (livrable 6, avec `lh.json` : résultats Lighthouse), chacun avec un `build.py` qui écrit un HTML, et `logo/blank.png`.
 - Générer puis imprimer avec Chrome sans interface :
   ```bash
   cd docs/livrables/sources/cmp && python3 build.py
@@ -558,6 +558,13 @@ Projet d’école : bLaNk (Louis Nourry, seul) répond à l’appel d’offres d
 - **Dépendance** : pour faire évoluer la version vibe codée, Néotisse dépend **d’un prestataire développeur**, pas de bLaNk.
 - **Hébergeur** : le site ne restera pas sur Netlify ; l’hébergeur définitif sera choisi à la mise en ligne.
 - **Personas** des PDF : Laurent (partenaire, 47 ans) et Sophie (grand public, 39 ans), repris du cahier des charges.
+
+### Livrable 6 : tableau de bord (WordPress)
+- Basé sur le cours « Mesurer pour piloter » (KPI, Site Kit, projection SEO) : objectif → KPI → métrique → seuils → outil.
+- 4 objectifs : demandes d’atelier (référence 6/mois pour 3 ateliers, seuils < 3 et > 9), remplir les événements (part des fiches qui mènent au site du lieu, < 10 % et > 40 %), livre d’or (avis/mois et note), Google (clics, ±20 %/mois).
+- Plan de taggage : `generate_lead`, `click_lieu`, `submit_avis` (événements clés), `view_event`, `click_contact`. Site Kit + GA4 + Tag Manager, chargés après accord Complianz (Consent Mode).
+- Audit Lighthouse en local (pas d’URL publique), le 24/11/2026 : mobile 74 / 92 / 79 / 100, ordinateur 96 / 92 / 79 / 100 ; LCP mobile 5,0 s. Corrections : scripts bloquants (jQuery, WP Customer Reviews partout), images en WebP.
+- Projection SEO : « atelier tissage » 110 et « atelier de tissage » 90 recherches/mois (Ubersuggest, France), CTR Sistrix (2,5 / 7,2 / 11 % en positions 10 / 5 / 3), conversion 3 %. Résultat : moins d’une demande par mois via Google ; la prospection reste la source principale.
 
 ### Incohérences connues (à corriger si on y retouche)
 - Les livrables 1 et 2 citent encore **Netlify** comme hébergeur, et le livrable 1 dit que Néotisse dépend de l’agence.
