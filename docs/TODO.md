@@ -1,7 +1,7 @@
 # TODO — Néotisse V2
 
 > À tenir à jour pendant le travail : cocher ce qui est fait, ajouter ce qui est découvert.
-> Dernière mise à jour : 10/11/2026.
+> Dernière mise à jour : 25/11/2026.
 
 ## Phase 1 : design (en cours)
 
@@ -107,13 +107,18 @@
 - [ ] Formulaire de contact : brancher `ContactForm` sur une route API (e-mail, validation serveur) ; aujourd’hui la confirmation s’affiche sans rien envoyer
 - [ ] Livre d’or : brancher `GuestbookForm` sur une route API (document `review` en `pending`, IP stockée côté serveur), modération dans Sanity ; aujourd’hui la confirmation s’affiche sans rien envoyer
 - [ ] Anti-spam : honeypot + délai minimal (limite par IP : à décider)
-- [ ] Statistiques (GA4 ou autre : à décider) chargées uniquement après consentement
+- [x] Statistiques (GA4) chargées uniquement après consentement
 - [ ] SEO : métadonnées, Open Graph, sitemap, robots, JSON-LD
 
 ## Phase 4 : mise en ligne (plus tard)
-- [ ] Coder les événements GA4 du plan de taggage (`click_lieu`, `submit_avis`, `generate_lead`, `view_event`, `click_social`, `click_contact`), après consentement ; `generate_lead` seulement quand l’envoi du formulaire marche
+- [x] **GA4 branché** (25/11) : chargement après accord, arrêt au retrait, UTM gardées, événements `view_event`, `click_lieu`, `submit_avis`, `click_social`, `click_contact` ; vérifié en local avec un identifiant fictif (file d’envoi, refus, retrait), sauf l’envoi réel de `submit_avis`
+- [x] **Tableau de bord dans le Studio** (25/11) : onglet « Statistiques » ; vérifié avec des données fictives (plein, vide, sombre, 375px) et route testée sans jeton, faux jeton, période invalide, GA4 non configuré
+- [ ] Créer la propriété GA4 (au nom de Néotisse), les dimensions `fiche`, `lien`, `event_type`, le compte de service en lecture, puis les 4 variables sur Netlify ; vérifier les envois réels (DebugView) et l’onglet « Statistiques » une fois connecté
+- [ ] `NEXT_PUBLIC_SITE_URL` sur Netlify : l’URL canonique de la recette vaut encore `http://localhost:3000/`
+- [ ] `generate_lead` : à coder avec l’envoi du formulaire de contact, puis afficher les demandes dans le tableau de bord
+- [ ] Livrable 6 (vibe codé) : remplacer Looker Studio par l’onglet « Statistiques » et `event_name` par `fiche`
 - [ ] LCP mobile sous 2,5 s (accueil 4,6 s, calendrier 3,5 s le 25/11) : bandeau de cookies affiché dès le premier rendu, environ 80 Ko de JavaScript inutilisé ; sur ordinateur, la 2ᵉ photo du héro est en `loading="lazy"` alors qu’elle est le LCP
-- [ ] Déploiement sur Netlify
+- [x] Déploiement sur Netlify (recette : neotisse-vb.netlify.app)
 - [ ] Achat du domaine
 - [ ] Mentions légales complètes : siège, RNA, fonction de Marie-Salomé, SIRET / adresse / TVA de bLaNk (encore « [À COMPLÉTER] » sur la page) ; vérifier l’adresse de Netlify au moment du déploiement
 - [ ] Politique de confidentialité complète : fonction de Marie-Salomé, siège, lieu et durée de conservation des sauvegardes (encore « [À COMPLÉTER] ») ; nommer le prestataire d’e-mails et confirmer Google Analytics une fois choisis ; mettre à jour la date en haut de page
@@ -131,7 +136,6 @@
 - Avis de test du WordPress (« pyramide », « INCROYABLE »…) : lesquels garder à la migration ?
 - Événement « Atelier participatif au musée de Tautavel » : texte en lorem ipsum sur la V1, à fournir
 - Service d’e-mail pour le formulaire de contact
-- Statistiques : GA4 ou autre ?
 - Stockage des messages de contact dans Sanity : pas pour l’instant
 - Liens LinkedIn de l’équipe (seule Marie-Salomé en a un sur la V1)
 - Photos de l’équipe et visuel 21/9 de la page À propos : aplats provisoires sur la V1, à fournir

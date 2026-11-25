@@ -40,7 +40,9 @@
 | Hébergement | **Netlify** |
 | CMS Sanity | Projet **`t4k96qs7`** créé (dataset `production`), Studio **embarqué sur `/studio`** (décision du 09/11/2026 ; pas de dossier `studio-neotisse/`) |
 | Plan Sanity | **Free pour l’instant** : le dataset est public. L’e-mail et l’IP des avis sont rangés dans des documents `private.…`, que Sanity ne rend jamais publics (voir « Contenus et Sanity », 12/11/2026). |
-| Domaine, e-mail (Resend), GA4 | Rien n’est acheté ni créé pour l’instant |
+| Domaine, e-mail (Resend) | Rien n’est acheté ni créé pour l’instant |
+| Statistiques | **GA4** (choix de Louis du 25/11/2026), avec le **tableau de bord dans le Studio** (onglet « Statistiques »), qui remplace Looker Studio (renommé Data Studio en mai 2026) pour la version vibe codée. Code en place, identifiants à créer (voir § 7.6) |
+| Recette | https://neotisse-vb.netlify.app (Netlify, déployé par Louis) |
 | Stockage des messages de contact | Pas pour l’instant |
 | Livre d’or | Avis affichés **3 par 3** (« Plus d’avis », puis « Voir moins » pour replier ; demande de Louis du 13/11/2026, au lieu de 5 par 5) |
 | Styles | **Tailwind v4** : tokens en CSS dans `src/app/globals.css` (`@theme`), pas de `tailwind.config.ts` |
@@ -363,6 +365,13 @@ Règles générales :
 - Lien **« Gérer mes cookies »** dans le pied de page qui rouvre le bandeau.
 - Si aucun traceur n’est actif, ne pas afficher le bandeau.
 
+### 7.6 Mesure d’audience et tableau de bord (25/11/2026)
+- **Collecte** : `src/lib/analytics.ts` (GA4, variable `NEXT_PUBLIC_GA_MEASUREMENT_ID`). Démarre à l’accord, s’arrête au retrait sans rechargement (`ga-disable-…`, cookies `_ga` supprimés). Les UTM de la page d’arrivée sont gardées en mémoire, jamais stockées, pour un accord donné plus tard. Signaux publicitaires refusés. Pas de suivi sur `/styleguide` ni `/studio`.
+- **Événements** : toujours par `track()`, qui limite les propriétés permises. `view_event` et `click_lieu` (`fiche`, `lien` ; `fiche` remplace le `event_name` du livrable 6, qui se confond avec la dimension « Nom de l’événement » de GA4), `submit_avis` (après la réponse du serveur), `click_social`, `click_contact` (e-mail et téléphone). `generate_lead` : seulement quand le formulaire de contact enverra vraiment.
+- **Pages vues** : seule la première est envoyée par le code ; les suivantes viennent de la mesure améliorée de GA4 (historique du navigateur). Dans GA4, désactiver « Interactions avec les formulaires » et « Clics sortants ».
+- **Lecture** : `GET /api/statistiques/?jours=7|30|90` (`src/app/api/statistiques/route.ts`, `src/lib/ga4.ts`). Le Studio envoie le jeton Sanity de la personne connectée, la route vérifie son rôle auprès de Sanity, puis lit l’API GA4 avec un compte de service (`GA4_PROPERTY_ID`, `GA4_CLIENT_EMAIL`, `GA4_PRIVATE_KEY`, serveur uniquement). Réponse : totaux seulement, gardés 60 s.
+- **Affichage** : outil « Statistiques » du Studio (`src/sanity/studio/stats/`). Seuils du livrable 6, lus sur 30 jours ; avis comptés dans Sanity. Zéro, absence de donnée et source indisponible sont trois messages différents.
+
 ---
 
 ## 8. Modèle de contenu Sanity
@@ -503,12 +512,15 @@ SANITY_REVALIDATE_SECRET=
 RESEND_API_KEY=                  # ou autre service d’e-mail
 CONTACT_FROM_EMAIL=
 NEXT_PUBLIC_GA_MEASUREMENT_ID=   # chargé seulement après consentement
+GA4_PROPERTY_ID=                 # serveur uniquement : tableau de bord du Studio
+GA4_CLIENT_EMAIL=                # compte de service Google, lecture seule
+GA4_PRIVATE_KEY=                 # sa clé privée, « \n » acceptés
 NEXT_PUBLIC_SITE_URL=https://neotisse.fr
 ```
 
 `.env.local` contient les valeurs locales et n’est jamais commité. `.env.example` documente les variables attendues (commité).
 
-`NEXT_PUBLIC_SANITY_PROJECT_ID` et `NEXT_PUBLIC_SANITY_DATASET` ont une valeur par défaut (`t4k96qs7`, `production`) dans `src/sanity/env.ts` : le build Netlify passe sans elles. À renseigner sur Netlify : `SANITY_API_WRITE_TOKEN` (livre d’or, sinon 503), `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_GA_MEASUREMENT_ID`.
+`NEXT_PUBLIC_SANITY_PROJECT_ID` et `NEXT_PUBLIC_SANITY_DATASET` ont une valeur par défaut (`t4k96qs7`, `production`) dans `src/sanity/env.ts` : le build Netlify passe sans elles. À renseigner sur Netlify : `SANITY_API_WRITE_TOKEN` (livre d’or, sinon 503), `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_GA_MEASUREMENT_ID` (lues au build : redéployer après modification), `GA4_PROPERTY_ID`, `GA4_CLIENT_EMAIL`, `GA4_PRIVATE_KEY`.
 
 ---
 

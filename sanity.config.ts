@@ -5,6 +5,7 @@
  * Le Studio est disponible sur /studio.
  */
 
+import { BarChartIcon } from '@sanity/icons/BarChart'
 import { frFRLocale } from '@sanity/locale-fr-fr'
 import { visionTool } from '@sanity/vision'
 import { defineConfig } from 'sanity'
@@ -19,6 +20,7 @@ import {
   RejectReviewAction,
   ReviewStatusBadge,
 } from './src/sanity/studio/reviewModeration'
+import { StatsTool } from './src/sanity/studio/stats/StatsTool'
 
 export default defineConfig({
   basePath: '/studio',
@@ -57,6 +59,11 @@ export default defineConfig({
     badges: (prev, { schemaType }) =>
       schemaType === 'review' ? [ReviewStatusBadge, ...prev] : prev,
   },
+  // Onglet « Statistiques » : chiffres de Google Analytics et avis (voir src/sanity/studio/stats/).
+  tools: (prev) => [
+    ...prev,
+    { name: 'statistiques', title: 'Statistiques', icon: BarChartIcon, component: StatsTool },
+  ],
   plugins: [
     frFRLocale(),
     structureTool({ structure, defaultDocumentNode }),

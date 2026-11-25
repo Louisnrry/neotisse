@@ -291,7 +291,8 @@ Copie du bandeau **Complianz de la V1** (mêmes textes, mêmes mesures : hauteur
 | Boutons | 45px de haut, 15px Quicksand 500, interlettrage 0.04em, bordure 1px : « Accepter » plein garance (survol garance-dark), « Refuser » contour garance (se remplit au survol), « Personnaliser » souligné sans bordure (survol garance). Focus : contour encre 3px, décalage 2px. |
 | Personnaliser | Les catégories apparaissent en fondu (1s) : fond `rgba(239,239,239,.5)`, padding 10px, 10px entre elles ; titre 14px 500 ; « Toujours activé » 12px 500 **vert** (`#008000`, comme la V1) pour Fonctionnel ; interrupteur 28×15px (gris → garance, pastille crème) pour Statistiques ; chevron qui déplie la description (14px). « Personnaliser » laisse la place à « Enregistrer mes choix ». |
 | Choix | Cookie propriétaire `neotisse_consent` (JSON `{statistics, date}`), **365 jours** comme la V1. Refuser ou retirer son accord supprime les cookies `_ga`. |
-| Statistiques | `Analytics.tsx` charge GA4 seulement si « Statistiques » est accepté **et** si `NEXT_PUBLIC_GA_MEASUREMENT_ID` est renseigné (cookie `_ga` limité à 13 mois). Aucune requête Google avant. |
+| Statistiques | `src/lib/analytics.ts` charge GA4 seulement si « Statistiques » est accepté **et** si `NEXT_PUBLIC_GA_MEASUREMENT_ID` est renseigné (cookie `_ga` limité à 13 mois). Aucune requête Google avant ; arrêt immédiat au retrait. |
+| Tableau de bord (Studio) | Composants `@sanity/ui`, colonnes garance `#C8361F` (`#E05A45` en thème sombre), valeur au survol et au focus, vue tableau, 4 indicateurs en 1, 2 ou 4 colonnes. |
 
 ## 9 octies. Calendrier (`/calendrier-des-ateliers/`)
 
