@@ -1,6 +1,32 @@
-{"mobile":{"performance":74,"accessibility":92,"best-practices":79,"seo":100,"lcp":"5,0 s","cls":"0","tbt":"130 ms"},
- "desktop":{"performance":96,"accessibility":92,"best-practices":79,"seo":100,"lcp":"1,1 s","cls":"0,002","tbt":"0 ms"},
- "note":"Lighthouse 12.6, page d’accueil de neotisse.local, le 24 novembre 2026. Le score « Bonnes pratiques » est pénalisé par l’absence de HTTPS et de HTTP/2 en local : l’hébergement de production les réglera.",
- "constat":"Le référencement technique est irréprochable (100) et la version ordinateur est rapide. Sur téléphone, là où le grand public consulte le site, l’accueil met 5 secondes à afficher son plus grand élément, au-delà des 2,5 s recommandées par Google. L’accessibilité perd quelques points sur des contrastes de texte et sur un lien sans intitulé dans le bandeau de cookies.",
- "fixes":[["Ne plus bloquer l’affichage avec les scripts","jQuery et jQuery Migrate sont chargés en tête de chaque page, avec les styles du livre d’or et du bandeau de cookies : jusqu’à 1,7 s de gain estimé sur mobile en différant ces fichiers et en ne chargeant WP Customer Reviews que sur la page Livre d’or. C’est la première cause de lenteur, et le grand public est sur téléphone."],
-           ["Alléger les images","Les photos sont servies en JPEG, plus grandes que leur taille d’affichage : environ 330 Ko économisables en les convertissant en WebP aux bonnes dimensions, avec un cache long chez l’hébergeur. Les pages Ateliers et Calendrier, très illustrées, en profitent aussi."]]}
+{
+ "mobile": {
+  "performance": 74,
+  "accessibility": 92,
+  "best-practices": 79,
+  "seo": 100,
+  "lcp": "5,0 s",
+  "cls": "0",
+  "tbt": "130 ms"
+ },
+ "desktop": {
+  "performance": 96,
+  "accessibility": 92,
+  "best-practices": 79,
+  "seo": 100,
+  "lcp": "1,1 s",
+  "cls": "0,002",
+  "tbt": "0 ms"
+ },
+ "note": "Lighthouse 12.6, une mesure sur la page d’accueil de neotisse.local, le 24 novembre 2026. Le score « Bonnes pratiques » baisse parce que le site local n’a pas de HTTPS : l’hébergement de production le réglera.",
+ "constat": "Le score SEO est de 100 et la version ordinateur est rapide. Sur téléphone, le plus grand élément s’affiche en 5 secondes, au-delà des 2,5 s recommandées par Google ; cet élément est le texte du bandeau de cookies, à la première visite. L’accessibilité perd des points sur des contrastes de texte et sur un lien sans intitulé dans ce bandeau.",
+ "fixes": [
+  [
+   "Ne plus bloquer l’affichage avec les scripts et les styles",
+   "jQuery, jQuery Migrate, les fichiers du livre d’or et ceux du bandeau sont chargés en tête de page : Lighthouse estime le gain à 1,7 s sur mobile si l’on diffère ce qui peut l’être et si l’on réserve WP Customer Reviews aux pages qui affichent des avis. C’est le plus gros gain relevé."
+  ],
+  [
+   "Alléger les images",
+   "Les logos des partenaires en PNG et les deux photos d’accueil en JPEG passeraient en WebP : environ 215 Ko de moins sur mobile. Les logos sont aussi plus grands que leur taille d’affichage."
+  ]
+ ]
+}

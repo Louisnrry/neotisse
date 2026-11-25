@@ -111,6 +111,8 @@
 - [ ] SEO : métadonnées, Open Graph, sitemap, robots, JSON-LD
 
 ## Phase 4 : mise en ligne (plus tard)
+- [ ] Coder les événements GA4 du plan de taggage (`click_lieu`, `submit_avis`, `generate_lead`, `view_event`, `click_social`, `click_contact`), après consentement ; `generate_lead` seulement quand l’envoi du formulaire marche
+- [ ] LCP mobile sous 2,5 s (accueil 4,6 s, calendrier 3,5 s le 25/11) : bandeau de cookies affiché dès le premier rendu, environ 80 Ko de JavaScript inutilisé ; sur ordinateur, la 2ᵉ photo du héro est en `loading="lazy"` alors qu’elle est le LCP
 - [ ] Déploiement sur Netlify
 - [ ] Achat du domaine
 - [ ] Mentions légales complètes : siège, RNA, fonction de Marie-Salomé, SIRET / adresse / TVA de bLaNk (encore « [À COMPLÉTER] » sur la page) ; vérifier l’adresse de Netlify au moment du déploiement

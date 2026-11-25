@@ -1,6 +1,6 @@
 
 code{font-family:"SF Mono",Menlo,monospace;font-size:.88em}
-pre{font-family:"SF Mono",Menlo,monospace;font-size:8pt;background:var(--k);color:#fff;padding:3mm 4mm;white-space:pre-wrap;word-break:break-all}
+pre{font-family:"SF Mono",Menlo,monospace;font-size:7pt;background:var(--k);color:#fff;padding:3mm 4mm;white-space:pre-wrap;word-break:break-all}
 .chain{list-style:none;display:grid;grid-template-columns:repeat(5,1fr);border:.6pt solid var(--k)}
 .chain li{padding:3mm;display:flex;flex-direction:column;font-size:8.4pt;color:var(--g)}
 .chain li+li{border-left:.6pt solid var(--k)}
@@ -39,7 +39,7 @@ pre{font-family:"SF Mono",Menlo,monospace;font-size:8pt;background:var(--k);colo
 .tile .small{color:var(--g)}
 .big-n{font-family:"Playfair Display",serif;font-size:28pt;line-height:1.1}
 .big-n span{font-size:11pt;margin-left:1.5mm}
-.chart{padding:4mm}
+.chart{padding:4mm 4mm 9mm}
 .bars{position:relative;display:flex;align-items:flex-end;gap:6mm;height:62mm;border-bottom:.6pt solid var(--k);padding:0 4mm}
 .bar{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
 .bar span{display:block;width:100%;background:var(--k);color:#fff;font-size:8pt;text-align:center;padding-top:1mm}
