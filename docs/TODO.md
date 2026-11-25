@@ -114,7 +114,7 @@
 - [x] **GA4 branché** (25/11) : chargement après accord, arrêt au retrait, UTM gardées, événements `view_event`, `click_lieu`, `submit_avis`, `click_social`, `click_contact` ; vérifié en local avec un identifiant fictif (file d’envoi, refus, retrait), sauf l’envoi réel de `submit_avis`
 - [x] **Tableau de bord dans le Studio** (25/11) : onglet « Statistiques » ; vérifié avec des données fictives (plein, vide, sombre, 375px) et route testée sans jeton, faux jeton, période invalide, GA4 non configuré
 - [x] Propriété GA4, compte de service et 6 variables Netlify en place (25/11) ; route en ligne testée (401 sans jeton, 200 pour un membre) ; aucun appel Google avant accord ni après refus
-- [ ] GA4 : désactiver « Ignorer les instances en double de la configuration », « Clics sortants » et « Interactions avec les formulaires » ; créer les dimensions `fiche`, `lien`, `event_type` ; puis revérifier en ligne cookies de 13 mois, UTM, une seule page vue, retrait
+- [ ] GA4 : désactiver « Ignorer les instances en double de la configuration », « Clics sortants » et « Interactions avec les formulaires » ; créer les dimensions `fiche`, `lien`, `event_type` ; puis revérifier en ligne cookies de 13 mois et UTM gardées (déjà vérifié en ligne le 25/11 : une seule page vue par page, `view_event` et `click_lieu` avec leurs propriétés, arrêt des envois au retrait ; pas `submit_avis`)
 - [x] `NEXT_PUBLIC_SITE_URL` sur Netlify (25/11) : URL canonique corrigée
 - [ ] `generate_lead` : à coder avec l’envoi du formulaire de contact, puis afficher les demandes dans le tableau de bord
 - [ ] Livrable 6 (vibe codé) : remplacer Looker Studio par l’onglet « Statistiques » et `event_name` par `fiche`
