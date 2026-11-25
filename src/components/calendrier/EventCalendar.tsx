@@ -8,6 +8,7 @@ import { Section } from "@/components/ui/Layout";
 import { RuledTitle } from "@/components/ui/Typography";
 import { eventTypeLabels } from "@/lib/events";
 import type { EventType, NeoEvent } from "@/sanity/types";
+import { track } from "@/lib/analytics";
 import { cn } from "@/lib/cn";
 import { dayNumber, formatEventDates, formatMonthYear, todayInParis } from "@/lib/dates";
 
@@ -170,6 +171,7 @@ export function EventCalendar({
     flushSync(() => setCurrent(e));
     const d = dialog.current;
     if (d && !d.open) d.showModal();
+    track("view_event", { fiche: e.title, event_type: e.type, lien: e.placeUrl ? "oui" : "non" });
   }
 
   function onClose() {
@@ -671,6 +673,7 @@ function EventDialog({
                   href={e.placeUrl}
                   target="_blank"
                   rel="noopener"
+                  onClick={() => track("click_lieu", { fiche: e.title, link_url: e.placeUrl!, lien: "oui" })}
                   className="inline-block rounded-[4px] bg-garance px-[1.5em] py-[0.8em] font-semibold text-creme no-underline transition-colors duration-200 hover:bg-garance-dark hover:text-blanc"
                 >
                   {e.placeUrlLabel ?? "Site du lieu"} ↗<span className="sr-only"> (nouvel onglet)</span>

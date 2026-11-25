@@ -10,6 +10,7 @@ import {
   type GuestbookErrors as Errors,
   type GuestbookValues as Values,
 } from "@/lib/guestbook";
+import { track } from "@/lib/analytics";
 import type { GuestbookFormTexts } from "@/sanity/queries/livreDor";
 
 
@@ -118,6 +119,8 @@ export function GuestbookForm({ form }: { form: GuestbookFormTexts }) {
         body: JSON.stringify({ ...values, site: String(data.get("site") ?? ""), elapsed }),
       });
       if (response.ok) {
+        // Compté seulement ici : le serveur a confirmé l’avis (un robot voit aussi la confirmation).
+        track("submit_avis", { rating: Number(values.note) });
         setStatus("ok");
         return;
       }

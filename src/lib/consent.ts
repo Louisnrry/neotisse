@@ -69,7 +69,6 @@ export function saveConsent(statistics: boolean) {
   const consent: Consent = { statistics, date: new Date().toISOString() };
   const secure = window.location.protocol === "https:" ? "; Secure" : "";
   document.cookie = `${COOKIE_NAME}=${encodeURIComponent(JSON.stringify(consent))}; Max-Age=${MAX_AGE_SECONDS}; Path=/; SameSite=Lax${secure}`;
-  if (!statistics) removeAnalyticsCookies();
   state = { consent, reopened: false, ready: true };
   emit();
 }
@@ -78,17 +77,4 @@ export function saveConsent(statistics: boolean) {
 export function reopenConsent() {
   state = { ...getConsentState(), reopened: true };
   emit();
-}
-
-/** Retrait du consentement : supprime les cookies Google Analytics déjà posés. */
-function removeAnalyticsCookies() {
-  const host = window.location.hostname;
-  const domains = ["", host, `.${host.replace(/^www\./, "")}`];
-  document.cookie.split("; ").forEach((part) => {
-    const name = part.split("=")[0];
-    if (name !== "_ga" && !name.startsWith("_ga_") && name !== "_gid") return;
-    domains.forEach((domain) => {
-      document.cookie = `${name}=; Max-Age=0; Path=/${domain ? `; Domain=${domain}` : ""}`;
-    });
-  });
 }
