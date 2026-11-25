@@ -4,7 +4,9 @@
  * - Rien n’est chargé ni envoyé avant l’accord « Statistiques » du bandeau.
  * - Au retrait de l’accord, les envois s’arrêtent tout de suite (`ga-disable-…`) et les cookies `_ga` sont supprimés.
  * - Un seul point d’entrée pour les événements : `track()`. Aucun champ de formulaire n’est envoyé.
- * - Navigation entre les pages : GA4 la détecte seul (mesure améliorée), ne pas envoyer de `page_view` à la main.
+ * - Pages vues : envoyées par GA4 seul (à la configuration, puis à chaque navigation), jamais à la main en plus.
+ * - Dans GA4, l’option « Ignorer les instances en double de la configuration sur la page » doit rester désactivée,
+ *   sinon la balise démarre seule et ignore la configuration ci-dessous (durée des cookies, campagne).
  */
 import { getConsentState, subscribeConsent } from "@/lib/consent";
 
@@ -37,23 +39,33 @@ function gtag(..._args: unknown[]) {
 /** Page d’arrivée, gardée en mémoire seulement : ses UTM servent si l’accord vient plus tard, sur une autre page. */
 const landingSearch = typeof window === "undefined" ? "" : window.location.search;
 
-/** Adresse de la première vue : la page courante, avec les UTM de l’arrivée si elle n’en a pas. */
-function firstPageLocation() {
-  const url = new URL(window.location.href);
-  const hasUtm = [...url.searchParams.keys()].some((key) => key.startsWith("utm_"));
-  if (!hasUtm) {
-    new URLSearchParams(landingSearch).forEach((value, key) => {
-      if (key.startsWith("utm_")) url.searchParams.set(key, value);
-    });
-  }
-  return url.href;
+/** Noms GA4 des paramètres UTM. */
+const CAMPAIGN_FIELDS: Record<string, string> = {
+  utm_source: "campaign_source",
+  utm_medium: "campaign_medium",
+  utm_campaign: "campaign_name",
+  utm_content: "campaign_content",
+  utm_term: "campaign_term",
+};
+
+/** UTM de l’arrivée à transmettre, si la page courante n’en porte plus (GA4 lit seul celles de l’adresse). */
+function landingCampaign() {
+  const campaign: Record<string, string> = {};
+  if (/[?&]utm_/.test(window.location.search)) return campaign;
+  new URLSearchParams(landingSearch).forEach((value, key) => {
+    if (CAMPAIGN_FIELDS[key]) campaign[CAMPAIGN_FIELDS[key]] = value;
+  });
+  return campaign;
 }
 
 function start(id: string) {
   const w = window as unknown as GaWindow;
   w[`ga-disable-${id}`] = false;
   enabled = true;
-  if (!started) {
+  if (started) {
+    // Accord redonné après un retrait, sans rechargement : la configuration ne repart pas, la vue si.
+    gtag("event", "page_view", { page_location: window.location.href });
+  } else {
     started = true;
     gtag("consent", "default", {
       ad_storage: "denied",
@@ -63,7 +75,7 @@ function start(id: string) {
     });
     gtag("js", new Date());
     gtag("config", id, {
-      send_page_view: false,
+      ...landingCampaign(),
       cookie_expires: COOKIE_SECONDS,
       // La durée court depuis l’accord : elle n’est pas prolongée à chaque visite.
       cookie_update: false,
@@ -75,7 +87,6 @@ function start(id: string) {
     script.src = `https://www.googletagmanager.com/gtag/js?id=${id}`;
     document.head.appendChild(script);
   }
-  gtag("event", "page_view", { page_location: firstPageLocation() });
 }
 
 function stop(id: string) {

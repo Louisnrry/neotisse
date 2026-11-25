@@ -113,8 +113,9 @@
 ## Phase 4 : mise en ligne (plus tard)
 - [x] **GA4 branché** (25/11) : chargement après accord, arrêt au retrait, UTM gardées, événements `view_event`, `click_lieu`, `submit_avis`, `click_social`, `click_contact` ; vérifié en local avec un identifiant fictif (file d’envoi, refus, retrait), sauf l’envoi réel de `submit_avis`
 - [x] **Tableau de bord dans le Studio** (25/11) : onglet « Statistiques » ; vérifié avec des données fictives (plein, vide, sombre, 375px) et route testée sans jeton, faux jeton, période invalide, GA4 non configuré
-- [ ] Créer la propriété GA4 (au nom de Néotisse), les dimensions `fiche`, `lien`, `event_type`, le compte de service en lecture, puis les 4 variables sur Netlify ; vérifier les envois réels (DebugView) et l’onglet « Statistiques » une fois connecté
-- [ ] `NEXT_PUBLIC_SITE_URL` sur Netlify : l’URL canonique de la recette vaut encore `http://localhost:3000/`
+- [x] Propriété GA4, compte de service et 6 variables Netlify en place (25/11) ; route en ligne testée (401 sans jeton, 200 pour un membre) ; aucun appel Google avant accord ni après refus
+- [ ] GA4 : désactiver « Ignorer les instances en double de la configuration », « Clics sortants » et « Interactions avec les formulaires » ; créer les dimensions `fiche`, `lien`, `event_type` ; puis revérifier en ligne cookies de 13 mois, UTM, une seule page vue, retrait
+- [x] `NEXT_PUBLIC_SITE_URL` sur Netlify (25/11) : URL canonique corrigée
 - [ ] `generate_lead` : à coder avec l’envoi du formulaire de contact, puis afficher les demandes dans le tableau de bord
 - [ ] Livrable 6 (vibe codé) : remplacer Looker Studio par l’onglet « Statistiques » et `event_name` par `fiche`
 - [ ] LCP mobile sous 2,5 s (accueil 4,6 s, calendrier 3,5 s le 25/11) : bandeau de cookies affiché dès le premier rendu, environ 80 Ko de JavaScript inutilisé ; sur ordinateur, la 2ᵉ photo du héro est en `loading="lazy"` alors qu’elle est le LCP
