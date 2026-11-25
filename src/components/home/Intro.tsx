@@ -50,7 +50,10 @@ export function Intro() {
 
   // Arrivée sur l’accueil par un lien interne (pas de rechargement, donc pas de script du <head>) :
   // on pose la classe avant le premier affichage pour éviter tout flash du héro.
+  // Next garde l’accueil en mémoire quand on le quitte (cacheComponents) : l’intro y est restée dans son état
+  // final, on la remet à zéro (fil crème replié, mot masqué jusqu’au départ de l’écriture).
   useLayoutEffect(() => {
+    introRef.current?.classList.remove("is-cut", "is-ready");
     if (introShouldPlay()) document.documentElement.classList.add("intro-play");
   }, []);
 
@@ -132,6 +135,11 @@ export function Intro() {
 
     const controls: AnimationPlaybackControls = animate(sequence);
 
+    // Le mot n’est montré qu’une fois la première image de l’écriture posée (lettres vides).
+    let ready = requestAnimationFrame(() => {
+      ready = requestAnimationFrame(() => intro.classList.add("is-ready"));
+    });
+
     placeCut();
     window.addEventListener("resize", placeCut);
     intro.addEventListener("click", skip);
@@ -146,6 +154,7 @@ export function Intro() {
     return () => {
       intro.removeEventListener("click", skip);
       timers.forEach(clearTimeout);
+      cancelAnimationFrame(ready);
       controls.stop();
       off();
       pendingTeardown = window.setTimeout(() => root.classList.remove("intro-play", "intro-open"), 0);

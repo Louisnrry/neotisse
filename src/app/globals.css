@@ -318,6 +318,9 @@
     justify-content: center;
     color: var(--color-creme);
   }
+  .neo-intro:not(.is-ready) .neo-intro__word {
+    visibility: hidden;
+  }
   .neo-intro__half--r .neo-intro__word {
     left: calc(-1 * var(--cut));
   }

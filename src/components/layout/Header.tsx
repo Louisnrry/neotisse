@@ -28,11 +28,12 @@ export function Header() {
   const menuRef = useRef<HTMLDivElement>(null);
   const burgerRef = useRef<HTMLButtonElement>(null);
 
-  // Réinitialise l’état à chaque changement de page.
+  // Réinitialise l’état à chaque changement de page. On arrive toujours en haut de la page : sur l’accueil, la barre
+  // est donc transparente, quelle que soit la position de défilement de la page quittée.
   const [prevPath, setPrevPath] = useState(pathname);
   if (prevPath !== pathname) {
     setPrevPath(pathname);
-    setArrival(isHome && typeof window !== "undefined" ? window.scrollY <= 10 : isHome);
+    setArrival(isHome);
     setHidden(false);
     setMenuOpen(false);
   }
@@ -40,7 +41,8 @@ export function Header() {
   useEffect(() => {
     let last = window.scrollY;
     let ticking = false;
-    let arrived = isHome && window.scrollY <= 10;
+    let arrived = isHome;
+    let frame = 0;
 
     const update = () => {
       ticking = false;
@@ -67,12 +69,16 @@ export function Header() {
     const onScroll = () => {
       if (!ticking) {
         ticking = true;
-        requestAnimationFrame(update);
+        frame = requestAnimationFrame(update);
       }
     };
-    update();
+    // Première lecture à l’image suivante : le défilement de la page quittée est alors remis à zéro.
+    onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(frame);
+    };
   }, [isHome]);
 
   const closeMenu = useCallback(() => {
