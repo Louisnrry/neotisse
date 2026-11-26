@@ -4,7 +4,7 @@
  */
 import { createSign } from "node:crypto";
 import { routes } from "@/lib/routes";
-import type { DayStats, OriginKind, Pair, Stats, StatsPeriod } from "@/lib/stats";
+import type { Bucket, OriginKind, Pair, Stats, StatsPeriod } from "@/lib/stats";
 
 if (typeof window !== "undefined") throw new Error("La lecture de GA4 se fait sur le serveur uniquement.");
 
@@ -133,10 +133,54 @@ function classifyCalendarView(referrer: string, source: string, channel: string)
   return classifySource(source, channel);
 }
 
+/** Date « AAAA-MM-JJ » décalée de `n` jours. */
+function addDays(iso: string, n: number) {
+  const date = new Date(`${iso}T12:00:00Z`);
+  date.setUTCDate(date.getUTCDate() + n);
+  return date.toISOString().slice(0, 10);
+}
+
+/** Semaine ISO d’une date, au format de GA4 (« 202648 »), et son lundi. */
+function isoWeek(iso: string) {
+  const date = new Date(`${iso}T12:00:00Z`);
+  const weekday = (date.getUTCDay() + 6) % 7; // lundi = 0
+  const monday = addDays(iso, -weekday);
+  const thursday = new Date(`${addDays(monday, 3)}T12:00:00Z`);
+  const year = thursday.getUTCFullYear();
+  const week = Math.floor((thursday.getTime() - Date.UTC(year, 0, 1)) / 86_400_000 / 7) + 1;
+  return { key: `${year}${String(week).padStart(2, "0")}`, monday };
+}
+
+type Totals3 = { users: number; sessions: number; views: number };
+
+/** Jours (ou semaines) de `from` à `to` compris, périodes vides comprises. */
+function makeBuckets(from: string, to: string, weekly: boolean, byKey: Map<string, Totals3>, today: string): Bucket[] {
+  const empty = { users: 0, sessions: 0, views: 0 };
+  const list: Bucket[] = [];
+  if (!weekly) {
+    for (let d = from; d <= to; d = addDays(d, 1)) {
+      list.push({ start: d, end: d, ...(byKey.get(d.replaceAll("-", "")) ?? empty), partial: d === today });
+    }
+    return list;
+  }
+  for (let monday = isoWeek(from).monday; monday <= to; monday = addDays(monday, 7)) {
+    const sunday = addDays(monday, 6);
+    list.push({
+      start: monday < from ? from : monday,
+      end: sunday > to ? to : sunday,
+      ...(byKey.get(isoWeek(monday).key) ?? empty),
+      partial: monday < from || sunday > to || sunday >= today,
+    });
+  }
+  return list;
+}
+
 /** Jour « AAAA-MM-JJ » dans le fuseau de la propriété GA4. */
 const dayIn = (timeZone: string, date: Date) => new Intl.DateTimeFormat("en-CA", { timeZone }).format(date);
 
 export async function readStats(config: Config, days: StatsPeriod): Promise<Stats> {
+  // Au-delà de 30 jours, une colonne par semaine : des colonnes d’un jour seraient trop fines pour être lues.
+  const weekly = days > 30;
   // Période : les `days` derniers jours, aujourd’hui compris. Précédente : les `days` jours d’avant.
   const current = { startDate: `${days - 1}daysAgo`, endDate: "today", name: "current" };
   const previous = { startDate: `${days * 2 - 1}daysAgo`, endDate: `${days}daysAgo`, name: "previous" };
@@ -146,7 +190,7 @@ export async function readStats(config: Config, days: StatsPeriod): Promise<Stat
       requests: [
         {
           dateRanges: [current, previous],
-          dimensions: names("date"),
+          dimensions: names(weekly ? "isoYearIsoWeek" : "date"),
           metrics: names("activeUsers", "sessions", "screenPageViews"),
           limit: 400,
         },
@@ -208,19 +252,16 @@ export async function readStats(config: Config, days: StatsPeriod): Promise<Stat
 
   // Jours sans visite : absents de la réponse GA4, donc remis à zéro.
   const timeZone = dailyReport.metadata?.timeZone ?? "Europe/Paris";
-  const byDay = new Map(
-    (dailyReport.rows ?? []).map((row) => [dim(row, 0), { users: num(row, 0), sessions: num(row, 1), views: num(row, 2) }]),
+  const byKey = new Map(
+    (dailyReport.rows ?? []).map((row) => [
+      dim(row, 0),
+      { users: num(row, 0), sessions: num(row, 1), views: num(row, 2) },
+    ]),
   );
-  const today = new Date(`${dayIn(timeZone, new Date())}T12:00:00Z`);
-  // Jour i de la période (décalage 0) ou de la précédente (décalage `days`).
-  const dayAt = (i: number, shift: number): DayStats => {
-    const date = new Date(today);
-    date.setUTCDate(today.getUTCDate() - (days - 1 - i) - shift);
-    const iso = date.toISOString().slice(0, 10);
-    return { date: iso, ...(byDay.get(iso.replaceAll("-", "")) ?? { users: 0, sessions: 0, views: 0 }) };
-  };
-  const daily = Array.from({ length: days }, (_, i) => dayAt(i, 0));
-  const previousDaily = Array.from({ length: days }, (_, i) => dayAt(i, days));
+  const todayIso = dayIn(timeZone, new Date());
+  const start = addDays(todayIso, -(days - 1));
+  const buckets = makeBuckets(start, todayIso, weekly, byKey, todayIso);
+  const previousBuckets = makeBuckets(addDays(start, -days), addDays(start, -1), weekly, byKey, todayIso);
 
   const totals: Stats["totals"] = {
     users: { current: 0, previous: 0 },
@@ -298,8 +339,9 @@ export async function readStats(config: Config, days: StatsPeriod): Promise<Stat
   return {
     days,
     generatedAt: new Date().toISOString(),
-    daily,
-    previousDaily,
+    bucket: weekly ? "week" : "day",
+    buckets,
+    previousBuckets,
     totals,
     sessions,
     socialEngaged,

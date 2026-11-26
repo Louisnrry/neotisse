@@ -180,8 +180,8 @@ export function StatsDashboard({ stats, reviews }: { stats: Stats; reviews: Revi
       </Grid>
 
       <Text size={1} muted>
-        Visites : Google Analytics. Avis : le Studio. Du {dayLabel(stats.daily[0].date)} au{" "}
-        {dayLabel(stats.daily[stats.daily.length - 1].date)}, aujourd’hui compris. Mis à jour à{" "}
+        Visites : Google Analytics. Avis : le Studio. Du {dayLabel(stats.buckets[0].start)} au{" "}
+        {dayLabel(stats.buckets[stats.buckets.length - 1].end)}, aujourd’hui compris. Mis à jour à{" "}
         {new Date(stats.generatedAt).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}. Les chiffres d’hier et
         d’aujourd’hui peuvent encore augmenter : Google met jusqu’à deux jours à tout compter.
       </Text>

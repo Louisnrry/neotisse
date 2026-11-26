@@ -1,10 +1,14 @@
 /** Tableau de bord du Studio : formes échangées entre la route `/api/statistiques/` et l’outil « Statistiques ». */
 
-export const STATS_PERIODS = [7, 30, 90] as const;
+export const STATS_PERIODS = [30, 90, 180] as const;
 export type StatsPeriod = (typeof STATS_PERIODS)[number];
 
-/** Un jour : visiteurs (personnes distinctes), visites et pages consultées. */
-export type DayStats = { date: string; users: number; sessions: number; views: number };
+/**
+ * Un jour ou une semaine : visiteurs (personnes distinctes), visites et pages consultées.
+ * `start` et `end` (AAAA-MM-JJ) bornent la partie comprise dans la période ; `partial` : jour ou semaine pas fini,
+ * ou semaine coupée par le début de la période.
+ */
+export type Bucket = { start: string; end: string; users: number; sessions: number; views: number; partial: boolean };
 
 /** Valeur de la période et de la période précédente de même durée. */
 export type Pair = { current: number; previous: number };
@@ -13,10 +17,12 @@ export type Stats = {
   days: StatsPeriod;
   /** Heure de lecture, ISO. */
   generatedAt: string;
-  /** Chiffres par jour, dans l’ordre, jours vides compris (AAAA-MM-JJ). */
-  daily: DayStats[];
-  /** Mêmes chiffres pour la période précédente, jour pour jour (même longueur que `daily`). */
-  previousDaily: DayStats[];
+  /** Regroupement du graphique : par jour sur 30 jours, par semaine au-delà. */
+  bucket: "day" | "week";
+  /** Chiffres par jour ou par semaine, dans l’ordre, périodes vides comprises. */
+  buckets: Bucket[];
+  /** Mêmes chiffres pour la période précédente, dans le même ordre. */
+  previousBuckets: Bucket[];
   /** Totaux de la période et de la précédente. Visiteurs : personnes distinctes (pas la somme des jours). */
   totals: { users: Pair; newUsers: Pair; sessions: Pair; views: Pair };
   sessions: Pair;
