@@ -31,6 +31,7 @@ export default defineConfig({
   document: {
     // Les pages et réglages sont des documents uniques : on empêche
     // la création de doublons depuis le menu « Créer ».
+    // Les messages de contact ne se créent que depuis le site : aucun bouton « + », où que ce soit.
     newDocumentOptions: (prev, { creationContext }) =>
       creationContext.type === 'global'
         ? prev.filter(
@@ -38,7 +39,7 @@ export default defineConfig({
               !singletonTypes.has(template.templateId) &&
               !hiddenFromCreateTypes.has(template.templateId),
           )
-        : prev,
+        : prev.filter((template) => template.templateId !== 'contactMessage'),
     actions: (prev, { schemaType }) => {
       // On évite de supprimer ou dupliquer accidentellement un document unique.
       if (singletonTypes.has(schemaType)) {

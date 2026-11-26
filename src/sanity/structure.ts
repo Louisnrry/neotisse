@@ -160,6 +160,7 @@ function buildStructure(S: Parameters<StructureResolver>[0], pending: number) {
             .title("Messages de contact")
             .apiVersion(apiVersion)
             .filter('_type == "contactMessage"')
+            // Pas de « + » : les messages ne se créent que depuis le site (voir aussi sanity.config.ts).
             .initialValueTemplates([])
             .defaultOrdering([{ field: "createdAt", direction: "desc" }]),
         ),
