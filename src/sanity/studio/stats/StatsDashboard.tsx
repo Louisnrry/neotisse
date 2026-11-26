@@ -3,6 +3,7 @@ import { Badge, Box, Card, Flex, Grid, Stack, Text } from "@sanity/ui"
 import type { ReactNode } from "react"
 import { useColorSchemeValue } from "sanity"
 
+import { OriginsPie } from "./OriginsPie"
 import { VisitorsChart } from "./VisitorsChart"
 
 import type { Pair, Stats } from "../../../lib/stats"
@@ -75,6 +76,12 @@ export function StatsDashboard({ stats, reviews }: { stats: Stats; reviews: Revi
     <Stack space={5}>
       <VisitorsChart stats={stats} />
 
+      {/* Sous le graphique, moitié-moitié : les parts en camembert, et le détail par provenance. */}
+      <Grid columns={[1, 1, 2]} gap={3}>
+        <OriginsPie stats={stats} />
+        <OriginsCard stats={stats} />
+      </Grid>
+
       {realtime && (
         <Card padding={4} radius={2} border>
           <Stack space={3}>
@@ -91,10 +98,7 @@ export function StatsDashboard({ stats, reviews }: { stats: Stats; reviews: Revi
         </Card>
       )}
 
-      <Grid columns={[1, 1, 1, 2]} gap={3}>
-        <CalendarCard stats={stats} />
-        <OriginsCard stats={stats} />
-      </Grid>
+      <CalendarCard stats={stats} />
 
       <Grid columns={[1, 1, 2, 4]} gap={3}>
         <Tile
@@ -387,7 +391,8 @@ function OriginsCard({ stats }: { stats: Stats }) {
       )
   const google = sum("google")
   const social = sum("reseaux")
-  const total = stats.sessions.current
+  // Même total que le camembert : la somme des provenances.
+  const total = stats.origins.reduce((sum, o) => sum + o.sessions.current, 0)
   const share = (n: number) => (total ? ` (${nf.format(Math.round((n / total) * 100))} % des visites)` : "")
   return (
     <FeaturedCard>
@@ -426,7 +431,7 @@ function OriginsCard({ stats }: { stats: Stats }) {
 /** Carte mise en avant : filet garance en haut, comme les cartes du site. */
 function FeaturedCard({ children }: { children: ReactNode }) {
   return (
-    <Card padding={[4, 4, 5]} radius={3} border shadow={1} style={{ borderTop: `4px solid ${useBarColor()}` }}>
+    <Card padding={[4, 4, 5]} radius={3} border shadow={1} style={{ borderTop: `4px solid ${useBarColor()}`, height: "100%" }}>
       {children}
     </Card>
   )
