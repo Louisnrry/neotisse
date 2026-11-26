@@ -17,7 +17,10 @@ export type Stats = {
   socialEngaged: Pair;
   /** Nombre d’envois par événement du plan de taggage. */
   events: Record<string, Pair>;
-  channels: { name: string; sessions: number; engaged: number }[];
+  /** Provenance des visites, regroupée (Google, Instagram, Facebook…). */
+  origins: { label: string; kind: OriginKind; detail: string; sessions: Pair; engaged: number }[];
+  /** Vues de la page Calendrier et d’où elles viennent (page du site, Google, réseaux…). */
+  calendar: { views: Pair; sources: { label: string; kind: OriginKind; views: number }[] };
   pages: { path: string; views: number }[];
   devices: { name: string; sessions: number }[];
   /** `null` : dimensions personnalisées absentes de GA4, détail par fiche indisponible. */
@@ -25,5 +28,8 @@ export type Stats = {
   /** Trente dernières minutes. `null` : lecture en direct indisponible. */
   realtime: { users: number; events: { name: string; count: number }[] } | null;
 };
+
+/** Famille d’une provenance : sert aux totaux « Google » et « Réseaux sociaux » et aux couleurs. */
+export type OriginKind = "google" | "reseaux" | "site" | "direct" | "autre";
 
 export type StatsErrorCode = "not-configured" | "unauthorized" | "forbidden" | "bad-request" | "unavailable";

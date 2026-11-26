@@ -12,15 +12,6 @@ const nf1 = new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 1 })
 const dayLabel = (iso: string) =>
   new Date(`${iso}T12:00:00Z`).toLocaleDateString("fr-FR", { day: "numeric", month: "short", timeZone: "UTC" })
 
-const CHANNELS: Record<string, string> = {
-  "Organic Search": "Recherche Google et autres",
-  "Organic Social": "Réseaux sociaux",
-  "Organic Video": "Vidéo",
-  Direct: "Direct ou inconnu",
-  Referral: "Sites référents",
-  Email: "E-mail",
-  Unassigned: "Non classé",
-}
 const DEVICES: Record<string, string> = { mobile: "Téléphone", desktop: "Ordinateur", tablet: "Tablette" }
 const EVENTS: Record<string, string> = {
   page_view: "pages vues",
@@ -84,6 +75,11 @@ export function StatsDashboard({ stats, reviews }: { stats: Stats; reviews: Revi
         </Card>
       )}
 
+      <Grid columns={[1, 1, 1, 2]} gap={3}>
+        <CalendarCard stats={stats} />
+        <OriginsCard stats={stats} />
+      </Grid>
+
       <Grid columns={[1, 1, 2, 4]} gap={3}>
         <Tile
           label="Fiches qui mènent au lieu"
@@ -142,13 +138,6 @@ export function StatsDashboard({ stats, reviews }: { stats: Stats; reviews: Revi
       </Section>
 
       <Grid columns={[1, 1, 2]} gap={3}>
-        <Section title="D’où viennent les visites">
-          <Table
-            empty="Aucune visite sur la période."
-            head={["Canal", "Visites", "Engagées"]}
-            rows={stats.channels.map((c) => [CHANNELS[c.name] ?? c.name, nf.format(c.sessions), nf.format(c.engaged)])}
-          />
-        </Section>
         <Section title="Pages les plus vues">
           <Table
             empty="Aucune page vue sur la période."
@@ -277,11 +266,9 @@ function niceMax(value: number) {
 }
 
 function DailyChart({ stats }: { stats: Stats }) {
-  const dark = useColorSchemeValue() === "dark"
+  const color = useBarColor()
   const [active, setActive] = useState<number | null>(null)
   const [asTable, setAsTable] = useState(false)
-  // Garance de la charte, éclaircie sur le fond sombre du Studio (contrastes vérifiés).
-  const color = dark ? "#E05A45" : "#C8361F"
   const { daily } = stats
   const max = niceMax(Math.max(...daily.map((d) => d.sessions)))
   const ticks = [max, max / 2, 0]
@@ -387,6 +374,168 @@ function DailyChart({ stats }: { stats: Stats }) {
           </Box>
         )}
       </Stack>
+    </Card>
+  )
+}
+
+/** Garance de la charte, éclaircie sur le fond sombre du Studio (contrastes vérifiés). */
+function useBarColor() {
+  return useColorSchemeValue() === "dark" ? "#E05A45" : "#C8361F"
+}
+
+/** Évolution courte : « +3 », « −2 » ou « = », avec la valeur d’avant. */
+const delta = ({ current, previous }: Pair) =>
+  current === previous ? "=" : `${current > previous ? "+" : "−"}${nf.format(Math.abs(current - previous))}`
+
+function BigNumber({ label, value, pair, days }: { label: string; value: string; pair?: Pair; days: number }) {
+  return (
+    <Stack space={3}>
+      <Text size={1} muted>
+        {label}
+      </Text>
+      <Text size={4} weight="semibold" style={{ fontSize: 44, lineHeight: 1 }}>
+        {value}
+      </Text>
+      {pair && (
+        <Text size={1} muted>
+          {delta(pair)} par rapport aux {days} jours d’avant ({nf.format(pair.previous)})
+        </Text>
+      )}
+    </Stack>
+  )
+}
+
+/** Barres horizontales, une couleur : la longueur porte la valeur, le nombre est écrit au bout. */
+function BarList({ rows, empty }: { rows: { label: string; value: number; note?: string }[]; empty: string }) {
+  const color = useBarColor()
+  if (!rows.length) {
+    return (
+      <Text size={1} muted>
+        {empty}
+      </Text>
+    )
+  }
+  const max = Math.max(...rows.map((r) => r.value), 1)
+  return (
+    <Stack space={4} as="ul" style={{ listStyle: "none", margin: 0, padding: 0 }}>
+      {rows.map((r) => (
+        <Stack key={r.label} space={2} as="li">
+          <Flex justify="space-between" gap={3}>
+            <Text size={1} weight="medium">
+              {r.label}
+            </Text>
+            <Text size={1} weight="semibold" style={{ fontVariantNumeric: "tabular-nums" }}>
+              {nf.format(r.value)}
+            </Text>
+          </Flex>
+          <Box style={{ height: 8, borderRadius: 4, background: "var(--card-border-color)" }} aria-hidden="true">
+            <Box
+              style={{
+                height: "100%",
+                width: `${(r.value / max) * 100}%`,
+                minWidth: r.value ? 4 : 0,
+                borderRadius: 4,
+                background: color,
+              }}
+            />
+          </Box>
+          {r.note && (
+            <Text size={0} muted>
+              {r.note}
+            </Text>
+          )}
+        </Stack>
+      ))}
+    </Stack>
+  )
+}
+
+/** Mis en avant : vues du calendrier et ce qui y mène (clics depuis le site, Google, réseaux…). */
+function CalendarCard({ stats }: { stats: Stats }) {
+  const { views, sources } = stats.calendar
+  const fromSite = sources.filter((s) => s.kind === "site").reduce((sum, s) => sum + s.views, 0)
+  const fromOutside = sources.filter((s) => s.kind !== "site").reduce((sum, s) => sum + s.views, 0)
+  return (
+    <FeaturedCard>
+      <Stack space={5}>
+        <Text as="h2" size={2} weight="semibold">
+          Vers le calendrier
+        </Text>
+        <Grid columns={[1, 2]} gap={4}>
+          <BigNumber label="Vues de la page Calendrier" value={nf.format(views.current)} pair={views} days={stats.days} />
+          <Stack space={3}>
+            <Text size={1} muted>
+              Dont
+            </Text>
+            <Text size={2} weight="semibold">
+              {nf.format(fromSite)} {fromSite > 1 ? "clics" : "clic"} depuis le site
+            </Text>
+            <Text size={2} weight="semibold">
+              {nf.format(fromOutside)} {fromOutside > 1 ? "arrivées" : "arrivée"} de l’extérieur
+            </Text>
+          </Stack>
+        </Grid>
+        <BarList
+          empty="Aucune vue du calendrier sur la période."
+          rows={sources.map((s) => ({ label: s.label, value: s.views }))}
+        />
+      </Stack>
+    </FeaturedCard>
+  )
+}
+
+/** Mis en avant : d’où viennent les visiteurs, Google et réseaux sociaux en premier. */
+function OriginsCard({ stats }: { stats: Stats }) {
+  const sum = (kind: string) =>
+    stats.origins
+      .filter((o) => o.kind === kind)
+      .reduce<Pair>(
+        (acc, o) => ({ current: acc.current + o.sessions.current, previous: acc.previous + o.sessions.previous }),
+        { current: 0, previous: 0 },
+      )
+  const google = sum("google")
+  const social = sum("reseaux")
+  const total = stats.sessions.current
+  const share = (n: number) => (total ? ` · ${nf.format(Math.round((n / total) * 100))} % des visites` : "")
+  return (
+    <FeaturedCard>
+      <Stack space={5}>
+        <Text as="h2" size={2} weight="semibold">
+          D’où viennent les visiteurs
+        </Text>
+        <Grid columns={[1, 2]} gap={4}>
+          <BigNumber label={`Depuis Google${share(google.current)}`} value={nf.format(google.current)} pair={google} days={stats.days} />
+          <BigNumber
+            label={`Depuis les réseaux sociaux${share(social.current)}`}
+            value={nf.format(social.current)}
+            pair={social}
+            days={stats.days}
+          />
+        </Grid>
+        <BarList
+          empty="Aucune visite sur la période."
+          rows={stats.origins.map((o) => ({
+            label: o.label,
+            value: o.sessions.current,
+            note: [o.detail && `Sources : ${o.detail}`, `${nf.format(o.engaged)} engagée${o.engaged > 1 ? "s" : ""}`]
+              .filter(Boolean)
+              .join(" · "),
+          }))}
+        />
+        <Text size={0} muted>
+          En visites. Les liens publiés sur Instagram ou Facebook avec des paramètres UTM sont reconnus même quand l’application
+          ne transmet pas sa provenance.
+        </Text>
+      </Stack>
+    </FeaturedCard>
+  )
+}
+
+/** Carte mise en avant : filet garance en haut, comme les cartes du site. */
+function FeaturedCard({ children }: { children: ReactNode }) {
+  return (
+    <Card padding={[4, 4, 5]} radius={3} border shadow={1} style={{ borderTop: `4px solid ${useBarColor()}` }}>
+      {children}
     </Card>
   )
 }

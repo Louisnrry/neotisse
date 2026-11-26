@@ -3,7 +3,8 @@
  * Le compte de service n’a qu’un droit de lecture sur la propriété GA4 ; sa clé n’est jamais envoyée au navigateur.
  */
 import { createSign } from "node:crypto";
-import type { Pair, Stats, StatsPeriod } from "@/lib/stats";
+import { routes } from "@/lib/routes";
+import type { OriginKind, Pair, Stats, StatsPeriod } from "@/lib/stats";
 
 if (typeof window !== "undefined") throw new Error("La lecture de GA4 se fait sur le serveur uniquement.");
 
@@ -85,6 +86,53 @@ const eventFilter = (values: string[]) => ({
   filter: { fieldName: "eventName", inListFilter: { values } },
 });
 
+/** Regroupe une source GA4 en provenance lisible. */
+export function classifySource(source: string, channel: string): { label: string; kind: OriginKind } {
+  const s = source.toLowerCase();
+  if (s === "(direct)" || channel === "Direct") return { label: "Accès direct ou inconnu", kind: "direct" };
+  if (/(^|\.)google\./.test(s) || s === "google") return { label: "Google", kind: "google" };
+  if (s.includes("instagram")) return { label: "Instagram", kind: "reseaux" };
+  if (/facebook|^fb$|^m\.facebook|^l\.facebook/.test(s)) return { label: "Facebook", kind: "reseaux" };
+  if (/chatgpt|openai|perplexity|gemini|claude\.ai|copilot/.test(s)) return { label: "Assistants IA", kind: "autre" };
+  if (channel.includes("Social")) return { label: "Autres réseaux", kind: "reseaux" };
+  if (channel.includes("Search")) return { label: "Autres moteurs de recherche", kind: "autre" };
+  if (channel === "Email") return { label: "E-mail", kind: "autre" };
+  if (channel === "Referral") return { label: "Autres sites", kind: "autre" };
+  return { label: "Autre", kind: "autre" };
+}
+
+/** Pages du site, pour dire depuis laquelle on est arrivé au calendrier. */
+const PAGE_NAMES: Record<string, string> = {
+  [routes.accueil]: "l’accueil",
+  [routes.ateliers]: "la page Ateliers",
+  [routes.partenaires]: "la page Partenaires",
+  [routes.livreDor]: "le livre d’or",
+  [routes.aPropos]: "la page À propos",
+  [routes.contact]: "la page Contact",
+};
+
+/** Hôtes du site : un précédent sur l’un d’eux est un clic depuis une autre page du site. */
+function isSiteHost(host: string) {
+  const site = process.env.NEXT_PUBLIC_SITE_URL ? new URL(process.env.NEXT_PUBLIC_SITE_URL).hostname : "";
+  return host === site || host === "neotisse.fr" || host === "www.neotisse.fr" || host.endsWith(".netlify.app");
+}
+
+/** Provenance d’une vue du calendrier : la page du site d’où vient le clic, sinon la source de la visite. */
+function classifyCalendarView(referrer: string, source: string, channel: string) {
+  let url: URL | null = null;
+  try {
+    url = referrer ? new URL(referrer) : null;
+  } catch {
+    url = null;
+  }
+  if (url && isSiteHost(url.hostname)) {
+    const path = url.pathname.endsWith("/") ? url.pathname : `${url.pathname}/`;
+    if (path === routes.calendrier) return null; // même page (changement d’adresse sans changer de page)
+    return { label: `Depuis ${PAGE_NAMES[path] ?? "une autre page du site"}`, kind: "site" as const };
+  }
+  return classifySource(source, channel);
+}
+
 /** Jour « AAAA-MM-JJ » dans le fuseau de la propriété GA4. */
 const dayIn = (timeZone: string, date: Date) => new Intl.DateTimeFormat("en-CA", { timeZone }).format(date);
 
@@ -93,7 +141,7 @@ export async function readStats(config: Config, days: StatsPeriod): Promise<Stat
   const current = { startDate: `${days - 1}daysAgo`, endDate: "today", name: "current" };
   const previous = { startDate: `${days * 2 - 1}daysAgo`, endDate: `${days}daysAgo`, name: "previous" };
 
-  const [batch, fiches, realtime] = await Promise.all([
+  const [batch, calendarReport, fiches, realtime] = await Promise.all([
     call<{ reports: Report[] }>(config, "batchRunReports", {
       requests: [
         { dateRanges: [current], dimensions: names("date"), metrics: names("sessions"), limit: 100 },
@@ -105,8 +153,9 @@ export async function readStats(config: Config, days: StatsPeriod): Promise<Stat
         },
         {
           dateRanges: [current, previous],
-          dimensions: names("sessionDefaultChannelGroup"),
+          dimensions: names("sessionSource", "sessionDefaultChannelGroup"),
           metrics: names("sessions", "engagedSessions"),
+          limit: 200,
         },
         {
           dateRanges: [current],
@@ -117,6 +166,14 @@ export async function readStats(config: Config, days: StatsPeriod): Promise<Stat
         },
         { dateRanges: [current], dimensions: names("deviceCategory"), metrics: names("sessions") },
       ],
+    }),
+    // Vues du calendrier, avec la page précédente (clic interne) et la source de la visite.
+    call<Report>(config, "runReport", {
+      dateRanges: [current, previous],
+      dimensions: names("pageReferrer", "sessionSource", "sessionDefaultChannelGroup"),
+      metrics: names("screenPageViews"),
+      dimensionFilter: { filter: { fieldName: "pagePath", stringFilter: { value: routes.calendrier } } },
+      limit: 500,
     }),
     // Par fiche, en nombre de visites : rouvrir la même fiche ne compte qu’une fois.
     call<Report>(config, "runReport", {
@@ -159,15 +216,40 @@ export async function readStats(config: Config, days: StatsPeriod): Promise<Stat
 
   const sessions: Pair = { current: 0, previous: 0 };
   const socialEngaged: Pair = { current: 0, previous: 0 };
-  const channels: Stats["channels"] = [];
+  const origins = new Map<string, Stats["origins"][number]>();
   for (const row of channelReport.rows ?? []) {
-    const name = dim(row, 0);
-    const period = dim(row, 1) === "previous" ? "previous" : "current";
+    const source = dim(row, 0);
+    const channel = dim(row, 1);
+    const period = dim(row, 2) === "previous" ? "previous" : "current";
     sessions[period] += num(row, 0);
-    if (name === "Organic Social") socialEngaged[period] += num(row, 1);
-    if (period === "current") channels.push({ name, sessions: num(row, 0), engaged: num(row, 1) });
+    if (channel === "Organic Social") socialEngaged[period] += num(row, 1);
+    const { label, kind } = classifySource(source, channel);
+    const origin = origins.get(label) ?? { label, kind, detail: "", sessions: { current: 0, previous: 0 }, engaged: 0 };
+    origin.sessions[period] += num(row, 0);
+    if (period === "current") {
+      origin.engaged += num(row, 1);
+      // Sources réelles derrière un groupe (ex. « bing, qwant ») : affichées en petit.
+      if (!["Google", "Instagram", "Facebook", "Accès direct ou inconnu"].includes(label)) {
+        origin.detail = [...new Set([...origin.detail.split(", ").filter(Boolean), source])].join(", ");
+      }
+    }
+    origins.set(label, origin);
   }
-  channels.sort((a, b) => b.sessions - a.sessions);
+
+  const calendar: Stats["calendar"] = { views: { current: 0, previous: 0 }, sources: [] };
+  const calendarSources = new Map<string, Stats["calendar"]["sources"][number]>();
+  for (const row of calendarReport.rows ?? []) {
+    const period = dim(row, 3) === "previous" ? "previous" : "current";
+    const views = num(row, 0);
+    calendar.views[period] += views;
+    if (period === "previous") continue;
+    const origin = classifyCalendarView(dim(row, 0), dim(row, 1), dim(row, 2));
+    if (!origin) continue;
+    const entry = calendarSources.get(origin.label) ?? { ...origin, views: 0 };
+    entry.views += views;
+    calendarSources.set(origin.label, entry);
+  }
+  calendar.sources = [...calendarSources.values()].sort((a, b) => b.views - a.views);
 
   let ficheRows: Stats["fiches"] = null;
   if (fiches) {
@@ -191,7 +273,10 @@ export async function readStats(config: Config, days: StatsPeriod): Promise<Stat
     sessions,
     socialEngaged,
     events,
-    channels,
+    origins: [...origins.values()]
+      .filter((o) => o.sessions.current > 0 || o.sessions.previous > 0)
+      .sort((a, b) => b.sessions.current - a.sessions.current),
+    calendar,
     pages: (pageReport.rows ?? []).map((row) => ({ path: dim(row, 0), views: num(row, 0) })),
     devices: (deviceReport.rows ?? [])
       .map((row) => ({ name: dim(row, 0), sessions: num(row, 0) }))
