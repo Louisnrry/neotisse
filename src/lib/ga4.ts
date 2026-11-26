@@ -89,16 +89,16 @@ const eventFilter = (values: string[]) => ({
 /** Regroupe une source GA4 en provenance lisible. */
 export function classifySource(source: string, channel: string): { label: string; kind: OriginKind } {
   const s = source.toLowerCase();
-  if (s === "(direct)" || channel === "Direct") return { label: "Accès direct ou inconnu", kind: "direct" };
+  if (s === "(direct)" || channel === "Direct") return { label: "Accès direct (adresse tapée, favori, message…)", kind: "direct" };
   if (/(^|\.)google\./.test(s) || s === "google") return { label: "Google", kind: "google" };
   if (s.includes("instagram")) return { label: "Instagram", kind: "reseaux" };
   if (/facebook|^fb$|^m\.facebook|^l\.facebook/.test(s)) return { label: "Facebook", kind: "reseaux" };
-  if (/chatgpt|openai|perplexity|gemini|claude\.ai|copilot/.test(s)) return { label: "Assistants IA", kind: "autre" };
+  if (/chatgpt|openai|perplexity|gemini|claude\.ai|copilot/.test(s)) return { label: "ChatGPT et autres assistants IA", kind: "autre" };
   if (channel.includes("Social")) return { label: "Autres réseaux", kind: "reseaux" };
-  if (channel.includes("Search")) return { label: "Autres moteurs de recherche", kind: "autre" };
+  if (channel.includes("Search")) return { label: "Autres moteurs de recherche (Bing, Qwant…)", kind: "autre" };
   if (channel === "Email") return { label: "E-mail", kind: "autre" };
-  if (channel === "Referral") return { label: "Autres sites", kind: "autre" };
-  return { label: "Autre", kind: "autre" };
+  if (channel === "Referral") return { label: "Autres sites (partenaires, articles…)", kind: "autre" };
+  return { label: "Autre provenance", kind: "autre" };
 }
 
 /** Pages du site, pour dire depuis laquelle on est arrivé au calendrier. */
@@ -128,7 +128,7 @@ function classifyCalendarView(referrer: string, source: string, channel: string)
   if (url && isSiteHost(url.hostname)) {
     const path = url.pathname.endsWith("/") ? url.pathname : `${url.pathname}/`;
     if (path === routes.calendrier) return null; // même page (changement d’adresse sans changer de page)
-    return { label: `Depuis ${PAGE_NAMES[path] ?? "une autre page du site"}`, kind: "site" as const };
+    return { label: `En cliquant depuis ${PAGE_NAMES[path] ?? "une autre page du site"}`, kind: "site" as const };
   }
   return classifySource(source, channel);
 }
@@ -229,7 +229,7 @@ export async function readStats(config: Config, days: StatsPeriod): Promise<Stat
     if (period === "current") {
       origin.engaged += num(row, 1);
       // Sources réelles derrière un groupe (ex. « bing, qwant ») : affichées en petit.
-      if (!["Google", "Instagram", "Facebook", "Accès direct ou inconnu"].includes(label)) {
+      if (!["Google", "Instagram", "Facebook"].includes(label) || kind === "direct") {
         origin.detail = [...new Set([...origin.detail.split(", ").filter(Boolean), source])].join(", ");
       }
     }

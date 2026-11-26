@@ -18,11 +18,11 @@ const REVIEWS = `{
 }`
 
 const MESSAGES: Record<StatsErrorCode, string> = {
-  "not-configured": "La lecture de Google Analytics n’est pas encore configurée sur l’hébergeur (variables GA4_…).",
-  unauthorized: "Votre connexion au Studio n’a pas pu être vérifiée. Déconnectez-vous, reconnectez-vous, puis réessayez.",
-  forbidden: "Votre compte n’a pas accès aux statistiques de Néotisse.",
-  "bad-request": "La période demandée n’est pas valable.",
-  unavailable: "Google Analytics ne répond pas pour le moment. Aucun chiffre n’est affiché : ce n’est pas un zéro.",
+  "not-configured": "Les statistiques ne sont pas encore reliées à Google Analytics. Prévenez votre prestataire.",
+  unauthorized: "Votre connexion n’a pas pu être vérifiée. Déconnectez-vous du Studio (en haut à droite), reconnectez-vous, puis rouvrez cette page.",
+  forbidden: "Votre compte n’a pas accès aux statistiques. Demandez à être ajoutée au projet Néotisse.",
+  "bad-request": "Cette période n’est pas disponible. Choisissez 7, 30 ou 90 jours.",
+  unavailable: "Google Analytics ne répond pas pour le moment. Réessayez dans quelques minutes. Aucun chiffre n’est affiché pour ne pas vous montrer de faux zéros.",
 }
 
 async function fetchStats(days: StatsPeriod, token: string | undefined, signal: AbortSignal): Promise<Stats> {
@@ -75,7 +75,7 @@ export function StatsTool() {
               Statistiques
             </Heading>
             <Text muted size={1}>
-              Visiteurs qui ont accepté les statistiques. Les autres ne sont pas comptés.
+              Seules les personnes qui ont accepté les cookies sont comptées : la fréquentation réelle est un peu plus élevée.
             </Text>
           </Stack>
 
@@ -86,7 +86,7 @@ export function StatsTool() {
                 mode={period === days ? "default" : "ghost"}
                 aria-pressed={period === days}
                 onClick={() => refresh(period)}
-                text={`${period} jours`}
+                text={`${period} derniers jours`}
                 fontSize={1}
                 padding={3}
               />

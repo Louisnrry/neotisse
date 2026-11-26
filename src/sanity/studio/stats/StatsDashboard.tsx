@@ -12,15 +12,27 @@ const nf1 = new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 1 })
 const dayLabel = (iso: string) =>
   new Date(`${iso}T12:00:00Z`).toLocaleDateString("fr-FR", { day: "numeric", month: "short", timeZone: "UTC" })
 
+/** Noms des pages au lieu de leurs adresses. */
+const PAGE_LABELS: Record<string, string> = {
+  "/": "Accueil",
+  "/ateliers-tissage-teinture/": "Ateliers",
+  "/calendrier-des-ateliers/": "Calendrier",
+  "/partenaires/": "Partenaires",
+  "/livre-dor/": "Livre d’or",
+  "/savoir-faire-textiles-anciens-a-propos/": "À propos",
+  "/contact-organiser-un-atelier/": "Contact",
+  "/mentions-legales/": "Mentions légales",
+  "/politique-de-confidentialite/": "Politique de confidentialité",
+}
 const DEVICES: Record<string, string> = { mobile: "Téléphone", desktop: "Ordinateur", tablet: "Tablette" }
 const EVENTS: Record<string, string> = {
-  page_view: "pages vues",
-  view_event: "fiches ouvertes",
-  click_lieu: "clics vers le lieu",
+  page_view: "pages consultées",
+  view_event: "événements ouverts",
+  click_lieu: "clics vers le site d’un lieu",
   submit_avis: "avis envoyés",
   generate_lead: "demandes d’atelier",
-  click_social: "clics vers les réseaux",
-  click_contact: "clics e-mail ou téléphone",
+  click_social: "clics vers Instagram ou Facebook",
+  click_contact: "clics pour vous écrire ou vous appeler",
 }
 
 type Status = { tone: "positive" | "caution" | "default"; label: string } | null
@@ -28,25 +40,25 @@ type Status = { tone: "positive" | "caution" | "default"; label: string } | null
 /** Seuils mensuels du livrable 6 : lus seulement sur 30 jours. */
 function monthly(days: number, value: number, low: number, high: number): Status {
   if (days !== 30) return null
-  if (value < low) return { tone: "caution", label: `⚠ Sous le seuil de ${low}` }
-  if (value > high) return { tone: "positive", label: `✓ Au-dessus de ${high}` }
-  return { tone: "default", label: "Zone normale" }
+  if (value < low) return { tone: "caution", label: `⚠ En dessous de l’objectif (${low} par mois)` }
+  if (value > high) return { tone: "positive", label: `✓ Très bon mois (plus de ${high})` }
+  return { tone: "default", label: "Dans l’objectif" }
 }
 
 /** Au moins 30 fiches ouvertes avant de juger un taux (cours : un taux se lit avec son volume). */
 function rateStatus(opened: number, rate: number): Status {
-  if (opened < 30) return { tone: "default", label: "Volume trop faible pour conclure" }
-  if (rate < 20) return { tone: "caution", label: "⚠ Sous le seuil de 20 %" }
-  if (rate > 50) return { tone: "positive", label: "✓ Au-dessus de 50 %" }
-  return { tone: "default", label: "Zone normale" }
+  if (opened < 30) return { tone: "default", label: "Pas encore assez de visites pour juger" }
+  if (rate < 20) return { tone: "caution", label: "⚠ En dessous de l’objectif (20 sur 100)" }
+  if (rate > 50) return { tone: "positive", label: "✓ Excellent (plus de 50 sur 100)" }
+  return { tone: "default", label: "Dans l’objectif" }
 }
 
 const versus = ({ current, previous }: Pair, days: number) => {
   const diff = current - previous
   const sign = diff > 0 ? "+" : diff < 0 ? "−" : "="
   return diff === 0
-    ? `Comme les ${days} jours d’avant (${nf.format(previous)})`
-    : `${sign}${nf.format(Math.abs(diff))} par rapport aux ${days} jours d’avant (${nf.format(previous)})`
+    ? `Autant que les ${days} jours précédents (${nf.format(previous)})`
+    : `${sign === "+" ? "↑" : "↓"} ${nf.format(Math.abs(diff))} de ${sign === "+" ? "plus" : "moins"} que les ${days} jours précédents (${nf.format(previous)})`
 }
 
 export function StatsDashboard({ stats, reviews }: { stats: Stats; reviews: ReviewStats | null }) {
@@ -63,11 +75,11 @@ export function StatsDashboard({ stats, reviews }: { stats: Stats; reviews: Revi
         <Card padding={4} radius={2} border>
           <Stack space={3}>
             <Text size={1} weight="semibold">
-              En direct · 30 dernières minutes
+              En ce moment (dernière demi-heure)
             </Text>
             <Text size={1} muted>
               {[
-                `visiteurs : ${nf.format(realtime.users)}`,
+                `${nf.format(realtime.users)} ${realtime.users > 1 ? "personnes" : "personne"} sur le site`,
                 ...realtime.events.map((e) => `${EVENTS[e.name] ?? e.name} : ${nf.format(e.count)}`),
               ].join(" · ")}
             </Text>
@@ -82,80 +94,80 @@ export function StatsDashboard({ stats, reviews }: { stats: Stats; reviews: Revi
 
       <Grid columns={[1, 1, 2, 4]} gap={3}>
         <Tile
-          label="Fiches qui mènent au lieu"
-          value={opened ? `${nf1.format(rate)} %` : "—"}
+          label="Après avoir ouvert un événement, combien vont sur le site du lieu ?"
+          value={opened ? `${nf.format(Math.round(rate))} sur 100` : "—"}
           detail={
             opened
-              ? `${nf.format(clicked)} clics pour ${nf.format(opened)} fiches ouvertes`
-              : "Aucune fiche ouverte sur la période"
+              ? `${nf.format(clicked)} sur ${nf.format(opened)} ont cliqué vers le lieu pour s’inscrire`
+              : "Aucun événement ouvert sur la période"
           }
           status={opened ? rateStatus(opened, rate) : null}
         />
         <Tile
-          label="Visites engagées des réseaux"
+          label="Visites venues d’Instagram et Facebook"
           value={nf.format(stats.socialEngaged.current)}
-          detail={versus(stats.socialEngaged, days)}
+          detail={`Seulement les personnes qui ont pris le temps de regarder. ${versus(stats.socialEngaged, days)}`}
           status={monthly(days, stats.socialEngaged.current, 100, 300)}
         />
         <Tile
-          label="Avis publiés"
+          label="Avis reçus et publiés"
           value={reviews ? nf.format(reviews.count) : "—"}
           detail={
             !reviews
-              ? "Avis illisibles pour le moment"
+              ? "Avis indisponibles pour le moment"
               : reviews.average
-                ? `Note moyenne ${nf1.format(reviews.average)}/5 · source : Sanity`
-                : "Source : Sanity"
+                ? `Note moyenne : ${nf1.format(reviews.average)} sur 5`
+                : "Aucun avis publié sur la période"
           }
           status={reviews ? monthly(days, reviews.count, 2, 6) : null}
         />
         <Tile
-          label="Demandes d’atelier"
+          label="Demandes d’atelier reçues"
           value="—"
-          detail="Pas encore mesuré : le formulaire de contact n’envoie pas encore d’e-mail"
+          detail="Pas encore comptées : le formulaire de contact doit d’abord être relié à votre boîte mail."
           status={null}
         />
       </Grid>
 
       <DailyChart stats={stats} />
 
-      <Section title="Fiches d’événement">
+      <Section title="Événements les plus consultés">
         {fiches === null ? (
           <Text size={1} muted>
-            Détail indisponible : les dimensions « fiche » et « lien » ne sont pas encore actives dans GA4.
+            Le détail par événement apparaîtra ici bientôt.
           </Text>
         ) : (
           <Table
-            empty="Aucune fiche ouverte sur la période."
-            head={["Fiche", "Visites avec ouverture", "Visites avec clic vers le lieu"]}
+            empty="Aucun événement ouvert sur la période."
+            head={["Événement", "Personnes qui l’ont ouvert", "Puis ont cliqué vers le lieu"]}
             rows={fiches.map((f) => [
               f.name,
               nf.format(f.opened),
-              f.hasLink ? nf.format(f.clicked) : "Pas de lien",
+              f.hasLink ? nf.format(f.clicked) : "Pas de lien vers le lieu",
             ])}
           />
         )}
       </Section>
 
       <Grid columns={[1, 1, 2]} gap={3}>
-        <Section title="Pages les plus vues">
+        <Section title="Pages les plus consultées">
           <Table
             empty="Aucune page vue sur la période."
-            head={["Page", "Vues"]}
-            rows={stats.pages.map((p) => [p.path, nf.format(p.views)])}
+            head={["Page", "Consultations"]}
+            rows={stats.pages.map((p) => [PAGE_LABELS[p.path] ?? p.path, nf.format(p.views)])}
           />
         </Section>
-        <Section title="Appareils">
+        <Section title="Sur quel écran ?">
           <Table
             empty="Aucune visite sur la période."
-            head={["Appareil", "Visites"]}
+            head={["Écran", "Visites"]}
             rows={stats.devices.map((d) => [DEVICES[d.name] ?? d.name, nf.format(d.sessions)])}
           />
         </Section>
-        <Section title="Autres actions">
+        <Section title="Ce que font les visiteurs">
           <Table
             empty=""
-            head={["Action", "Nombre"]}
+            head={["Action", "Combien de fois"]}
             rows={["click_contact", "click_social", "submit_avis"].map((e) => [
               EVENTS[e][0].toUpperCase() + EVENTS[e].slice(1),
               nf.format(events[e].current),
@@ -165,10 +177,10 @@ export function StatsDashboard({ stats, reviews }: { stats: Stats; reviews: Revi
       </Grid>
 
       <Text size={1} muted>
-        Source : Google Analytics 4 et Sanity. Période : {dayLabel(stats.daily[0].date)} –{" "}
-        {dayLabel(stats.daily[stats.daily.length - 1].date)}, aujourd’hui compris (journée incomplète). Lu à{" "}
-        {new Date(stats.generatedAt).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}. Google peut
-        mettre un à deux jours à compter toutes les visites.
+        Visites : Google Analytics. Avis : le Studio. Du {dayLabel(stats.daily[0].date)} au{" "}
+        {dayLabel(stats.daily[stats.daily.length - 1].date)}, aujourd’hui compris. Mis à jour à{" "}
+        {new Date(stats.generatedAt).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}. Les chiffres d’hier et
+        d’aujourd’hui peuvent encore augmenter : Google met jusqu’à deux jours à tout compter.
       </Text>
     </Stack>
   )
@@ -279,14 +291,14 @@ function DailyChart({ stats }: { stats: Stats }) {
       <Stack space={4}>
         <Flex align="center" justify="space-between" gap={3} wrap="wrap">
           <Text as="h2" size={1} weight="semibold">
-            Visites par jour · {nf.format(stats.sessions.current)} au total
+            Visites jour par jour : {nf.format(stats.sessions.current)} au total
           </Text>
           <Button
             mode="bleed"
             fontSize={1}
             padding={2}
             onClick={() => setAsTable((v) => !v)}
-            text={asTable ? "Voir le graphique" : "Voir le tableau"}
+            text={asTable ? "Voir le graphique" : "Voir les chiffres"}
           />
         </Flex>
         <Text size={1} muted>
@@ -383,10 +395,6 @@ function useBarColor() {
   return useColorSchemeValue() === "dark" ? "#E05A45" : "#C8361F"
 }
 
-/** Évolution courte : « +3 », « −2 » ou « = », avec la valeur d’avant. */
-const delta = ({ current, previous }: Pair) =>
-  current === previous ? "=" : `${current > previous ? "+" : "−"}${nf.format(Math.abs(current - previous))}`
-
 function BigNumber({ label, value, pair, days }: { label: string; value: string; pair?: Pair; days: number }) {
   return (
     <Stack space={3}>
@@ -398,7 +406,7 @@ function BigNumber({ label, value, pair, days }: { label: string; value: string;
       </Text>
       {pair && (
         <Text size={1} muted>
-          {delta(pair)} par rapport aux {days} jours d’avant ({nf.format(pair.previous)})
+          {versus(pair, days)}
         </Text>
       )}
     </Stack>
@@ -459,24 +467,24 @@ function CalendarCard({ stats }: { stats: Stats }) {
     <FeaturedCard>
       <Stack space={5}>
         <Text as="h2" size={2} weight="semibold">
-          Vers le calendrier
+          Qui consulte le calendrier ?
         </Text>
         <Grid columns={[1, 2]} gap={4}>
-          <BigNumber label="Vues de la page Calendrier" value={nf.format(views.current)} pair={views} days={stats.days} />
+          <BigNumber label="Fois où le calendrier a été ouvert" value={nf.format(views.current)} pair={views} days={stats.days} />
           <Stack space={3}>
             <Text size={1} muted>
-              Dont
+              Parmi elles
             </Text>
             <Text size={2} weight="semibold">
-              {nf.format(fromSite)} {fromSite > 1 ? "clics" : "clic"} depuis le site
+              {nf.format(fromSite)} depuis une autre page du site
             </Text>
             <Text size={2} weight="semibold">
-              {nf.format(fromOutside)} {fromOutside > 1 ? "arrivées" : "arrivée"} de l’extérieur
+              {nf.format(fromOutside)} directement de l’extérieur (Google, réseaux…)
             </Text>
           </Stack>
         </Grid>
         <BarList
-          empty="Aucune vue du calendrier sur la période."
+          empty="Personne n’a ouvert le calendrier sur la période."
           rows={sources.map((s) => ({ label: s.label, value: s.views }))}
         />
       </Stack>
@@ -496,17 +504,17 @@ function OriginsCard({ stats }: { stats: Stats }) {
   const google = sum("google")
   const social = sum("reseaux")
   const total = stats.sessions.current
-  const share = (n: number) => (total ? ` · ${nf.format(Math.round((n / total) * 100))} % des visites` : "")
+  const share = (n: number) => (total ? ` (${nf.format(Math.round((n / total) * 100))} % des visites)` : "")
   return (
     <FeaturedCard>
       <Stack space={5}>
         <Text as="h2" size={2} weight="semibold">
-          D’où viennent les visiteurs
+          Comment les gens trouvent le site
         </Text>
         <Grid columns={[1, 2]} gap={4}>
-          <BigNumber label={`Depuis Google${share(google.current)}`} value={nf.format(google.current)} pair={google} days={stats.days} />
+          <BigNumber label={`Par Google${share(google.current)}`} value={nf.format(google.current)} pair={google} days={stats.days} />
           <BigNumber
-            label={`Depuis les réseaux sociaux${share(social.current)}`}
+            label={`Par Instagram, Facebook et autres réseaux${share(social.current)}`}
             value={nf.format(social.current)}
             pair={social}
             days={stats.days}
@@ -517,14 +525,14 @@ function OriginsCard({ stats }: { stats: Stats }) {
           rows={stats.origins.map((o) => ({
             label: o.label,
             value: o.sessions.current,
-            note: [o.detail && `Sources : ${o.detail}`, `${nf.format(o.engaged)} engagée${o.engaged > 1 ? "s" : ""}`]
+            note: [o.detail && `Par exemple : ${o.detail}`, `dont ${nf.format(o.engaged)} qui ${o.engaged > 1 ? "ont" : "a"} pris le temps de regarder`]
               .filter(Boolean)
               .join(" · "),
           }))}
         />
         <Text size={0} muted>
-          En visites. Les liens publiés sur Instagram ou Facebook avec des paramètres UTM sont reconnus même quand l’application
-          ne transmet pas sa provenance.
+          Nombre de visites. Astuce : utilisez les liens préparés pour vos publications Instagram et Facebook, sinon une
+          partie de ces visites apparaît en « Accès direct ».
         </Text>
       </Stack>
     </FeaturedCard>
