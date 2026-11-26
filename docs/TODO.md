@@ -117,7 +117,7 @@
 - [x] **Tableau de bord dans le Studio** (25/11) : onglet « Statistiques » ; vérifié avec des données fictives (plein, vide, sombre, 375px) et route testée sans jeton, faux jeton, période invalide, GA4 non configuré
 - [x] **Tableau de bord : calendrier et provenance mis en avant** (26/11) : vérifié sur les vraies données GA4 (route locale) et avec des données fictives (plein, vide, sombre, 375px)
 - [x] **Graphique interactif des visiteurs en tête du tableau de bord** (26/11) : vérifié avec des données fictives (survol, clavier, comparaison, tableau, sombre, 375px) ; données réelles lues par la route locale
-- [x] **Colonnes au lieu de la courbe, périodes 30/90/180 jours, camembert des provenances** (26/11) : vérifié avec les vraies données (30 et 180 jours) et des données fictives (survol, légende, sombre, 375px)
+- [x] **Périodes 30/90/180 jours, camembert des provenances, courbe avec bulle au-dessus du point** (26/11 ; les colonnes ont été essayées puis retirées) : vérifié avec les vraies données (30 et 180 jours) et des données fictives (survol, légende, sombre, 375px)
 - [x] Propriété GA4, compte de service et 6 variables Netlify en place (25/11) ; route en ligne testée (401 sans jeton, 200 pour un membre) ; aucun appel Google avant accord ni après refus
 - [ ] GA4 : désactiver « Ignorer les instances en double de la configuration », « Clics sortants » et « Interactions avec les formulaires » ; créer les dimensions `fiche`, `lien`, `event_type` ; puis revérifier en ligne cookies de 13 mois et UTM gardées (déjà vérifié en ligne le 25/11 : une seule page vue par page, `view_event` et `click_lieu` avec leurs propriétés, arrêt des envois au retrait ; pas `submit_avis`)
 - [x] `NEXT_PUBLIC_SITE_URL` sur Netlify (25/11) : URL canonique corrigée
