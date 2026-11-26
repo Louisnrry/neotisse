@@ -51,8 +51,8 @@ function monthly(days: number, value: number, low: number, high: number): Status
 /** Au moins 30 fiches ouvertes avant de juger un taux (cours : un taux se lit avec son volume). */
 function rateStatus(opened: number, rate: number): Status {
   if (opened < 30) return { tone: "default", label: "Pas encore assez de visites pour juger" }
-  if (rate < 20) return { tone: "caution", label: "⚠ En dessous de l’objectif (20 sur 100)" }
-  if (rate > 50) return { tone: "positive", label: "✓ Excellent (plus de 50 sur 100)" }
+  if (rate < 20) return { tone: "caution", label: "⚠ En dessous de l’objectif (20 %)" }
+  if (rate > 50) return { tone: "positive", label: "✓ Excellent (plus de 50 %)" }
   return { tone: "default", label: "Dans l’objectif" }
 }
 
@@ -103,10 +103,10 @@ export function StatsDashboard({ stats, reviews }: { stats: Stats; reviews: Revi
       <Grid columns={[1, 1, 2, 4]} gap={3}>
         <Tile
           label="Après avoir ouvert un événement, combien vont sur le site du lieu ?"
-          value={opened ? `${nf.format(Math.round(rate))} sur 100` : "—"}
+          value={opened ? `${nf.format(Math.round(rate))} %` : "—"}
           detail={
             opened
-              ? `${nf.format(clicked)} sur ${nf.format(opened)} ont cliqué vers le lieu pour s’inscrire`
+              ? `${nf.format(clicked)} ${clicked > 1 ? "personnes" : "personne"} sur ${nf.format(opened)} ${clicked > 1 ? "ont" : "a"} cliqué vers le lieu pour s’inscrire`
               : "Aucun événement ouvert sur la période"
           }
           status={opened ? rateStatus(opened, rate) : null}
