@@ -14,11 +14,13 @@ type PrivateData = { email?: string; ip?: string; createdAt?: string } | null
 
 const QUERY = `*[_id == $id][0]{ email, ip, createdAt }`
 
-export const ReviewPrivateView: UserViewComponent = ({ documentId }) => {
+/** Coordonnées privées d’un avis, relues en direct (document `private.<identifiant de l’avis>`). */
+export function useReviewPrivate(documentId: string | undefined) {
   const client = useClient({ apiVersion })
   const [data, setData] = useState<PrivateData | undefined>(undefined)
 
   useEffect(() => {
+    if (!documentId) return
     const id = reviewPrivateId(documentId)
     let alive = true
     client.fetch<PrivateData>(QUERY, { id }).then((d) => alive && setData(d), () => alive && setData(null))
@@ -30,6 +32,12 @@ export const ReviewPrivateView: UserViewComponent = ({ documentId }) => {
       sub.unsubscribe()
     }
   }, [client, documentId])
+
+  return data
+}
+
+export const ReviewPrivateView: UserViewComponent = ({ documentId }) => {
+  const data = useReviewPrivate(documentId)
 
   if (data === undefined) {
     return (

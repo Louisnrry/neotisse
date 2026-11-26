@@ -4,6 +4,8 @@ import { CloseCircleIcon } from "@sanity/icons/CloseCircle"
 import { StarIcon } from "@sanity/icons/Star"
 import { defineField, defineType } from "sanity"
 
+import { ReviewContactInput } from "../../studio/ReviewContactInput"
+
 export const reviewStatusOptions = [
   { title: "À modérer", value: "pending" },
   { title: "Publié", value: "approved" },
@@ -50,6 +52,15 @@ export const review = defineType({
       title: "Nom",
       type: "string",
       validation: (rule) => rule.required(),
+    }),
+    defineField({
+      // Affichage seul : l’e-mail est lu dans le document privé, rien n’est enregistré ici.
+      name: "contact",
+      title: "Adresse e-mail",
+      type: "string",
+      description: "Jamais affichée sur le site. Elle sert à répondre à l’auteur de l’avis.",
+      readOnly: true,
+      components: { input: ReviewContactInput },
     }),
     defineField({
       name: "title",
