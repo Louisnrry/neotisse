@@ -3,10 +3,11 @@
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
 import { Button } from "@/components/ui/Button";
 import { FormMessage, TextArea, TextField } from "@/components/ui/Field";
+import { CONTACT_MIN_DELAY_MS, validateContact, type ContactErrors, type ContactValues } from "@/lib/contactForm";
 import type { ContactFormTexts } from "@/sanity/queries/contact";
 
-type Values = { nom: string; prenom: string; email: string; objet: string; projet: string };
-type Errors = Partial<Record<keyof Values, string>>;
+type Values = ContactValues;
+type Errors = ContactErrors;
 
 /** Libellé suivi d’un astérisque garance (le caractère obligatoire est porté par l’attribut `required`). */
 function Required({ children }: { children: string }) {
@@ -17,25 +18,12 @@ function Required({ children }: { children: string }) {
   );
 }
 
-const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-function validate(v: Values): Errors {
-  const e: Errors = {};
-  if (!v.nom.trim()) e.nom = "Indiquez votre nom.";
-  if (!v.prenom.trim()) e.prenom = "Indiquez votre prénom.";
-  if (!v.email.trim()) e.email = "Indiquez votre adresse e-mail.";
-  else if (!emailPattern.test(v.email.trim())) e.email = "Cette adresse e-mail ne semble pas valide.";
-  if (!v.objet.trim()) e.objet = "Indiquez l’objet de votre message.";
-  if (!v.projet.trim()) e.projet = "Parlez-nous de votre projet.";
-  return e;
-}
-
 /**
  * Formulaire « Écrivez-nous » (CLAUDE.md § 7.4) : Nom et Prénom sur deux colonnes (une seule sous 521px),
  * e-mail, objet, projet, bouton « Envoyer ». Validation côté client, erreurs reliées par `aria-describedby`.
  * Anti-spam : champ piège caché + délai minimal de 2s.
- * TODO(phase 3) : envoyer vers une route API (e-mail via Resend, Reply-To = visiteur, validation serveur).
- * En attendant, un envoi valide affiche directement la confirmation.
+ * Envoi à `POST /api/contact/`, qui valide à nouveau et enregistre le message dans Sanity
+ * (Studio → Messages de contact, en lecture seule). TODO : e-mail à l’association en plus.
  */
 const formId = "contact-form";
 
@@ -59,19 +47,21 @@ export function ContactForm({
   }, []);
   const [errors, setErrors] = useState<Errors>({});
   const [status, setStatus] = useState<"idle" | "sending" | "ok">("idle");
+  const [sendError, setSendError] = useState("");
 
-  function onSubmit(event: FormEvent<HTMLFormElement>) {
+  async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    const elapsed = Date.now() - startedAt.current;
     // Robot : champ piège rempli ou envoi trop rapide → on fait comme si de rien n’était.
-    if (data.get("site") || Date.now() - startedAt.current < 2000) {
+    if (data.get("site") || elapsed < CONTACT_MIN_DELAY_MS) {
       setStatus("ok");
       return;
     }
     const values = Object.fromEntries(
       (["nom", "prenom", "email", "objet", "projet"] as const).map((k) => [k, String(data.get(k) ?? "")]),
     ) as Values;
-    const found = validate(values);
+    const found = validateContact(values);
     setErrors(found);
     const first = Object.keys(found)[0];
     if (first) {
@@ -79,8 +69,29 @@ export function ContactForm({
       return;
     }
     setStatus("sending");
-    // TODO(phase 3) : `await fetch("/api/contact", …)` puis gestion de l’erreur d’envoi.
-    setStatus("ok");
+    setSendError("");
+    try {
+      const response = await fetch("/api/contact/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...values, site: String(data.get("site") ?? ""), elapsed }),
+      });
+      if (response.ok) {
+        setStatus("ok");
+        return;
+      }
+      const body = (await response.json().catch(() => ({}))) as { errors?: Errors; error?: string };
+      if (body.errors) {
+        setErrors(body.errors);
+        const firstError = Object.keys(body.errors)[0];
+        if (firstError) document.getElementById(`contact-${firstError}`)?.focus();
+      } else {
+        setSendError(body.error ?? "L’envoi a échoué. Réessayez dans quelques instants.");
+      }
+    } catch {
+      setSendError("L’envoi a échoué. Vérifiez votre connexion puis réessayez.");
+    }
+    setStatus("idle");
   }
 
   if (status === "ok") {
@@ -121,6 +132,8 @@ export function ContactForm({
             <label htmlFor="contact-site">Site web</label>
             <input id="contact-site" name="site" type="text" tabIndex={-1} autoComplete="off" />
           </div>
+
+          {sendError && <FormMessage tone="error">{sendError}</FormMessage>}
         </form>
       </div>
 

@@ -104,7 +104,9 @@
 - [ ] Faire relire le Studio par l’association (libellés, aide, parcours de la cliente)
 
 ## Phase 3 : fonctionnalités (plus tard)
-- [ ] Formulaire de contact : brancher `ContactForm` sur une route API (e-mail, validation serveur) ; aujourd’hui la confirmation s’affiche sans rien envoyer
+- [x] Formulaire de contact branché sur `POST /api/contact/` (validation serveur, anti-spam) : chaque message est enregistré dans Sanity et se lit dans le Studio, **Messages de contact**, en lecture seule (26/11/2026)
+- [ ] Formulaire de contact : envoyer aussi un e-mail à l’association (service d’envoi à choisir)
+- [ ] Politique de confidentialité (dans le Studio) : préciser que les messages de contact sont aussi conservés dans Sanity
 - [ ] Livre d’or : brancher `GuestbookForm` sur une route API (document `review` en `pending`, IP stockée côté serveur), modération dans Sanity ; aujourd’hui la confirmation s’affiche sans rien envoyer
 - [ ] Anti-spam : honeypot + délai minimal (limite par IP : à décider)
 - [x] Statistiques (GA4) chargées uniquement après consentement

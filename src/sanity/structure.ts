@@ -7,6 +7,7 @@ import { CommentIcon } from "@sanity/icons/Comment"
 import { ComponentIcon } from "@sanity/icons/Component"
 import { DocumentTextIcon } from "@sanity/icons/DocumentText"
 import { DocumentsIcon } from "@sanity/icons/Documents"
+import { EnvelopeIcon } from "@sanity/icons/Envelope"
 import { EarthGlobeIcon } from "@sanity/icons/EarthGlobe"
 import { HelpCircleIcon } from "@sanity/icons/HelpCircle"
 import { HomeIcon } from "@sanity/icons/Home"
@@ -148,6 +149,19 @@ function buildStructure(S: Parameters<StructureResolver>[0], pending: number) {
                 .icon(StarIcon)
                 .child(S.documentTypeList("review").title("Tous les avis")),
             ]),
+        ),
+      // Messages du formulaire de contact : lecture seule, les plus récents en premier.
+      S.listItem()
+        .id("messages-contact")
+        .title("Messages de contact")
+        .icon(EnvelopeIcon)
+        .child(
+          S.documentList()
+            .title("Messages de contact")
+            .apiVersion(apiVersion)
+            .filter('_type == "contactMessage"')
+            .initialValueTemplates([])
+            .defaultOrdering([{ field: "createdAt", direction: "desc" }]),
         ),
     ])
 }

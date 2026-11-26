@@ -54,6 +54,8 @@ export default defineConfig({
           DeleteReviewAction,
         ]
       }
+      // Messages de contact : lecture seule. Ni publication, ni duplication, ni suppression.
+      if (schemaType === 'contactMessage') return []
       return prev
     },
     badges: (prev, { schemaType }) =>

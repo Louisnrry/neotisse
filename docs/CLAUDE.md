@@ -43,7 +43,7 @@
 | Domaine, e-mail (Resend) | Rien n’est acheté ni créé pour l’instant |
 | Statistiques | **GA4** (choix de Louis du 25/11/2026), avec le **tableau de bord dans le Studio** (onglet « Statistiques »), qui remplace Looker Studio (renommé Data Studio en mai 2026) pour la version vibe codée. Code en place, identifiants à créer (voir § 7.6) |
 | Recette | https://neotisse-vb.netlify.app (Netlify, déployé par Louis) |
-| Stockage des messages de contact | Pas pour l’instant |
+| Stockage des messages de contact | **Dans Sanity** (demande de Louis du 26/11/2026) : Studio → **Messages de contact**, **en lecture seule** (voir § 7.4) |
 | Livre d’or | Avis affichés **3 par 3** (« Plus d’avis », puis « Voir moins » pour replier ; demande de Louis du 13/11/2026, au lieu de 5 par 5) |
 | Styles | **Tailwind v4** : tokens en CSS dans `src/app/globals.css` (`@theme`), pas de `tailwind.config.ts` |
 | Gestionnaire de paquets | npm |
@@ -349,7 +349,9 @@ Règles générales :
 ### 7.4 Formulaire de contact
 - Champs (tous obligatoires) : **Nom** (placeholder « Dupont »), **Prénom** (placeholder « Marie ») (2 colonnes), **Adresse e-mail** (placeholder « marie.dupont@exemple.fr » ; ces trois placeholders ajoutés le 13/11/2026 à la demande de Louis, modifiables dans le Studio, Contact → Formulaire), **Objet** (placeholder « Organiser un atelier, conférence, partenariat… »), **Votre projet** (textarea, placeholder « Parlez-nous de votre projet : lieu, public, dates envisagées… »).
 - Bouton « Envoyer ». Confirmation inline : « **Merci, votre message est bien parti !** Nous revenons vers vous très vite. »
-- Envoi d’un e-mail à l’adresse configurée dans Sanity (`siteSettings.contactRecipient`), objet `[Néotisse] {objet}`, `Reply-To` = e-mail du visiteur.
+- **Enregistrement dans Sanity** (26/11/2026, demande de Louis) : le formulaire envoie à `POST /api/contact/` (`src/app/api/contact/route.ts`), qui valide (règles partagées `src/lib/contactForm.ts`), applique l’anti-spam (champ piège, délai 2 s, au plus 5 messages par IP et par heure, comptés dans Sanity) et crée un document `contactMessage` (nom, prénom, e-mail, objet, projet, date ; IP masquée, pour la limite d’envois). Identifiant `contact.<uuid>` : comme les coordonnées des avis, **jamais public** (vérifié : requête sans token → liste vide). Sans `SANITY_API_WRITE_TOKEN` : réponse 503 et message d’erreur dans le formulaire.
+- **Lecture dans le Studio** : menu **« Messages de contact »** (les plus récents en premier ; aperçu « objet / prénom nom · date »). Le type est **en lecture seule** : aucune action (ni publication, ni duplication, ni suppression), absent du menu « Créer » (`sanity.config.ts`, `hiddenFromCreateTypes`). Pour supprimer un message (demande RGPD, conservation de 3 ans), passer par Vision ou ajouter plus tard une action dédiée.
+- **À faire** : envoi d’un e-mail à l’adresse configurée dans Sanity (`siteSettings.contactRecipient`), objet `[Néotisse] {objet}`, `Reply-To` = e-mail du visiteur.
 - Validation côté client et serveur, messages d’erreur accessibles (`aria-invalid`, `aria-describedby`), erreurs en `garance-dark`.
 - Champs : padding 14px, bordure `#CFC7BF`, fond blanc, focus bordure `ink` + halo `rgba(200,54,31,.18)` ; labels Quicksand 700, 0.85rem, letter-spacing 0.04em.
 - Anti-spam : honeypot + temps minimal (2s) + limite de débit par IP.

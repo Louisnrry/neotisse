@@ -1,5 +1,6 @@
 import type { SchemaTypeDefinition } from "sanity"
 
+import { contactMessage } from "./documents/contactMessage"
 import { event } from "./documents/event"
 import { faqItem } from "./documents/faqItem"
 import { partner } from "./documents/partner"
@@ -29,6 +30,7 @@ export const schemaTypes: SchemaTypeDefinition[] = [
   workshop,
   teamMember,
   faqItem,
+  contactMessage,
 
   // Pages et réglages (un seul document par type)
   siteSettings,
@@ -68,7 +70,7 @@ export const singletonTypes = new Set([
 
 /** Identifiants fixes des documents uniques, utilisés par la navigation du Studio. */
 /** Types qu’on ne crée jamais à la main depuis le menu « Créer ». */
-export const hiddenFromCreateTypes = new Set(["reviewPrivate"])
+export const hiddenFromCreateTypes = new Set(["reviewPrivate", "contactMessage"])
 
 export const singletonIds: Record<string, string> = Object.fromEntries(
   [...singletonTypes].map((type) => [type, type]),
