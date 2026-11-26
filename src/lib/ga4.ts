@@ -4,7 +4,7 @@
  */
 import { createSign } from "node:crypto";
 import { routes } from "@/lib/routes";
-import type { OriginKind, Pair, Stats, StatsPeriod } from "@/lib/stats";
+import type { DayStats, OriginKind, Pair, Stats, StatsPeriod } from "@/lib/stats";
 
 if (typeof window !== "undefined") throw new Error("La lecture de GA4 se fait sur le serveur uniquement.");
 
@@ -141,10 +141,15 @@ export async function readStats(config: Config, days: StatsPeriod): Promise<Stat
   const current = { startDate: `${days - 1}daysAgo`, endDate: "today", name: "current" };
   const previous = { startDate: `${days * 2 - 1}daysAgo`, endDate: `${days}daysAgo`, name: "previous" };
 
-  const [batch, calendarReport, fiches, realtime] = await Promise.all([
+  const [batch, totalsReport, calendarReport, fiches, realtime] = await Promise.all([
     call<{ reports: Report[] }>(config, "batchRunReports", {
       requests: [
-        { dateRanges: [current], dimensions: names("date"), metrics: names("sessions"), limit: 100 },
+        {
+          dateRanges: [current, previous],
+          dimensions: names("date"),
+          metrics: names("activeUsers", "sessions", "screenPageViews"),
+          limit: 400,
+        },
         {
           dateRanges: [current, previous],
           dimensions: names("eventName"),
@@ -166,6 +171,11 @@ export async function readStats(config: Config, days: StatsPeriod): Promise<Stat
         },
         { dateRanges: [current], dimensions: names("deviceCategory"), metrics: names("sessions") },
       ],
+    }),
+    // Totaux : les visiteurs d’une période ne sont pas la somme des visiteurs de chaque jour.
+    call<Report>(config, "runReport", {
+      dateRanges: [current, previous],
+      metrics: names("activeUsers", "newUsers", "sessions", "screenPageViews"),
     }),
     // Vues du calendrier, avec la page précédente (clic interne) et la source de la visite.
     call<Report>(config, "runReport", {
@@ -198,14 +208,33 @@ export async function readStats(config: Config, days: StatsPeriod): Promise<Stat
 
   // Jours sans visite : absents de la réponse GA4, donc remis à zéro.
   const timeZone = dailyReport.metadata?.timeZone ?? "Europe/Paris";
-  const byDay = new Map((dailyReport.rows ?? []).map((row) => [dim(row, 0), num(row, 0)]));
+  const byDay = new Map(
+    (dailyReport.rows ?? []).map((row) => [dim(row, 0), { users: num(row, 0), sessions: num(row, 1), views: num(row, 2) }]),
+  );
   const today = new Date(`${dayIn(timeZone, new Date())}T12:00:00Z`);
-  const daily = Array.from({ length: days }, (_, i) => {
+  // Jour i de la période (décalage 0) ou de la précédente (décalage `days`).
+  const dayAt = (i: number, shift: number): DayStats => {
     const date = new Date(today);
-    date.setUTCDate(today.getUTCDate() - (days - 1 - i));
+    date.setUTCDate(today.getUTCDate() - (days - 1 - i) - shift);
     const iso = date.toISOString().slice(0, 10);
-    return { date: iso, sessions: byDay.get(iso.replaceAll("-", "")) ?? 0 };
-  });
+    return { date: iso, ...(byDay.get(iso.replaceAll("-", "")) ?? { users: 0, sessions: 0, views: 0 }) };
+  };
+  const daily = Array.from({ length: days }, (_, i) => dayAt(i, 0));
+  const previousDaily = Array.from({ length: days }, (_, i) => dayAt(i, days));
+
+  const totals: Stats["totals"] = {
+    users: { current: 0, previous: 0 },
+    newUsers: { current: 0, previous: 0 },
+    sessions: { current: 0, previous: 0 },
+    views: { current: 0, previous: 0 },
+  };
+  for (const row of totalsReport.rows ?? []) {
+    const period = dim(row, 0) === "previous" ? "previous" : "current";
+    totals.users[period] = num(row, 0);
+    totals.newUsers[period] = num(row, 1);
+    totals.sessions[period] = num(row, 2);
+    totals.views[period] = num(row, 3);
+  }
 
   const events: Record<string, Pair> = Object.fromEntries(EVENTS.map((e) => [e, { current: 0, previous: 0 }]));
   // Avec deux périodes, GA4 ajoute le nom de la période en dernière dimension.
@@ -270,6 +299,8 @@ export async function readStats(config: Config, days: StatsPeriod): Promise<Stat
     days,
     generatedAt: new Date().toISOString(),
     daily,
+    previousDaily,
+    totals,
     sessions,
     socialEngaged,
     events,

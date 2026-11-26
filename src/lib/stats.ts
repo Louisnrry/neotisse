@@ -3,6 +3,9 @@
 export const STATS_PERIODS = [7, 30, 90] as const;
 export type StatsPeriod = (typeof STATS_PERIODS)[number];
 
+/** Un jour : visiteurs (personnes distinctes), visites et pages consultées. */
+export type DayStats = { date: string; users: number; sessions: number; views: number };
+
 /** Valeur de la période et de la période précédente de même durée. */
 export type Pair = { current: number; previous: number };
 
@@ -10,8 +13,12 @@ export type Stats = {
   days: StatsPeriod;
   /** Heure de lecture, ISO. */
   generatedAt: string;
-  /** Visites par jour, dans l’ordre, jours sans visite compris (AAAA-MM-JJ). */
-  daily: { date: string; sessions: number }[];
+  /** Chiffres par jour, dans l’ordre, jours vides compris (AAAA-MM-JJ). */
+  daily: DayStats[];
+  /** Mêmes chiffres pour la période précédente, jour pour jour (même longueur que `daily`). */
+  previousDaily: DayStats[];
+  /** Totaux de la période et de la précédente. Visiteurs : personnes distinctes (pas la somme des jours). */
+  totals: { users: Pair; newUsers: Pair; sessions: Pair; views: Pair };
   sessions: Pair;
   /** Visites engagées venues des réseaux sociaux (canal Organic Social). */
   socialEngaged: Pair;

@@ -1,7 +1,9 @@
 /** Affichage du tableau de bord (sans appel réseau) : indicateurs du livrable 6, visites par jour et détails. */
-import { Badge, Box, Button, Card, Flex, Grid, Stack, Text } from "@sanity/ui"
-import { useState, type ReactNode } from "react"
+import { Badge, Box, Card, Flex, Grid, Stack, Text } from "@sanity/ui"
+import type { ReactNode } from "react"
 import { useColorSchemeValue } from "sanity"
+
+import { VisitorsChart } from "./VisitorsChart"
 
 import type { Pair, Stats } from "../../../lib/stats"
 
@@ -71,6 +73,8 @@ export function StatsDashboard({ stats, reviews }: { stats: Stats; reviews: Revi
 
   return (
     <Stack space={5}>
+      <VisitorsChart stats={stats} />
+
       {realtime && (
         <Card padding={4} radius={2} border>
           <Stack space={3}>
@@ -129,7 +133,6 @@ export function StatsDashboard({ stats, reviews }: { stats: Stats; reviews: Revi
         />
       </Grid>
 
-      <DailyChart stats={stats} />
 
       <Section title="Événements les plus consultés">
         {fiches === null ? (
@@ -270,125 +273,6 @@ function Table({ head, rows, empty }: { head: string[]; rows: string[][]; empty:
   )
 }
 
-/** Échelle haute arrondie (graduation du milieu toujours entière). */
-function niceMax(value: number) {
-  if (value <= 4) return 4
-  const power = 10 ** Math.floor(Math.log10(value))
-  return [1, 2, 4, 6, 8, 10].map((n) => n * power).find((n) => n >= value) ?? value
-}
-
-function DailyChart({ stats }: { stats: Stats }) {
-  const color = useBarColor()
-  const [active, setActive] = useState<number | null>(null)
-  const [asTable, setAsTable] = useState(false)
-  const { daily } = stats
-  const max = niceMax(Math.max(...daily.map((d) => d.sessions)))
-  const ticks = [max, max / 2, 0]
-  const shown = active === null ? null : daily[active]
-
-  return (
-    <Card padding={4} radius={2} border>
-      <Stack space={4}>
-        <Flex align="center" justify="space-between" gap={3} wrap="wrap">
-          <Text as="h2" size={1} weight="semibold">
-            Visites jour par jour : {nf.format(stats.sessions.current)} au total
-          </Text>
-          <Button
-            mode="bleed"
-            fontSize={1}
-            padding={2}
-            onClick={() => setAsTable((v) => !v)}
-            text={asTable ? "Voir le graphique" : "Voir les chiffres"}
-          />
-        </Flex>
-        <Text size={1} muted>
-          {versus(stats.sessions, stats.days)}
-        </Text>
-
-        {asTable ? (
-          <Box style={{ maxHeight: 320, overflowY: "auto" }}>
-            <Table empty="" head={["Jour", "Visites"]} rows={daily.map((d) => [dayLabel(d.date), nf.format(d.sessions)])} />
-          </Box>
-        ) : (
-          <Box>
-            <Box style={{ minHeight: 20 }} aria-live="polite">
-              <Text size={1} weight="semibold">
-                {shown
-                  ? `${nf.format(shown.sessions)} ${shown.sessions > 1 ? "visites" : "visite"} · ${dayLabel(shown.date)}`
-                  : " "}
-              </Text>
-            </Box>
-            <Flex style={{ height: 200 }} gap={2}>
-              <Flex direction="column" justify="space-between" style={{ margin: "-6px 0" }}>
-                {ticks.map((t) => (
-                  <Text key={t} size={0} muted align="right">
-                    {nf.format(t)}
-                  </Text>
-                ))}
-              </Flex>
-              <div
-                role="group"
-                aria-label="Visites par jour"
-                onPointerLeave={() => setActive(null)}
-                style={{ position: "relative", flex: 1, display: "flex", minWidth: 0 }}
-              >
-                {ticks.map((t) => (
-                  <div
-                    key={t}
-                    aria-hidden="true"
-                    style={{ position: "absolute", left: 0, right: 0, bottom: `${(t / max) * 100}%`, borderTop: "1px solid var(--card-border-color)" }}
-                  />
-                ))}
-                {daily.map((d, i) => (
-                  <button
-                    key={d.date}
-                    type="button"
-                    aria-label={`${dayLabel(d.date)} : ${d.sessions} visite${d.sessions > 1 ? "s" : ""}`}
-                    onPointerEnter={() => setActive(i)}
-                    onFocus={() => setActive(i)}
-                    onBlur={() => setActive(null)}
-                    style={{
-                      position: "relative",
-                      flex: "1 1 0",
-                      minWidth: 0,
-                      height: "100%",
-                      display: "flex",
-                      alignItems: "flex-end",
-                      justifyContent: "center",
-                      padding: "0 1px",
-                      border: 0,
-                      background: active === i ? "var(--card-border-color)" : "none",
-                    }}
-                  >
-                    <span
-                      style={{
-                        display: "block",
-                        width: "100%",
-                        maxWidth: 24,
-                        height: `${(d.sessions / max) * 100}%`,
-                        minHeight: d.sessions ? 2 : 0,
-                        background: color,
-                        borderRadius: "4px 4px 0 0",
-                      }}
-                    />
-                  </button>
-                ))}
-              </div>
-            </Flex>
-            <Flex justify="space-between" marginTop={3}>
-              <Text size={0} muted>
-                {dayLabel(daily[0].date)}
-              </Text>
-              <Text size={0} muted>
-                {dayLabel(daily[daily.length - 1].date)}
-              </Text>
-            </Flex>
-          </Box>
-        )}
-      </Stack>
-    </Card>
-  )
-}
 
 /** Garance de la charte, éclaircie sur le fond sombre du Studio (contrastes vérifiés). */
 function useBarColor() {
