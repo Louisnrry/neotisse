@@ -590,4 +590,5 @@ Projet d’école : bLaNk (Louis Nourry, seul) répond à l’appel d’offres d
 
 ### Incohérences connues (à corriger si on y retouche)
 - Les livrables 1 et 2 citent encore **Netlify** comme hébergeur, et le livrable 1 dit que Néotisse dépend de l’agence.
-- Le livrable 1 (page 8) et la slide 7 de Canva notent encore les critères en points sur 3 ; la slide 7 affiche aussi « ≈ 5 €/mois » et « 0 €/mois », pas les coûts ci-dessus.
+- Le livrable 1 (page 8) et la slide 7 de Canva notent encore les critères en points sur 3 (Louis a choisi de garder ces points sur la slide, 27/11/2026). Les coûts de la slide 7 sont alignés depuis le 27/11 : 585 € / an et 345 € / an.
+- Slide 9 de Canva (« Suivre les résultats », données fictives) depuis le 27/11 : visites du site, part des fiches d’événement qui mènent au site du lieu, visites du calendrier, livre d’or (note et nombre d’avis), graphique des visites par mois et provenance des visites du site et du calendrier.
